@@ -7,7 +7,7 @@ html, body {
 }
 
 body {
-  @apply h-full bg-primary-900 dark:bg-primary-400;
+  @apply h-full bg-primary-900;
 }
 
 #root {
