@@ -4,7 +4,11 @@ import Letter from '@/types/Letter';
 import Guess from '@/types/Guess';
 
 function randomGuess(): Guess[] {
-  return [...randomWord()].map((letter, index) => ({ letter: letter.toUpperCase() as Letter, guess: false, id: index }));
+  return [...randomWord()].map((letter, index) => ({
+    letter: letter.toUpperCase() as Letter,
+    guess: false,
+    id: index,
+  }));
 }
 
 export default function useGuessWord() {

@@ -1,8 +1,8 @@
-import type LetterValue from "@/types/Letter";
+import type Letter from "@/types/Letter";
 
 type Props = React.HTMLAttributes<HTMLParagraphElement> & {
   show: boolean;
-  value?: LetterValue | '';
+  value?: Letter | '';
 };
 
 export default function LetterDisplay({ show, value }: Props) {

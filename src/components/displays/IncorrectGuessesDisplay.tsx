@@ -1,4 +1,4 @@
-import Text from './Text';
+import Text from '@/components/ui/Text';
 import { NUM_TRIES } from '@/config/constants';
 
 type Props = {

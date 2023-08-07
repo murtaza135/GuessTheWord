@@ -1,17 +1,17 @@
-import Card from '@/components/Card';
+import Card from '@/components/ui/Card';
 import useGuessWord from '@/hooks/useGuessWord';
-import LetterValue from '@/types/Letter';
+import Letter from '@/types/Letter';
 import useIncrement from '@/hooks/useIncrement';
-import Keyboard from '@/components/Keyboard';
-import IncorrectGuessesDisplay from '@/components/IncorrectGuessesDisplay';
-import AnswerDisplay from '@/components/AnswerDisplay';
-import GuessDisplay from '@/components/GuessDisplay';
+import Keyboard from '@/components/keyboard/Keyboard';
+import IncorrectGuessesDisplay from '@/components/displays/IncorrectGuessesDisplay';
+import AnswerDisplay from '@/components/displays/AnswerDisplay';
+import GuessDisplay from '@/components/displays/GuessDisplay';
 
 export default function PlayPage() {
   const { guess, isGuessCorrect, updateGuessWithLetter } = useGuessWord();
   const [numGuesses, incrementNumGuesses] = useIncrement(0);
 
-  const handleLetterClick = (letter: LetterValue) => {
+  const handleLetterClick = (letter: Letter) => {
     const isCorrect = updateGuessWithLetter(letter);
     if (!isCorrect) incrementNumGuesses();
   };
