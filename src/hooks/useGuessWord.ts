@@ -1,12 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import randomWord from '@/utils/words/randomWord';
 import Letter from '@/types/Letter';
-
-type Guess = {
-  id: number;
-  letter: Letter;
-  guess: boolean;
-};
+import Guess from '@/types/Guess';
 
 function randomGuess(): Guess[] {
   return [...randomWord()].map((letter, index) => ({ letter: letter.toUpperCase() as Letter, guess: false, id: index }));
