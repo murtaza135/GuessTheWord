@@ -10,11 +10,37 @@ import GameFinishedDisplay from '@/components/displays/GameFinishedDisplay';
 import { NUM_TRIES } from '@/config/constants';
 import Button from '@/components/ui/Button';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { getLosses, getWins, updateLosses, updateWins } from '@/app/api/api';
 
 export default function PlayPage() {
+  const queryClient = useQueryClient();
   const { guess, isGuessCorrect, updateGuessWithLetter, resetWord } = useGuessWord();
   const [numGuesses, incrementNumGuesses, resetNumGuesses] = useIncrement(0);
   const isGameOver = isGuessCorrect || numGuesses >= NUM_TRIES;
+  const { mutate: mutateWins } = useMutation({
+    mutationFn: updateWins,
+    onSuccess: (data) => queryClient.setQueryData(['wins'], data)
+  });
+  const { mutate: mutateLosses } = useMutation({
+    mutationFn: updateLosses,
+    onSuccess: (data) => queryClient.setQueryData(['losses'], data)
+  });
+
+  useEffect(() => {
+    if (isGameOver) {
+      if (isGuessCorrect) {
+        queryClient.ensureQueryData<number>(['wins'], { queryFn: getWins })
+          .then((wins) => mutateWins(wins + 1))
+          .catch((error) => console.log(error));
+      } else {
+        queryClient.ensureQueryData<number>(['losses'], { queryFn: getLosses })
+          .then((losses) => mutateLosses(losses + 1))
+          .catch((error) => console.log(error));
+      }
+    }
+  }, [isGameOver, isGuessCorrect]);
 
   const handleLetterClick = (letter: Letter) => {
     const isCorrect = updateGuessWithLetter(letter);

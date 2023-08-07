@@ -8,14 +8,12 @@ import { getLosses, getWins } from '@/app/api/api';
 export default function MainMenuPage() {
   const { data: numWins } = useQuery({
     queryKey: ['wins'],
-    queryFn: getWins,
-    initialData: 0
+    queryFn: getWins
   });
 
   const { data: numLosses } = useQuery({
     queryKey: ['losses'],
-    queryFn: getLosses,
-    initialData: 0
+    queryFn: getLosses
   });
 
   return (
@@ -23,8 +21,8 @@ export default function MainMenuPage() {
       <Card className='flex flex-col gap-10 items-center'>
         <Text className='text-primary-900 font-bold  text-4xl md:text-4xl'>Guess the Word!</Text>
         <div className='flex flex-col gap-2 items-center'>
-          <Text className='text-green-700 font-bold text-2xl md:text-2xl'>Wins: {numWins}</Text>
-          <Text className='text-red-800 font-bold text-2xl md:text-2xl'>Losses: {numLosses}</Text>
+          <Text className='text-green-700 font-bold text-2xl md:text-2xl'>Wins: {numWins || '...'}</Text>
+          <Text className='text-red-800 font-bold text-2xl md:text-2xl'>Losses: {numLosses || '...'}</Text>
         </div>
         <Link to="/play" className='w-full mt-1'>
           <Button className='w-full text-3xl px-2 py-3'>Play</Button>
