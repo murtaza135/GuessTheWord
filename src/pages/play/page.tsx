@@ -9,6 +9,7 @@ import GuessDisplay from '@/components/displays/GuessDisplay';
 import GameFinishedDisplay from '@/components/displays/GameFinishedDisplay';
 import { NUM_TRIES } from '@/config/constants';
 import Button from '@/components/ui/Button';
+import { Link } from 'react-router-dom';
 
 export default function PlayPage() {
   const { guess, isGuessCorrect, updateGuessWithLetter, resetWord } = useGuessWord();
@@ -39,7 +40,10 @@ export default function PlayPage() {
                 <IncorrectGuessesDisplay value={numGuesses} />
               </div>
               <Keyboard onClick={handleLetterClick} />
-              <Button onClick={handlePlayAgain}>Reset</Button>
+              <div className="flex gap-3 flex-1">
+                <Button onClick={handlePlayAgain}>Reset</Button>
+                <Link to="/"><Button>Main Menu</Button></Link>
+              </div>
             </>
           )
         }
