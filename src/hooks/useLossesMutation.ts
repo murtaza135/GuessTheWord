@@ -12,7 +12,7 @@ export default function useLossesMutation() {
       queryClient.setQueryData(['losses'], newData);
       return { previousData };
     },
-    onError: (error, newData, context) => {
+    onError: (_error, _newData, context) => {
       queryClient.setQueryData(['losses'], context?.previousData);
     },
     onSettled: () => {

@@ -12,7 +12,7 @@ export default function useWinsMutation() {
       queryClient.setQueryData(['wins'], newData);
       return { previousData };
     },
-    onError: (error, newData, context) => {
+    onError: (_error, _newData, context) => {
       queryClient.setQueryData(['wins'], context?.previousData);
     },
     onSettled: () => {
