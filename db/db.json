@@ -1,4 +1,8 @@
 {
-  "wins": { "value": 0 },
-  "losses": { "value": 0 }
+  "wins": {
+    "value": 12
+  },
+  "losses": {
+    "value": 4
+  }
 }
