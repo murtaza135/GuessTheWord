@@ -4,21 +4,26 @@ import LetterDisplay from '@/components/LetterDisplay';
 import Text from '@/components/Text';
 import letters from '@/utils/letters';
 import useGuessWord from '@/hooks/useGuessWord';
-import LetterValue from "@/types/Letter";
 
 
 export default function PlayPage() {
-  const [word, { resetWord, isGuessCorrect, updateGuessWithLetter }] = useGuessWord();
-  console.log(word.length);
-  console.log(word);
-
+  const { guess, isGuessCorrect, updateGuessWithLetter } = useGuessWord();
 
   return (
     <div className='h-full flex flex-col py-10 items-center justify-center'>
       <Card className='flex flex-col gap-6 items-center'>
         <div className="flex gap-1 flex-wrap justify-center">
-          {Array.from(word).map((letter) => <LetterDisplay key={letter} show={false} value={letter as LetterValue} />)}
+          {guess.map(({ id, guess, letter }) => (
+            <LetterDisplay key={id} show={guess} value={letter} />
+          ))}
         </div>
+
+        {import.meta.env.DEV && (
+          <div className='flex gap-1 mt-2 text-slate-700'>
+            <Text>Word: </Text>
+            <Text>{guess.map((value) => value.letter).join('').toLowerCase()}</Text>
+          </div>
+        )}
 
         <div className='flex gap-1'>
           <Text>Incorrect Guesses: </Text>
@@ -26,8 +31,7 @@ export default function PlayPage() {
         </div>
 
         <div className="flex gap-1 flex-wrap justify-center">
-          {letters.map((letter) => <Letter value={letter} />)}
-          <Letter value='A' />
+          {letters.map((letter) => <Letter key={letter} value={letter} />)}
         </div>
       </Card>
     </div>

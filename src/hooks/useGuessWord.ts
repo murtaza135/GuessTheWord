@@ -1,30 +1,35 @@
 import { useState, useMemo, useCallback } from 'react';
 import randomWord from '@/utils/words/randomWord';
-import { useList } from "react-use";
 import Letter from '@/types/Letter';
-import keys from "lodash/keys";
-import pickBy from "lodash/pickBy";
+
+type Guess = {
+  id: number;
+  letter: Letter;
+  guess: boolean;
+};
+
+function randomGuess(): Guess[] {
+  return [...randomWord()].map((letter, index) => ({ letter: letter.toUpperCase() as Letter, guess: false, id: index }));
+}
 
 export default function useGuessWord() {
-  const initialWord = useMemo(() => randomWord(), [])!;
-  const [word, setWord] = useState(initialWord);
-  const [guess, { set: setGuess, updateAt }] = useList<boolean>(new Array<boolean>(initialWord.length).fill(false));
+  const [guess, setGuess] = useState(() => randomGuess());
+  const isGuessCorrect = useMemo(() => guess.every((value) => value.guess), [guess]);
 
-  const resetWord = useCallback(() => {
-    const newWord = randomWord();
-    setWord(newWord);
-    setGuess(new Array<boolean>(newWord.length).fill(false));
-  }, []);
+  const resetWord = useCallback(() => setGuess(randomGuess()), []);
 
   const updateGuessWithLetter = useCallback((letter: Letter) => {
-    const indexes = keys(pickBy(word, letter))
-      .map((value) => Number(value));
-    indexes.forEach((index) => updateAt(index, true));
-  }, [word]);
+    const updatedGuess = guess.map((value): Guess => {
+      return value.letter.toUpperCase() === letter.toUpperCase()
+        ? { ...value, guess: true }
+        : value;
+    });
 
-  const isGuessCorrect = useCallback(() => {
-    return !guess.some((value) => !value);
+    setGuess(updatedGuess);
+
+    const isCorrectLetter = updatedGuess.filter((value) => value.letter.toUpperCase() === letter.toUpperCase()).length > 0;
+    return isCorrectLetter;
   }, [guess]);
 
-  return [word, { resetWord, updateGuessWithLetter, isGuessCorrect }] as const;
+  return { guess, isGuessCorrect, resetWord, updateGuessWithLetter } as const;
 }
