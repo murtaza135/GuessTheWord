@@ -1,0 +1,10 @@
+{
+  "theme_color": "#134e4a",
+  "background_color": "#134e4a",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "Guess the Word!",
+  "short_name": "Guess!",
+  "description": "Guess the word game"
+}
