@@ -9,13 +9,10 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "server": "json-server db/db.json --port 3001 --delay 1000",
     "preview": "vite preview",
-    "generate-pwa-assets": "npx pwa-asset-generator ./assets/icon.svg ./dist/images/ -i ./dist/index.html -m ./dist/manifest.json -t png -f -e -o false",
-    "generate-sw": "esbuild --outfile=sw/sw-out.js --bundle sw/sw.js && workbox injectManifest workbox-config.cjs",
-    "build-plus": "npm run build && npm run generate-pwa-assets && npm run generate-sw"
+    "generate-assets": "pwa-assets-generator --preset minimal public/images/favicon.svg"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.32.6",
-    "@tanstack/react-query-devtools": "^4.32.6",
     "clsx": "^2.0.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
@@ -26,11 +23,13 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.32.5",
+    "@tanstack/react-query-devtools": "^4.32.6",
     "@types/lodash": "^4.14.196",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "@vite-pwa/assets-generator": "^0.0.4",
     "@vitejs/plugin-react": "^4.0.3",
     "autoprefixer": "^10.4.14",
     "esbuild": "^0.19.1",
@@ -42,6 +41,7 @@
     "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
+    "vite-plugin-pwa": "^0.16.4",
     "workbox-cli": "^7.0.0",
     "workbox-core": "^7.0.0",
     "workbox-precaching": "^7.0.0",

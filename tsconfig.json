@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2020", "DOM", "DOM.Iterable", "WebWorker"],
+    "types": ["vite-plugin-pwa/client"],
     "module": "ESNext",
     "skipLibCheck": true,
 
@@ -23,8 +24,8 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"],
-    }
+    },
   },
-  "include": ["src"],
+  "include": ["src", "sw"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
