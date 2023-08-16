@@ -23,7 +23,7 @@ export default defineConfig({
         start_url: "/",
         name: "Guess the Word!",
         short_name: "Guess!",
-        description: "Guess the word game",
+        description: "A 'guess the word' game",
         icons: [
           {
             src: 'images/pwa-64x64.png',
