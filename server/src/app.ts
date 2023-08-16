@@ -1,7 +1,7 @@
 import path from 'path';
 import express from 'express';
 import Router from 'express-promise-router';
-import { VERSION_MAJOR } from './config/constants';
+import { VERSION_MAJOR } from './config/config';
 
 const app = express();
 const router = Router();
