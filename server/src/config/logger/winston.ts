@@ -1,11 +1,11 @@
 import path from 'path';
 import winston from 'winston';
 import { simpleMessage, detailedMessage, enumerateError, colorizeError } from './winston.utils';
-import { IS_DEVELOPMENT, ENTRY_PATH, LOG_LEVEL } from '../config';
+import config from '../config';
 
 export const FILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB (in bytes)
 
-const level = IS_DEVELOPMENT ? 'debug' : 'warn';
+const level = config.IS_DEVELOPMENT ? 'debug' : 'warn';
 
 const levels = {
   error: 0,
@@ -30,7 +30,7 @@ const defaultFormat = winston.format.combine(
 );
 
 const consoleTransport = new winston.transports.Console({
-  level: LOG_LEVEL || 'debug',
+  level: config.LOG_LEVEL || 'debug',
   format: winston.format.combine(
     colorizeError(),
     winston.format.colorize({ level: true, message: true }),
@@ -43,7 +43,7 @@ const consoleTransport = new winston.transports.Console({
 
 const simpleErrorFileTransport = new winston.transports.File({
   level: 'warn',
-  filename: path.join(ENTRY_PATH, '..', 'logs', 'simple-errors.log'),
+  filename: path.join(config.ENTRY_PATH, '..', 'logs', 'simple-errors.log'),
   maxsize: FILE_SIZE_LIMIT,
   maxFiles: 5,
   format: winston.format.combine(
@@ -57,7 +57,7 @@ const simpleErrorFileTransport = new winston.transports.File({
 
 const detailedErrorFileTransport = new winston.transports.File({
   level: 'warn',
-  filename: path.join(ENTRY_PATH, '..', 'logs', 'detailed-errors.log'),
+  filename: path.join(config.ENTRY_PATH, '..', 'logs', 'detailed-errors.log'),
   maxsize: FILE_SIZE_LIMIT,
   maxFiles: 5,
   format: winston.format.combine(
@@ -77,7 +77,7 @@ const logger = winston.createLogger({
   exitOnError: false
 });
 
-if (IS_DEVELOPMENT) logger.add(consoleTransport);
+if (config.IS_DEVELOPMENT) logger.add(consoleTransport);
 
 type Logger = Pick<winston.Logger, LogLevel>;
 

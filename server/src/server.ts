@@ -1,8 +1,10 @@
 import './config/dotenv';
 import app from './app';
-import { PORT } from './config/config';
+import config from './config/config';
 import { logger } from './config/logger';
 
-const server = app.listen(PORT, () => logger.info(`[GuessTheWord] server running: ${process.env.NODE_ENV} mode on port ${PORT}`));
+const server = app.listen(config.PORT, () => {
+  logger.info(`[GuessTheWord] server running: ${config.NODE_ENV} mode on port ${config.PORT}`);
+});
 
 export default server;

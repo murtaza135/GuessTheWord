@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import morgan from 'morgan';
 import { getReasonPhrase } from 'http-status-codes';
 import logger from './winston';
-import { IS_DEVELOPMENT } from '../config';
+import config from '../config';
 
 const morganFormat = (
   tokens: morgan.TokenIndexer<IncomingMessage, ServerResponse<IncomingMessage>>,
@@ -17,7 +17,7 @@ const morganFormat = (
   return `${method} ${url} | ${statusCode} ${statusReasonPhrase} | ${responseTime}ms`;
 };
 
-const skip = () => !IS_DEVELOPMENT;
+const skip = () => !config.IS_DEVELOPMENT;
 const stream = {
   write: (message: string) => logger.http(message.trim())
 };
