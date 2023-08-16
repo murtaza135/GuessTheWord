@@ -1,6 +1,5 @@
 {
   "name": "guess-the-word-server",
-  "main": "dist/server.js",
   "scripts": {
     "start": "node dist/server.js",
     "dev": "cross-env NODE_ENV=development nodemon src/server.ts",
