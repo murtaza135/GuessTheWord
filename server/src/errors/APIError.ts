@@ -4,7 +4,7 @@ import { type Status, type StatusText } from './status-codes';
 
 type BaseAPIErrorConstructor = {
   message?: string;
-  fields?: Record<string, string>,
+  fields?: Record<string, unknown>,
   cause?: Error,
 };
 
@@ -16,7 +16,7 @@ type APIErrorConstructor = XOR<
 export default class APIError extends Error {
   public readonly status: Status;
   public readonly statusText: StatusText;
-  public readonly fields: Record<string, string>;
+  public readonly fields: Record<string, unknown>;
 
   constructor(options: APIErrorConstructor) {
     const status = options.status ?? getStatusCode(options.statusText) as Status;

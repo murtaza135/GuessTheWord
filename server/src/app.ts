@@ -6,6 +6,7 @@ import config from './config/config';
 import { morgan } from './config/logger';
 import APIError from './errors/APIError';
 import errorHandler from './errors/error-handler';
+import rateLimit from './middleware/rateLimit';
 
 const app = express();
 const router = Router();
@@ -15,6 +16,7 @@ router.use(express.static(path.join(__dirname, 'public')));
 
 router.use(morgan());
 router.use(express.json());
+router.use(rateLimit({ maxAttempts: 25, duration: 1 }));
 
 router.use(actuator({
   basePath: '/_app',
