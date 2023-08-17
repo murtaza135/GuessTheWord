@@ -9,7 +9,25 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String?   @unique
+  image     String?
+  wins      Int
+  losses    Int
+  createdAt DateTime  @default(now())
+  Account   Account[]
+}
+
+model Account {
+  userId            Int
+  provider          String
+  providerAccountId String
+  refreshToken      String
+  accessToken       String
+  expiresAt         DateTime
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@id([userId, providerAccountId])
+  @@index([userId])
 }
