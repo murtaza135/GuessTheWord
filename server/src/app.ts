@@ -1,6 +1,7 @@
 import path from 'path';
 import express from 'express';
 import Router from 'express-promise-router';
+import actuator from 'express-actuator';
 import config from './config/config';
 import { morgan } from './config/logger';
 import APIError from './errors/APIError';
@@ -14,6 +15,14 @@ router.use(express.static(path.join(__dirname, 'public')));
 
 router.use(morgan());
 router.use(express.json());
+
+router.use(actuator({
+  basePath: '/_app',
+  infoBuildOptions: {
+    name: 'Guess the Word!',
+    version: config.VERSION
+  }
+}));
 
 router.use(() => { throw new APIError({ statusText: 'Not Found' }); });
 router.use(errorHandler);
