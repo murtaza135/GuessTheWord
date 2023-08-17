@@ -1,7 +1,7 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { type ExtractEnumValue } from '../types/utils';
 
-const statusCodes = {
+export const STATUS_CODES = {
   [ReasonPhrases.BAD_REQUEST]: StatusCodes.BAD_REQUEST,
   [ReasonPhrases.UNAUTHORIZED]: StatusCodes.UNAUTHORIZED,
   [ReasonPhrases.FORBIDDEN]: StatusCodes.FORBIDDEN,
@@ -11,5 +11,5 @@ const statusCodes = {
   [ReasonPhrases.INTERNAL_SERVER_ERROR]: StatusCodes.INTERNAL_SERVER_ERROR,
 } as const;
 
-export type StatusText = ExtractEnumValue<keyof typeof statusCodes, string>;
-export type Status = ExtractEnumValue<typeof statusCodes[StatusText], number>;
+export type StatusText = ExtractEnumValue<keyof typeof STATUS_CODES, string>;
+export type Status = ExtractEnumValue<typeof STATUS_CODES[StatusText], number>;

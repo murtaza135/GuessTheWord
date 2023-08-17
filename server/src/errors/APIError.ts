@@ -1,6 +1,6 @@
 import { getReasonPhrase, getStatusCode } from 'http-status-codes';
 import { type XOR } from 'ts-essentials';
-import { type Status, type StatusText } from './types';
+import { type Status, type StatusText } from './status-codes';
 
 type BaseAPIErrorConstructor = {
   message?: string;

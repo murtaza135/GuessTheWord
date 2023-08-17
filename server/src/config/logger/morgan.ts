@@ -22,4 +22,4 @@ const stream = {
   write: (message: string) => logger.http(message.trim())
 };
 
-export default morgan(morganFormat, { skip, stream });
+export default () => morgan(morganFormat, { skip, stream });
