@@ -6,7 +6,8 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['production', 'development']),
   VERSION: z.string().regex(/^[0-9]+\.[0-9]+\.[0-9]+$/), // e.g. 11.2.456
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'http', 'debug']),
-  DATABASE_URL: z.string()
+  DATABASE_URL: z.string(),
+  ACCESS_TOKEN_SECRET: z.string()
 });
 
 export default envSchema;

@@ -1,6 +1,7 @@
 import Router from 'express-promise-router';
 import rateLimit from '../../middleware/rateLimit';
 import auth from '../../lib/auth';
+import authController from './auth.controller';
 
 const router = Router();
 
@@ -16,11 +17,7 @@ router.post(
   // rateLimit({ maxAttempts: 5, duration: 60 }),
   // validate.body(loginSchema),
   auth.authenticate({ strategy: 'local-login', message: 'lol' }),
-  function (req, res, next) {
-    res.status(200).json({
-      success: true
-    });
-  }
+  authController.sendAccessToken
 );
 
 // router.post(

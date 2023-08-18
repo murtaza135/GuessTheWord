@@ -7,6 +7,7 @@ const config = {
   ENTRY_POINT: process.argv[1],
   ENTRY_PATH: path.dirname(process.argv[1]),
   API_URL: `${env.DOMAIN_NAME_PROTOCOL}:${env.PORT}/api/v${env.VERSION.split('.')[0]}`,
+  ACCESS_TOKEN_EXPIRE_TIME: '15m',
   ...env,
 };
 
