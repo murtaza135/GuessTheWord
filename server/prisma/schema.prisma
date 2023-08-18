@@ -13,8 +13,8 @@ model User {
   name         String
   email        String?        @unique
   image        String?
-  wins         Int
-  losses       Int
+  wins         Int            @default(0)
+  losses       Int            @default(0)
   createdAt    DateTime       @default(now())
   Account      OAuthAccount[]
   LocalAccount LocalAccount?

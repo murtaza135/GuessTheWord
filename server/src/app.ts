@@ -3,6 +3,7 @@ import express from 'express';
 import Router from 'express-promise-router';
 import actuator from 'express-actuator';
 import cookieParser from 'cookie-parser';
+import { User } from '@prisma/client';
 import config from './config/config';
 import { morgan } from './config/logger';
 import APIError from './errors/APIError';

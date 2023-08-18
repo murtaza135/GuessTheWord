@@ -45,15 +45,18 @@ class Auth {
       passport.authenticate(
         options.strategy,
         function (error: unknown, user: Express.User, info?: StrategyInfo) {
-          if (error) return next(error);
+          if (error) {
+            if (error instanceof Error) return next(error);
+            return next(new Error('Something went wrong', { cause: error }));
+          }
 
           if (!user) {
-            const newOptions = { ...info, ...options };
-            return next(
-              self.onUnauthorized
-                ? self.onUnauthorized(newOptions)
-                : new Error(options.message ?? info?.message ?? 'Unauthorized')
-            );
+            if (self.onUnauthorized) {
+              const newOptions = { ...info, ...options };
+              return next(self.onUnauthorized(newOptions));
+            }
+
+            return next(new Error(options.message ?? info?.message ?? 'Unauthorized'));
           }
 
           req.user = user;

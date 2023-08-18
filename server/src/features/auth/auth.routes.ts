@@ -7,24 +7,20 @@ import validate from '../../middleware/validate';
 
 const router = Router();
 
-// router.post(
-//   '/auth/register',
-//   rateLimit({ maxAttempts: 5, duration: 60 }),
-//   // validate.body(createUserSchema),
-//   // registerController
-// );
-
 router.post(
-  '/auth/login',
-  // rateLimit({ maxAttempts: 5, duration: 60 }),
-  validate.body(authSchemas.login),
-  auth.authenticate({ strategy: 'local-login', message: 'lol' }),
+  '/auth/register',
+  rateLimit({ maxAttempts: 5, duration: 60 }),
+  validate.body(authSchemas.register),
+  auth.authenticate({ strategy: 'local-register' }),
   authController.sendAccessToken,
 );
 
-// router.post(
-//   '/auth/logout',
-//   // logoutController
-// );
+router.post(
+  '/auth/login',
+  rateLimit({ maxAttempts: 5, duration: 60 }),
+  validate.body(authSchemas.login),
+  auth.authenticate({ strategy: 'local-login' }),
+  authController.sendAccessToken,
+);
 
 export default router;

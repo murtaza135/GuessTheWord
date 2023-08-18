@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { logger } from '../logger';
 import globalExtension from './extensions/global.extension';
+import userExtension from './extensions/user.extension';
 
 const prisma = new PrismaClient({
   log: [
@@ -29,6 +30,7 @@ prisma.$on('error', (event) => {
 });
 
 const xprisma = prisma
-  .$extends(globalExtension);
+  .$extends(globalExtension)
+  .$extends(userExtension);
 
 export default xprisma;
