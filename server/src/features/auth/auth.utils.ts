@@ -2,15 +2,6 @@ import { Express, Request, Response, NextFunction } from 'express';
 import passport, { Strategy } from 'passport';
 import APIError from '../../errors/APIError';
 
-export function sendAuthFailResponse(req: Request, res: Response) {
-  const error = new APIError({ statusText: 'Unauthorized' });
-  res.status(error.status).json(error);
-}
-
-export function sendAuthSuccessResponse(req: Request, res: Response) {
-
-}
-
 export function authenticate(
   strategy: string | string[] | Strategy,
   options?: { message: string | undefined; },
@@ -31,4 +22,20 @@ export function authenticate(
       }
     )(req, res, next);
   };
+}
+
+type StrategyConfig = {
+  name?: string;
+  strategy: Strategy;
+};
+
+export function initAuth(config: StrategyConfig | StrategyConfig[]) {
+  const allConfigs = config instanceof Array ? config : [config];
+  allConfigs.forEach((configItem) => {
+    if (configItem.name) {
+      passport.use(configItem.name, configItem.strategy);
+    } else {
+      passport.use(configItem.strategy);
+    }
+  });
 }

@@ -9,14 +9,16 @@ import { morgan } from './config/logger';
 import APIError from './errors/APIError';
 import errorHandler from './errors/error-handler';
 import rateLimit from './middleware/rateLimit';
-import { authRouter, initPassport } from './features/auth';
+import { authRouter, initPassport, strategyConfig } from './features/auth';
+import { initAuth } from './features/auth/auth.utils';
 
 const app = express();
 const router = Router();
 app.use(`/api/v${config.VERSION_MAJOR}`, router);
 
 // TODO make this cleaner
-initPassport();
+// initPassport();
+initAuth(strategyConfig);
 
 router.use(express.static(path.join(__dirname, 'public')));
 

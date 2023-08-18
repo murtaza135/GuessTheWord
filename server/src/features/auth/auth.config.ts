@@ -15,3 +15,19 @@ export default function initPassport() {
     }
   }));
 }
+
+export const strategyConfig = [
+  {
+    name: 'local-login',
+    strategy: new LocalStrategy(async function (username, password, done) {
+      try {
+        const user = await xprisma.localAccount.findUnique({ where: { username } });
+        if (!user) return done(null, false, { message: 'no user on line 10' });
+        if (password !== user.password) return done(null, false);
+        return done(null, user);
+      } catch (error: unknown) {
+        return done(error, false, { message: 'error on line 14' });
+      }
+    })
+  }
+];
