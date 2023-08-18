@@ -1,3 +1,4 @@
+import '@colors/colors';
 import './config/dotenv';
 import app from './app';
 import config from './config/config';

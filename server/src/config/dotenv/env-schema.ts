@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const envSchema = z.object({
-  API_URL: z.string(),
+  DOMAIN_NAME_PROTOCOL: z.string(),
   PORT: z.coerce.number(),
   NODE_ENV: z.enum(['production', 'development']),
   VERSION: z.string().regex(/^[0-9]+\.[0-9]+\.[0-9]+$/), // e.g. 11.2.456

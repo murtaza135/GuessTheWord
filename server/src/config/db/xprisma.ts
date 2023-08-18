@@ -28,11 +28,6 @@ prisma.$on('error', (event) => {
   logger.error(event.message);
 });
 
-// @ts-ignore https://www.prisma.io/docs/concepts/components/prisma-client/working-with-prismaclient/connection-management#exit-hooks
-prisma.$on('beforeExit', () => {
-  logger.info('Closing database connection');
-});
-
 const xprisma = prisma
   .$extends(globalExtension);
 
