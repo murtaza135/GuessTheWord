@@ -23,4 +23,12 @@ router.post(
   authController.sendAccessToken,
 );
 
+router.get(
+  '/auth/test',
+  auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
+  function (req, res, next) {
+    res.status(200).json({ success: true });
+  }
+);
+
 export default router;

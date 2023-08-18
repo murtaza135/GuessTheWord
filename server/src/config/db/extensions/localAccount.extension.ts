@@ -7,7 +7,7 @@ const encrpyPassword = async (password: LocalAccount['password']) => {
   return bcrypt.hash(password, salt);
 };
 
-const userExtension = Prisma.defineExtension({
+const localAccountExtension = Prisma.defineExtension({
   query: {
     localAccount: {
       async create({ args, query }) {
@@ -62,4 +62,4 @@ const userExtension = Prisma.defineExtension({
   }
 });
 
-export default userExtension;
+export default localAccountExtension;
