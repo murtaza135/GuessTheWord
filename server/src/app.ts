@@ -3,22 +3,21 @@ import express from 'express';
 import Router from 'express-promise-router';
 import actuator from 'express-actuator';
 import cookieParser from 'cookie-parser';
-import passport from 'passport';
 import config from './config/config';
 import { morgan } from './config/logger';
 import APIError from './errors/APIError';
 import errorHandler from './errors/error-handler';
 import rateLimit from './middleware/rateLimit';
-import { authRouter, initPassport, strategyConfig } from './features/auth';
-import { initAuth } from './features/auth/auth.utils';
+import { authRouter, strategyConfig } from './features/auth';
+import auth from './lib/auth';
 
 const app = express();
 const router = Router();
 app.use(`/api/v${config.VERSION_MAJOR}`, router);
 
-// TODO make this cleaner
-// initPassport();
-initAuth(strategyConfig);
+auth.init(strategyConfig, {
+  onUnauthorized: (options) => new APIError({ statusText: 'Unauthorized', message: options.message })
+});
 
 router.use(express.static(path.join(__dirname, 'public')));
 
@@ -26,7 +25,6 @@ router.use(morgan());
 router.use(express.json());
 router.use(cookieParser());
 router.use(rateLimit({ maxAttempts: 25, duration: 1 }));
-router.use(passport.initialize()); // add all methods and fields in req that are needed by passport, such as req.session.passort, req.user, req.isAuthenticated(), etc
 
 router.use(actuator({
   basePath: '/_app',
