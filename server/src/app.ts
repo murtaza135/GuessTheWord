@@ -16,7 +16,8 @@ const app = express();
 const router = Router();
 app.use(`/api/v${config.VERSION_MAJOR}`, router);
 
-auth.init(strategyConfig, {
+auth.init({
+  config: strategyConfig,
   onUnauthorized: ({ message }) => new APIError({ statusText: 'Unauthorized', message })
 });
 

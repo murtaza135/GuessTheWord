@@ -20,14 +20,15 @@ export type StrategyConfig = {
 };
 
 type InitOptions = {
+  config: StrategyConfig | StrategyConfig[];
   onUnauthorized?: OnUnauthorizedFn;
 };
 
 class Auth {
   private onUnauthorized?: OnUnauthorizedFn;
 
-  init(config: StrategyConfig | StrategyConfig[], options?: InitOptions) {
-    this.onUnauthorized = options?.onUnauthorized;
+  init({ config, onUnauthorized }: InitOptions) {
+    this.onUnauthorized = onUnauthorized;
 
     const configs = config instanceof Array ? config : [config];
     configs.forEach((strategyConfig) => {
