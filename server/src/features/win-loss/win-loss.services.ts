@@ -14,7 +14,7 @@ async function incrementLosses(userId: User['userId'], losses?: User['losses']) 
   const userWinLoss = await xprisma.user.update({
     data: { losses: { increment: losses ?? 1 } },
     where: { userId },
-    select: { wins: true, losses: true }
+    select: { wins: true, losses: true },
   });
   return userWinLoss;
 }
