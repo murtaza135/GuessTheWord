@@ -1,4 +1,4 @@
-import { ExpressRequestUser } from '../features/auth/auth.types';
+import { ExpressRequestUser } from '../features/auth';
 
 declare global {
   namespace Express {

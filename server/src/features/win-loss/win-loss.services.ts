@@ -1,26 +1,22 @@
 import { User } from '@prisma/client';
-import pick from 'lodash/pick';
 import xprisma from '../../config/db';
-import { WinLoss } from './win-loss.types';
 
 async function incrementWins(userId: User['userId'], wins?: User['wins']) {
-  const numWins = wins ?? 1;
-  const user = await xprisma.user.update({
-    data: { wins: { increment: numWins } },
-    where: { userId }
+  const userWinLoss = await xprisma.user.update({
+    data: { wins: { increment: wins ?? 1 } },
+    where: { userId },
+    select: { wins: true, losses: true }
   });
-  const winLoss: WinLoss = pick(user, ['wins', 'losses']);
-  return winLoss;
+  return userWinLoss;
 }
 
 async function incrementLosses(userId: User['userId'], losses?: User['losses']) {
-  const numLosses = losses ?? 1;
-  const user = await xprisma.user.update({
-    data: { losses: { increment: numLosses } },
-    where: { userId }
+  const userWinLoss = await xprisma.user.update({
+    data: { losses: { increment: losses ?? 1 } },
+    where: { userId },
+    select: { wins: true, losses: true }
   });
-  const winLoss: WinLoss = pick(user, ['wins', 'losses']);
-  return winLoss;
+  return userWinLoss;
 }
 
 const winLossServices = {
