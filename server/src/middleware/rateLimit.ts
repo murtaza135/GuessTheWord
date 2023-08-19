@@ -3,7 +3,7 @@ import { RateLimiterMemory, IRateLimiterOptions, RateLimiterRes } from 'rate-lim
 import APIError from '../errors/APIError';
 
 type RateLimitOptions = IRateLimiterOptions & {
-  maxAttempts?: number;
+  maxAttempts?: IRateLimiterOptions['points'];
 };
 
 function rateLimit(options: RateLimitOptions) {
@@ -17,7 +17,10 @@ function rateLimit(options: RateLimitOptions) {
       await rateLimiter.consume(req.ip);
       next();
     } catch (error: unknown) {
-      const msBeforeNextAttempt = error instanceof RateLimiterRes ? error.msBeforeNext : null;
+      const msBeforeNextAttempt = error instanceof RateLimiterRes
+        ? error.msBeforeNext
+        : undefined;
+
       throw new APIError({
         statusText: 'Too Many Requests',
         message: 'There have been too many requests. Please try again later.',

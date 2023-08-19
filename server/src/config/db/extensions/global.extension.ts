@@ -5,9 +5,11 @@ const globalExtension = Prisma.defineExtension({
   query: {
     $allModels: {
       async $allOperations({ model, args, query }) {
+        // run query for all operations, if query fails, catch error and throw APIError instead
         try {
           return await query(args);
         } catch (error: any) {
+          // data could not be validated against database schema
           if (error instanceof Prisma.PrismaClientValidationError) {
             throw new APIError({
               statusText: 'Bad Request',
@@ -17,7 +19,8 @@ const globalExtension = Prisma.defineExtension({
           }
 
           if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            if (error.code === 'P2002' /* unique constraint violation */) {
+            // unique constraint violation
+            if (error.code === 'P2002') {
               const fields: Record<string, string> = Object.fromEntries(
                 (error.meta?.target as Array<string>).map((field) => [
                   field, `${field} is taken`
@@ -32,23 +35,17 @@ const globalExtension = Prisma.defineExtension({
               });
             }
 
-            if (error.code === 'P2025' /* item not found */) {
+            // item not found
+            if (error.code === 'P2025') {
               throw new APIError({
                 statusText: 'Not Found',
                 message: `${model} not found`,
                 cause: error
               });
             }
-
-            if (error.code.startsWith('P2') /* invalid query */) {
-              throw new APIError({
-                statusText: 'Internal Server Error',
-                message: 'Your request cannot be processed at this time',
-                cause: error
-              });
-            }
           }
 
+          // re-throw regular error to be handled by the error handler
           throw error;
         }
       },

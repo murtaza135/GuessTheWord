@@ -25,8 +25,8 @@ prisma.$on('warn', (event) => {
 });
 
 prisma.$on('error', (event) => {
-  // TODO ?? most errors happen to be operational errors, in which case they are only info based
-  logger.error(event.message);
+  // most errors happen to be operational errors, in which case they are only info based
+  logger.info(event.message);
 });
 
 const xprisma = prisma

@@ -17,7 +17,7 @@ const router = Router();
 app.use(`/api/v${config.VERSION_MAJOR}`, router);
 
 auth.init(strategyConfig, {
-  onUnauthorized: (options) => new APIError({ statusText: 'Unauthorized', message: options.message })
+  onUnauthorized: ({ message }) => new APIError({ statusText: 'Unauthorized', message })
 });
 
 router.use(express.static(path.join(__dirname, 'public')));

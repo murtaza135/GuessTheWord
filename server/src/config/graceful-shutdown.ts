@@ -13,7 +13,7 @@ const httpGracefulShutdownConfig: Options = {
     } else if (signal === 'uncaughtException' || signal === 'unhandledRejection') {
       logger.error(`Server has been shutdown due to ${signal}`);
     } else if (signal === 'manual') {
-      logger.warn('Server has been shutdown MANUALLY');
+      logger.error('Server has been shutdown MANUALLY');
     } else {
       logger.warn(`Server has been shutdown due to ${signal}`);
     }

@@ -51,11 +51,7 @@ class Auth {
           }
 
           if (!user) {
-            if (self.onUnauthorized) {
-              const newOptions = { ...info, ...options };
-              return next(self.onUnauthorized(newOptions));
-            }
-
+            if (self.onUnauthorized) return next(self.onUnauthorized({ ...info, ...options }));
             return next(new Error(options.message ?? info?.message ?? 'Unauthorized'));
           }
 

@@ -9,6 +9,7 @@ const encrpyPassword = async (password: LocalAccount['password']) => {
 
 const localAccountExtension = Prisma.defineExtension({
   query: {
+    // encrypt password for all queries that mutate the password
     localAccount: {
       async create({ args, query }) {
         if (args.data.password) {
