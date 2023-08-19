@@ -2,12 +2,14 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as CustomStrategy } from 'passport-custom';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Request } from 'express';
+import { User } from '@prisma/client';
 import { StrategyConfig } from '../../lib/auth';
 import xprisma from '../../config/db';
 import { RegisterSchema } from './auth.schema';
 import config from '../../config/config';
-import { User } from './auth.types';
 import authServices from './auth.services';
+
+type JwtUserId = { userId: User['userId']; };
 
 export const strategyConfig: StrategyConfig[] = [
   {
@@ -19,14 +21,13 @@ export const strategyConfig: StrategyConfig[] = [
         secretOrKey: config.ACCESS_TOKEN_SECRET,
         jsonWebTokenOptions: { maxAge: config.ACCESS_TOKEN_MAX_AGE }
       },
-      async function (jwtPayload: User | null, submit) {
-        if (!jwtPayload || !jwtPayload.id) return submit(null, false);
-        const userId = jwtPayload.id;
-
+      async function (jwtPayload: JwtUserId, submit) {
         try {
-          const account = await xprisma.localAccount.findUnique({ where: { userId } });
+          const account = await xprisma.localAccount.findUnique(
+            { where: { userId: jwtPayload.userId } }
+          );
           if (!account) return submit(null, false);
-          return submit(null, { id: account.userId });
+          return submit(null, { userId: account.userId });
         } catch (error: unknown) {
           return submit(error, false);
         }
@@ -52,7 +53,7 @@ export const strategyConfig: StrategyConfig[] = [
       try {
         const account = await authServices.localLogin({ username, password });
         if (!account) return submit(null, false, { message: 'Invalid Credentials' });
-        return submit(null, { id: account.userId });
+        return submit(null, { userId: account.userId });
       } catch (error: unknown) {
         return submit(error, false);
       }

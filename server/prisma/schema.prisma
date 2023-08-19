@@ -9,7 +9,7 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
+  userId       Int            @id @default(autoincrement())
   name         String
   email        String?        @unique
   image        String?
@@ -21,11 +21,14 @@ model User {
 }
 
 model LocalAccount {
-  id       Int    @id @default(autoincrement())
-  userId   Int    @unique
-  username String @unique
-  password String
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  localAccountId Int    @id @default(autoincrement())
+  userId         Int    @unique
+  username       String @unique
+  password       String
+  user           User   @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([userId])
+  @@index([username])
 }
 
 model OAuthAccount {
@@ -35,7 +38,7 @@ model OAuthAccount {
   refreshToken      String
   accessToken       String
   expiresAt         DateTime
-  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user              User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([userId, providerAccountId])
   @@index([userId])

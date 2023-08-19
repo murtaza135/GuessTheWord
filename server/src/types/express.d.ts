@@ -1,8 +1,8 @@
-import { User as AuthUser } from '../features/auth/auth.types';
+import { ExpressRequestUser } from '../features/auth/auth.types';
 
 declare global {
   namespace Express {
-    interface User extends AuthUser { }
+    interface User extends ExpressRequestUser { }
 
     export interface Request {
       user?: User;

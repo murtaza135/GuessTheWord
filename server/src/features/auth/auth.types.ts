@@ -1,8 +1,6 @@
-import { User as PrismaUser } from '@prisma/client';
+import { User } from '@prisma/client';
 
-export type User = {
-  id: PrismaUser['id'];
+export type ExpressRequestUser = {
+  userId: User['userId'];
   [x: string]: unknown;
 };
-
-export type UserObject = Pick<PrismaUser, 'email' | 'id' | 'name'>;

@@ -4,11 +4,10 @@ import { User } from '@prisma/client';
 import config from '../../config/config';
 import { LoginSchema, RegisterSchema } from './auth.schema';
 import xprisma from '../../config/db';
-import { UserObject } from './auth.types';
 
-function generateAccessToken(id: number) {
+function generateAccessToken(userId: User['userId']) {
   return jwt.sign(
-    { id },
+    { userId },
     config.ACCESS_TOKEN_SECRET,
     { expiresIn: config.ACCESS_TOKEN_MAX_AGE },
   );
@@ -20,7 +19,7 @@ async function localRegister(data: RegisterSchema) {
   const account = await xprisma.$transaction(async (tx) => {
     const newUser = await tx.user.create({ data: userData });
     const newAccount = await tx.localAccount.create({
-      data: { ...accountData, userId: newUser.id }
+      data: { ...accountData, userId: newUser.userId }
     });
     return newAccount;
   });
@@ -36,10 +35,12 @@ async function localLogin(data: LoginSchema) {
 }
 
 // TODO figure out a way to return user via req.user instead of making an extra request to the db
-async function getUser(id: User['id']) {
-  const user = await xprisma.user.findUniqueOrThrow({ where: { id } });
-  const userDetails: UserObject = pick(user, ['id', 'name', 'email']);
-  return userDetails;
+async function getUser(userId: User['userId']) {
+  const user = await xprisma.user.findUniqueOrThrow({
+    where: { userId },
+    select: { userId: true, name: true, email: true }
+  });
+  return user;
 }
 
 const authServices = {

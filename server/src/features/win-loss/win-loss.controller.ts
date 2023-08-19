@@ -7,7 +7,7 @@ async function incrementWins(
   res: Response,
 ) {
   const user = req.user!;
-  const winLoss = await winLossServices.incrementWins(user.id, req.body.wins);
+  const winLoss = await winLossServices.incrementWins(user.userId, req.body.wins);
   res.status(200).json(winLoss);
 }
 
@@ -16,7 +16,7 @@ async function incrementLosses(
   res: Response,
 ) {
   const user = req.user!;
-  const winLoss = await winLossServices.incrementLosses(user.id, req.body.losses);
+  const winLoss = await winLossServices.incrementLosses(user.userId, req.body.losses);
   res.status(200).json(winLoss);
 }
 

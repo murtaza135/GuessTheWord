@@ -3,21 +3,21 @@ import pick from 'lodash/pick';
 import xprisma from '../../config/db';
 import { WinLoss } from './win-loss.types';
 
-async function incrementWins(userId: User['id'], wins?: User['wins']) {
+async function incrementWins(userId: User['userId'], wins?: User['wins']) {
   const numWins = wins ?? 1;
   const user = await xprisma.user.update({
     data: { wins: { increment: numWins } },
-    where: { id: userId }
+    where: { userId }
   });
   const winLoss: WinLoss = pick(user, ['wins', 'losses']);
   return winLoss;
 }
 
-async function incrementLosses(userId: User['id'], losses?: User['losses']) {
+async function incrementLosses(userId: User['userId'], losses?: User['losses']) {
   const numLosses = losses ?? 1;
   const user = await xprisma.user.update({
     data: { losses: { increment: numLosses } },
-    where: { id: userId }
+    where: { userId }
   });
   const winLoss: WinLoss = pick(user, ['wins', 'losses']);
   return winLoss;
