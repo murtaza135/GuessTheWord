@@ -2,7 +2,6 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as CustomStrategy } from 'passport-custom';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Request } from 'express';
-import pick from 'lodash/pick';
 import { StrategyConfig } from '../../lib/auth';
 import xprisma from '../../config/db';
 import { RegisterSchema } from './auth.schema';

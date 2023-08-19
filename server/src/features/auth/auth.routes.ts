@@ -24,11 +24,9 @@ router.post(
 );
 
 router.get(
-  '/auth/test',
+  '/auth/me',
   auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
-  function (req, res, next) {
-    res.status(200).json({ success: true });
-  }
+  authController.sendUser
 );
 
 export default router;

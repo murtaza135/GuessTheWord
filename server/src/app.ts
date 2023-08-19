@@ -9,6 +9,7 @@ import APIError from './errors/APIError';
 import errorHandler from './errors/error-handler';
 import rateLimit from './middleware/rateLimit';
 import { authRouter, strategyConfig } from './features/auth';
+import { winLossRouter } from './features/win-loss';
 import auth from './lib/auth';
 
 const app = express();
@@ -35,8 +36,9 @@ router.use(actuator({
 }));
 
 router.use(authRouter);
+router.use(winLossRouter);
 
-router.use(() => { throw new APIError({ statusText: 'Not Found' }); });
+router.use(() => { throw new APIError({ statusText: 'Not Found', message: 'API route not found' }); });
 router.use(errorHandler);
 
 export default app;

@@ -1,8 +1,18 @@
 import jwt from 'jsonwebtoken';
 import pick from 'lodash/pick';
+import { User } from '@prisma/client';
 import config from '../../config/config';
 import { LoginSchema, RegisterSchema } from './auth.schema';
 import xprisma from '../../config/db';
+import { UserObject } from './auth.types';
+
+function generateAccessToken(id: number) {
+  return jwt.sign(
+    { id },
+    config.ACCESS_TOKEN_SECRET,
+    { expiresIn: config.ACCESS_TOKEN_MAX_AGE },
+  );
+}
 
 async function localRegister(data: RegisterSchema) {
   const userData = pick(data, ['name', 'email']);
@@ -25,18 +35,18 @@ async function localLogin(data: LoginSchema) {
   return account;
 }
 
-function generateAccessToken(id: number) {
-  return jwt.sign(
-    { id },
-    config.ACCESS_TOKEN_SECRET,
-    { expiresIn: config.ACCESS_TOKEN_MAX_AGE },
-  );
+// TODO figure out a way to return user via req.user instead of making an extra request to the db
+async function getUser(id: User['id']) {
+  const user = await xprisma.user.findUniqueOrThrow({ where: { id } });
+  const userDetails: UserObject = pick(user, ['id', 'name', 'email']);
+  return userDetails;
 }
 
 const authServices = {
+  generateAccessToken,
   localRegister,
   localLogin,
-  generateAccessToken
+  getUser
 };
 
 export default authServices;
