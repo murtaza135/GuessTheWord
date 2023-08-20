@@ -3,6 +3,9 @@ import express from 'express';
 import Router from 'express-promise-router';
 import actuator from 'express-actuator';
 import cookieParser from 'cookie-parser';
+import hpp from 'hpp';
+import helmet from 'helmet';
+import cors from 'cors';
 import config from './config/config';
 import { morgan } from './config/logger';
 import APIError from './errors/APIError';
@@ -25,7 +28,10 @@ router.use(express.static(path.join(__dirname, 'public')));
 
 router.use(morgan());
 router.use(express.json());
-router.use(cookieParser());
+router.use(cookieParser()); // TODO not being used right now, change auth strategy from bearer token to cookies?
+router.use(helmet());
+router.use(cors({ origin: config.CLIENT_URL }));
+router.use(hpp());
 router.use(rateLimit({ maxAttempts: 25, duration: 1 }));
 
 router.use(actuator({
@@ -39,7 +45,13 @@ router.use(actuator({
 router.use(authRouter);
 router.use(winLossRouter);
 
-router.use(() => { throw new APIError({ statusText: 'Not Found', message: 'API route not found' }); });
+router.use(() => {
+  throw new APIError({
+    statusText: 'Not Found',
+    message: 'API route not found',
+  });
+});
+
 router.use(errorHandler);
 
 export default app;
