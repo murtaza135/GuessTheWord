@@ -12,14 +12,18 @@
     "generate-assets": "pwa-assets-generator --preset minimal public/images/favicon.svg"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.2.0",
     "@tanstack/react-query": "^4.32.6",
     "clsx": "^2.0.0",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
+    "react-aria": "^3.27.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.4",
     "react-router-dom": "^6.14.2",
     "react-use": "^17.4.0",
-    "tailwind-merge": "^1.14.0"
+    "tailwind-merge": "^1.14.0",
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.32.5",
