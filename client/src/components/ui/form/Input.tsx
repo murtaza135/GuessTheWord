@@ -6,7 +6,7 @@ import capitalize from 'lodash/capitalize';
 type Props = Omit<AriaTextFieldProps, "defaultValue" | "errorMessage" | "name" | "label" | "type"> & {
   name: string;
   label: string;
-  type: string;
+  type: React.HTMLInputTypeAttribute;
 };
 
 function getFormError(
@@ -45,7 +45,7 @@ export default function Input(props: Props) {
       />
 
       {isError && (
-        <p className='text-sm text-red-400' {...errorMessageProps}>
+        <p className='text-sm text-red-700' {...errorMessageProps}>
           {error}
         </p>
       )}
