@@ -1,5 +1,5 @@
-import Button from '@/components/ui/Button';
-import Text from '@/components/ui/Text';
+import Button from '@/components/ui/buttons/Button';
+import Text from '@/components/ui/text/Text';
 import { Link } from 'react-router-dom';
 import useWinsQuery from '@/hooks/useWinsQuery';
 import useLossesQuery from '@/hooks/useLossesQuery';

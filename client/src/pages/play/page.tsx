@@ -1,4 +1,4 @@
-import Card from '@/components/ui/Card';
+import Card from '@/components/ui/cards/Card';
 import useGuessWord from '@/hooks/useGuessWord';
 import Letter from '@/types/Letter';
 import useIncrement from '@/hooks/useIncrement';
@@ -8,7 +8,7 @@ import AnswerDisplay from '@/components/displays/AnswerDisplay';
 import GuessDisplay from '@/components/displays/GuessDisplay';
 import GameFinishedDisplay from '@/components/displays/GameFinishedDisplay';
 import { NUM_TRIES } from '@/config/constants';
-import Button from '@/components/ui/Button';
+import Button from '@/components/ui/buttons/Button';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';

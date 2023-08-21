@@ -1,6 +1,6 @@
-import Text from '@/components/ui/Text';
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
+import Text from '@/components/ui/text/Text';
+import Button from '@/components/ui/buttons/Button';
+import Card from '@/components/ui/cards/Card';
 import { Link } from 'react-router-dom';
 
 export default function ErrorPage() {

@@ -1,4 +1,4 @@
-import Text from '@/components/ui/Text';
+import Text from '@/components/ui/text/Text';
 import Guess from '@/types/Guess';
 
 type Props = {
