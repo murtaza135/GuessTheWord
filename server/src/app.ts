@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import hpp from 'hpp';
 import helmet from 'helmet';
 import cors from 'cors';
+import compression from 'compression';
 import config from './config/config';
 import { morgan } from './config/logger';
 import APIError from './errors/APIError';
@@ -29,6 +30,7 @@ router.use(express.static(path.join(__dirname, 'public')));
 router.use(morgan());
 router.use(express.json());
 router.use(cookieParser()); // TODO not being used right now, change auth strategy from bearer token to cookies?
+router.use(compression());
 router.use(helmet());
 router.use(cors({ origin: config.CLIENT_URL }));
 router.use(hpp());
