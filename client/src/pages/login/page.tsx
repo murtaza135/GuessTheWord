@@ -5,23 +5,22 @@ import Button from '@/components/ui/buttons/Button';
 import schema from './schema';
 import Text from '@/components/ui/text/Text';
 import { Link } from 'react-router-dom';
-import Separator from '@/components/ui/Separator';
 
 export default function LoginPage() {
   return (
     <div className='h-full flex flex-col py-10 items-center justify-center mx-4'>
-      <Card className='flex flex-col gap-10 items-center'>
+      <Card className='flex flex-col gap-10 items-center w-full max-w-xl'>
         <Form
           schema={schema.login}
           onSubmit={(data) => { console.log(data); }}
-          className='w-full max-w-xl flex flex-col gap-6'
+          className='flex flex-col gap-6 w-full max-w-xl'
         >
           <Input name='username' label='Username' type='text' />
           <Input name='password' label='Password' type='password' />
           <Button type='submit'>Submit</Button>
         </Form>
 
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-4 w-full max-w-xl'>
           <Link to="/register">
             <Text className='text-primary-900'>Don't have an account? Sign Up</Text>
           </Link>
