@@ -1,11 +1,11 @@
-import { APIResponse } from './types';
+import { ErrorResponse } from './types';
 
 export default class APIError extends Error {
-  public readonly status: APIResponse['status'];
-  public readonly statusText: APIResponse['statusText'];
-  public readonly fields: NonNullable<APIResponse['fields']>;
+  public readonly status: NonNullable<ErrorResponse['status']>;
+  public readonly statusText: NonNullable<ErrorResponse['statusText']>;
+  public readonly fields: NonNullable<ErrorResponse['fields']>;
 
-  constructor(options: APIResponse) {
+  constructor(options: ErrorResponse) {
     const message = options.message ?? options.statusText;
     const fields = options.fields ?? {};
 
