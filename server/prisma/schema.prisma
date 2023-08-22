@@ -10,7 +10,7 @@ datasource db {
 
 model User {
   userId       Int            @id @default(autoincrement())
-  name         String
+  name         String?
   email        String?        @unique
   image        String?
   wins         Int            @default(0)

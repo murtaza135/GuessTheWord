@@ -38,7 +38,7 @@ async function localLogin(data: LoginSchema) {
 async function getUser(userId: User['userId']) {
   const user = await xprisma.user.findUniqueOrThrow({
     where: { userId },
-    select: { userId: true, name: true, email: true }
+    select: { userId: true, name: true, email: true, image: true }
   });
   return user;
 }

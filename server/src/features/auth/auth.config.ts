@@ -1,6 +1,6 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as CustomStrategy } from 'passport-custom';
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { Strategy as JwtStrategy } from 'passport-jwt';
 import { Strategy as GithubStrategy, Profile as GithubProfile } from 'passport-github2';
 import { VerifyCallback } from 'passport-oauth2';
 import { Request } from 'express';
