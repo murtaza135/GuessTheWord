@@ -109,9 +109,9 @@ export const strategyConfig: StrategyConfig[] = [
         try {
           const account = await xprisma.oAuthAccount.findUnique({
             where: {
-              provider_providerAccountId: {
+              provider_accountId: {
                 provider: profile.provider,
-                providerAccountId: profile.id
+                accountId: profile.id
               }
             }
           });
@@ -124,7 +124,7 @@ export const strategyConfig: StrategyConfig[] = [
           };
 
           const oauthAccountData = {
-            providerAccountId: profile.id,
+            accountId: profile.id,
             provider: profile.provider,
             username: profile.username
           };
@@ -161,9 +161,9 @@ export const strategyConfig: StrategyConfig[] = [
         try {
           const account = await xprisma.oAuthAccount.findUnique({
             where: {
-              provider_providerAccountId: {
+              provider_accountId: {
                 provider: profile.provider,
-                providerAccountId: profile.id
+                accountId: profile.id
               }
             }
           });
@@ -176,7 +176,7 @@ export const strategyConfig: StrategyConfig[] = [
           };
 
           const oauthAccountData = {
-            providerAccountId: profile.id,
+            accountId: profile.id,
             provider: profile.provider,
             username: profile.username
           };
