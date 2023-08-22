@@ -13,7 +13,7 @@ export default function Navbar() {
         <IconText text='9999' icon={<RxCheck />} className='bg-green-400' />
       </div>
       <Link to='/account'>
-        <Avatar alt='Avatar' fallback='AV' />
+        <Avatar alt='Avatar' />
       </Link>
     </nav>
   );
