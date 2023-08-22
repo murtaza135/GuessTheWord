@@ -9,12 +9,12 @@ const morganFormat = (
   req: IncomingMessage,
   res: ServerResponse<IncomingMessage>
 ) => {
-  const method = tokens.method(req, res);
-  const url = tokens.url(req, res);
-  const statusCode = tokens.status(req, res);
-  const statusReasonPhrase = getReasonPhrase(statusCode as string);
-  const responseTime = tokens['response-time'](req, res);
-  return `${method} ${url} | ${statusCode} ${statusReasonPhrase} | ${responseTime}ms`;
+  const method = tokens.method(req, res) ?? 'unknown_method';
+  const url = tokens.url(req, res) ?? 'unknown_url';
+  const status = tokens.status(req, res) ?? 'unknown_status';
+  const statusText = status ? getReasonPhrase(status) : 'unknown_status_text';
+  const responseTime = `${tokens['response-time'](req, res)}ms` ?? 'unknown_response_time';
+  return `${method} ${url} | ${status} ${statusText} | ${responseTime}`;
 };
 
 const skip = () => !config.IS_DEVELOPMENT;

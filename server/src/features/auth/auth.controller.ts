@@ -18,7 +18,6 @@ function sendAccessToken(req: Request<unknown, unknown, LoginSchema>, res: Respo
 
 function redirectAccessToken(req: Request<unknown, unknown, LoginSchema>, res: Response) {
   if (!req.user) throw new Error('req.user does not exist in sendAccessToken in auth.controller.ts');
-  console.log(req.user);
   const accessToken = authServices.generateAccessToken(req.user.userId);
   res.cookie(config.ACCESS_TOKEN_COOKIE_NAME, accessToken, {
     httpOnly: true,
