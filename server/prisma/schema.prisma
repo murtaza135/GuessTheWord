@@ -32,14 +32,12 @@ model LocalAccount {
 }
 
 model OAuthAccount {
+  providerAccountId String
   userId            Int
   provider          String
-  providerAccountId String
-  refreshToken      String
-  accessToken       String
-  expiresAt         DateTime
-  user              User     @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
+  username          String?
+  user              User    @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
-  @@id([userId, providerAccountId])
+  @@id([provider, providerAccountId])
   @@index([userId])
 }
