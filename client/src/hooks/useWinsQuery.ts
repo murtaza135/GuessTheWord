@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getWins } from '@/app/api/api';
+import { getWins } from '@/app/api/old-api';
 
 export default function useWinsQuery() {
   const { data: wins, ...rest } = useQuery({

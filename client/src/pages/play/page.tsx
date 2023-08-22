@@ -12,7 +12,7 @@ import Button from '@/components/ui/buttons/Button';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { getLosses, getWins } from '@/app/api/api';
+import { getLosses, getWins } from '@/app/api/old-api';
 import useWinsMutation from '@/hooks/useWinsMutation';
 import useLossesMutation from '@/hooks/useLossesMutation';
 

@@ -1,4 +1,4 @@
-import API from '@/app/api/api2';
+import API from '@/app/api/api';
 import { TokenResponse } from './types';
 import { useMutation } from '@tanstack/react-query';
 import { LoginSchema } from '@/pages/login/schema';

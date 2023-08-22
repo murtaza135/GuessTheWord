@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import queryClient from './api/queryClient';
-import { getLosses, getWins } from './api/api';
-import API from './api/api2';
+import { getLosses, getWins } from './api/old-api';
+import API from './api/api';
 
 queryClient.prefetchQuery({ queryKey: ['wins'], queryFn: getWins });
 queryClient.prefetchQuery({ queryKey: ['losses'], queryFn: getLosses });

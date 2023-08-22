@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateWins } from '@/app/api/api';
+import { updateWins } from '@/app/api/old-api';
 
 export default function useWinsMutation() {
   const queryClient = useQueryClient();

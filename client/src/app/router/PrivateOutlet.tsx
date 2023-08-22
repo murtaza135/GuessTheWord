@@ -1,5 +1,5 @@
-import useProfile from './useProfile';
-import Spinner from '../ui/spinner/Spinner';
+import useProfile from '../../components/auth/useProfile';
+import Spinner from '../../components/ui/spinner/Spinner';
 import { Outlet } from 'react-router-dom';
 import { Navigate, useLocation } from 'react-router-dom';
 

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateLosses } from '@/app/api/api';
+import { updateLosses } from '@/app/api/old-api';
 
 export default function useLossesMutation() {
   const queryClient = useQueryClient();

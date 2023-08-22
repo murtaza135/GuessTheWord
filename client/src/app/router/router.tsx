@@ -2,7 +2,7 @@ import { createBrowserRouter, Outlet } from "react-router-dom";
 import App from "@/app/App";
 import ErrorPage from '@/pages/error/page';
 import pages from './pages';
-import PrivateOutlet from '@/components/auth/PrivateOutlet';
+import PrivateOutlet from '@/app/router/PrivateOutlet';
 
 const router = createBrowserRouter([
   {
