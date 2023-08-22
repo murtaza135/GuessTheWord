@@ -1,4 +1,5 @@
 import path from 'path';
+import ms from 'ms';
 import { env } from './dotenv';
 
 const config = {
@@ -8,6 +9,8 @@ const config = {
   ENTRY_PATH: path.dirname(process.argv[1]),
   API_URL: `${env.DOMAIN_NAME_PROTOCOL}:${env.PORT}/api/v${env.VERSION.split('.')[0]}`,
   ACCESS_TOKEN_MAX_AGE: '15m',
+  ACCESS_TOKEN_COOKIE_NAME: 'access',
+  ACCESS_TOKEN_COOKIE_MAX_AGE: ms('15m'),
   ...env,
 };
 

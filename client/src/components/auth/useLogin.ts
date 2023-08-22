@@ -1,5 +1,4 @@
 import API from '@/app/api/api';
-import { TokenResponse } from './types';
 import { useMutation } from '@tanstack/react-query';
 import { LoginSchema } from '@/pages/login/schema';
 import { ErrorResponse } from '@/app/api/types';
@@ -13,9 +12,10 @@ type Options = {
 
 export default function useLogin(options?: Options) {
   const navigate = useNavigate();
-  const mutation = useMutation<TokenResponse, ErrorResponse, LoginSchema>({
+  const mutation = useMutation<null, ErrorResponse, LoginSchema>({
     mutationFn: (args) => API.post('/auth/login', { body: args }),
     onSuccess: () => {
+      console.log("hello world");
       if (options?.successRedirect) navigate(options.successRedirect);
     }
   });

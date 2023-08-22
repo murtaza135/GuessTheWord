@@ -16,8 +16,14 @@ export const strategyConfig: StrategyConfig[] = [
     name: 'protect',
     strategy: new JwtStrategy(
       {
+        // TODO move function out and clean up
+        jwtFromRequest: (req: Request) => {
+          if (req && req.cookies) {
+            return req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
+          }
+          return null;
+        },
         // TODO add secretOrKeyProvider instead of secretOrKey?
-        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: config.ACCESS_TOKEN_SECRET,
         jsonWebTokenOptions: { maxAge: config.ACCESS_TOKEN_MAX_AGE }
       },

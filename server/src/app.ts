@@ -29,10 +29,10 @@ router.use(express.static(path.join(__dirname, 'public')));
 
 router.use(morgan());
 router.use(express.json());
-router.use(cookieParser()); // TODO not being used right now, change auth strategy from bearer token to cookies?
+router.use(cookieParser());
 router.use(compression());
 router.use(helmet());
-router.use(cors({ origin: config.CLIENT_URL }));
+router.use(cors({ origin: config.CLIENT_URL, credentials: true }));
 router.use(hpp());
 router.use(rateLimit({ maxAttempts: 25, duration: 1 }));
 

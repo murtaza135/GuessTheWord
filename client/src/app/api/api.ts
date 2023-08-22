@@ -1,7 +1,6 @@
 import { API_URL } from '@/config/constants';
 import APIError from './APIError';
 import { ErrorResponse } from './types';
-import { TokenResponse } from '@/components/auth/types';
 
 type APIMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'CONNECT' | 'OPTIONS' | 'TRACE';
 type APIBody = BodyInit | Record<string, unknown>;
@@ -19,34 +18,29 @@ type APIConfigWithBody = {
 const JSON_MIME_TYPE = 'application/json';
 
 export default class API {
-  private static async handleRequest<SuccessResponse>(endpoint: string, method: APIMethod, { body, config }: APIConfigWithBody) {
+  private static async handleRequest<SuccessResponse>(endpoint: string, method: APIMethod, { body, config }: APIConfigWithBody): Promise<SuccessResponse> {
     const url = `${API_URL}${endpoint}`;
-    const token = localStorage.getItem('token');
 
     const headers = new Headers({
       ...config?.headers,
       'Content-Type': JSON_MIME_TYPE,
-      'Authorization': token ? `Bearer ${token}` : '',
     });
 
     const fetchConfig = {
       ...config,
       headers,
       method,
-      body: body ? JSON.stringify(body) : undefined
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: 'include'
     } as RequestInit;
 
     const response = await window.fetch(url, fetchConfig);
 
-    if (response.ok) {
-      const data: SuccessResponse = await response.json();
-      if (endpoint === '/auth/login' || endpoint === '/auth/register') {
-        const token = (data as TokenResponse).token;
-        localStorage.setItem('token', token);
-      }
-      return data;
+    if (response.status === 204) {
+      return null as SuccessResponse;
+    } else if (response.ok) {
+      return response.json();
     } else {
-      if (response.status === 401) localStorage.removeItem('token');
       const errorResponse: ErrorResponse = await response.json();
       return Promise.reject(new APIError(errorResponse));
     }
