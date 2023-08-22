@@ -2,17 +2,21 @@ import Form from '@/components/ui/form/Form';
 import Input from '@/components/ui/form/Input';
 import Card from '@/components/ui/cards/Card';
 import Button from '@/components/ui/buttons/Button';
-import schema from './schema';
+import schema, { LoginSchema } from './schema';
 import Text from '@/components/ui/text/Text';
 import { Link } from 'react-router-dom';
+import useLogin from '@/components/auth/useLogin';
 
 export default function LoginPage() {
+  const { mutate } = useLogin({ successRedirect: '/' });
+  const handleSubmit = (data: LoginSchema) => mutate(data);
+
   return (
     <div className='h-full flex flex-col py-10 items-center justify-center mx-4'>
       <Card className='flex flex-col gap-10 items-center w-full max-w-xl'>
         <Form
           schema={schema.login}
-          onSubmit={(data) => { console.log(data); }}
+          onSubmit={handleSubmit}
           className='flex flex-col gap-6 w-full max-w-xl'
         >
           <Input name='username' label='Username' type='text' />
@@ -29,7 +33,6 @@ export default function LoginPage() {
             <Button className='w-full border-2 bg-transparent text-primary-900'>Play as Guest</Button>
           </Link>
         </div>
-
       </Card>
     </div>
   );

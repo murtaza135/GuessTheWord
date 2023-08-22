@@ -4,10 +4,12 @@ import Button from '@/components/ui/buttons/Button';
 import { Link } from 'react-router-dom';
 import useWinsQuery from '@/hooks/useWinsQuery';
 import useLossesQuery from '@/hooks/useLossesQuery';
+import useProfile from '@/components/auth/useProfile';
 
 export default function MainMenuPage() {
   const { wins } = useWinsQuery();
   const { losses } = useLossesQuery();
+  const { data } = useProfile();
 
   return (
     <div className='h-full flex flex-col py-10 items-center justify-center'>

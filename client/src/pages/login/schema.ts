@@ -9,6 +9,8 @@ const login = z.object({
   password: z.string().trim().min(6, 'Password too short'),
 });
 
+export type LoginSchema = z.infer<typeof login>;
+
 const schema = {
   login
 };

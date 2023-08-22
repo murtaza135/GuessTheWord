@@ -3,14 +3,19 @@ import Input from '@/components/ui/form/Input';
 import Card from '@/components/ui/cards/Card';
 import Button from '@/components/ui/buttons/Button';
 import schema from './schema';
+import useRegister from '@/components/auth/useRegister';
+import { RegisterSchema } from './schema';
 
 export default function RegisterPage() {
+  const { mutate } = useRegister({ successRedirect: '/' });
+  const handleSubmit = (data: RegisterSchema) => mutate(data);
+
   return (
     <div className='h-full flex flex-col py-10 items-center justify-center mx-4'>
       <Card className='w-full max-w-xl'>
         <Form
           schema={schema.register}
-          onSubmit={(data) => { console.log(data); }}
+          onSubmit={handleSubmit}
           className='flex flex-col gap-6 w-full max-w-xl'
         >
           <Input name='email' label='Email' type='email' />
