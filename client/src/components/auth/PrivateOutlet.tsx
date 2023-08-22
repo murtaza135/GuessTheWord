@@ -1,7 +1,13 @@
-import React from 'react';
+import useProfile from './useProfile';
+import Spinner from '../ui/spinner/Spinner';
+import { Outlet } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 export default function PrivateOutlet() {
-  return (
-    <div>PrivateOutlet</div>
-  );
+  const location = useLocation();
+  const { data, isLoading } = useProfile();
+
+  if (isLoading) return <Spinner />;
+  if (!data) return <Navigate to="/login" state={{ from: location }} replace />;
+  return <Outlet />;
 }
