@@ -2,6 +2,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as CustomStrategy } from 'passport-custom';
 import { Strategy as JwtStrategy } from 'passport-jwt';
 import { Strategy as GithubStrategy, Profile as GithubProfile } from 'passport-github2';
+import { Strategy as GoogleStrategy, Profile as GoogleProfile } from 'passport-google-oauth20';
 import { VerifyCallback } from 'passport-oauth2';
 import { Request } from 'express';
 import { User } from '@prisma/client';
@@ -16,10 +17,8 @@ type JwtUserId = { userId: User['userId']; };
 
 const profileUtil = {
   getName(profile: Profile) {
-    if (profile.name?.familyName) {
-      if (profile.name?.familyName && profile.name?.givenName) {
-        return `${profile.name.givenName} ${profile.name.familyName}`;
-      }
+    if (profile.name?.familyName && profile.name?.givenName) {
+      return `${profile.name.givenName} ${profile.name.familyName}`;
     }
     if (profile.name?.givenName) return profile.name.givenName;
     if (profile.name?.familyName) return profile.name.familyName;
@@ -105,6 +104,58 @@ export const strategyConfig: StrategyConfig[] = [
         accessToken: string,
         refreshToken: string,
         profile: GithubProfile,
+        submit: VerifyCallback,
+      ) {
+        try {
+          const account = await xprisma.oAuthAccount.findUnique({
+            where: {
+              provider_providerAccountId: {
+                provider: profile.provider,
+                providerAccountId: profile.id
+              }
+            }
+          });
+          if (account) return submit(null, { userId: account.userId });
+
+          const userData = {
+            name: profileUtil.getName(profile) ?? profile.displayName ?? profile.username ?? 'Unknown',
+            email: profileUtil.getEmail(profile),
+            image: profileUtil.getImage(profile)
+          };
+
+          const oauthAccountData = {
+            providerAccountId: profile.id,
+            provider: profile.provider,
+            username: profile.username
+          };
+
+          const account2 = await xprisma.$transaction(async (tx) => {
+            const newUser = await tx.user.create({ data: userData });
+            const newAccount = await tx.oAuthAccount.create({
+              data: { ...oauthAccountData, userId: newUser.userId }
+            });
+            return newAccount;
+          });
+
+          return submit(null, { userId: account2.userId });
+        } catch (error: unknown) {
+          return submit(error as Error);
+        }
+      }
+    )
+  },
+  {
+    name: 'google',
+    strategy: new GoogleStrategy(
+      {
+        clientID: config.GOOGLE_CLIENT_ID,
+        clientSecret: config.GOOGLE_CLIENT_SECRET,
+        callbackURL: `${config.API_URL}/auth/callback/google`
+      },
+      async function (
+        accessToken: string,
+        refreshToken: string,
+        profile: GoogleProfile,
         submit: VerifyCallback,
       ) {
         try {

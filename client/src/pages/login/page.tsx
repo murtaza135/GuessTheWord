@@ -35,7 +35,7 @@ export default function LoginPage() {
           <Input name='password' label='Password' type='password' />
           <Button type='submit'>Login</Button>
           <a href="http://localhost:5000/api/v1/auth/login/github"><GithubButton type='button'>Sign in with Github</GithubButton></a>
-          <GoogleButton type='button'>Sign in with Google</GoogleButton>
+          <a href="http://localhost:5000/api/v1/auth/login/google"><GoogleButton type='button'>Sign in with Google</GoogleButton></a>
         </Form>
 
         <div className='flex flex-col gap-4 w-full max-w-xl'>

@@ -35,6 +35,17 @@ router.get(
 );
 
 router.get(
+  '/auth/login/google',
+  auth.authenticate({ strategy: 'google', scope: ['profile', 'email'] })
+);
+
+router.get(
+  '/auth/callback/google',
+  auth.authenticate({ strategy: 'google' }),
+  authController.redirectAccessToken
+);
+
+router.get(
   '/auth/me',
   auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
   authController.sendUser
