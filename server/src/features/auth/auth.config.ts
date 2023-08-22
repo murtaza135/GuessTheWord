@@ -78,7 +78,7 @@ export const strategyConfig: StrategyConfig[] = [
       // @ts-ignore
       function verify<any>(accessToken, refreshToken, profile, submit) {
         console.log(profile);
-        submit(null, { user: 1 });
+        submit(null, profile);
       }
     )
   }

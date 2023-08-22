@@ -25,7 +25,8 @@ function redirectAccessToken(req: Request<unknown, unknown, LoginSchema>, res: R
     sameSite: 'strict',
     maxAge: config.ACCESS_TOKEN_COOKIE_MAX_AGE
   });
-  res.redirect(config.CLIENT_URL);
+  res.status(200).json(req.user);
+  // res.redirect(config.CLIENT_URL);
 }
 
 async function sendUser(req: Request, res: Response) {

@@ -31,11 +31,6 @@ router.get(
 router.get(
   '/auth/callback/github',
   auth.authenticate({ strategy: 'github' }),
-  // function (req, res, next) {
-  //   const user = req.user!;
-  //   // res.status(200).json({ success: true, user });
-  //   res.cookie()
-  // }
   authController.redirectAccessToken
 );
 
