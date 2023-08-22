@@ -1,17 +1,19 @@
 import { Express, Request, Response, NextFunction } from 'express';
-import passport, { Strategy } from 'passport';
+import passport, { Strategy, AuthenticateOptions } from 'passport';
+import { type XOR } from 'ts-essentials';
 
-type AuthenticateMiddlewareOptions = {
-  strategy: string | string[] | Strategy;
-  message?: string;
-};
+type AuthenticateMiddlewareOptions = { strategy: string | string[] | Strategy; }
+  & XOR<
+    { scope?: AuthenticateOptions['scope']; },
+    { message?: string; }
+  >;
 
 type StrategyInfo = {
   message?: string;
   [x: string]: unknown;
 };
 
-type OnUnauthorizedOptions = AuthenticateMiddlewareOptions & StrategyInfo;
+type OnUnauthorizedOptions = Omit<AuthenticateMiddlewareOptions, 'scope'> & StrategyInfo;
 type OnUnauthorizedFn = (options: OnUnauthorizedOptions) => Error;
 
 export type StrategyConfig = {
@@ -43,23 +45,27 @@ class Auth {
   authenticate(options: AuthenticateMiddlewareOptions) {
     const self = this;
     return function (req: Request, res: Response, next: NextFunction) {
-      passport.authenticate(
-        options.strategy,
-        function (error: unknown, user: Express.User, info?: StrategyInfo) {
-          if (error) {
-            if (error instanceof Error) return next(error);
-            return next(new Error('Something went wrong', { cause: error }));
-          }
+      if (options.scope) {
+        passport.authenticate(options.strategy, { scope: options.scope })(req, res, next);
+      } else {
+        passport.authenticate(
+          options.strategy,
+          function (error: unknown, user: Express.User, info?: StrategyInfo) {
+            if (error) {
+              if (error instanceof Error) return next(error);
+              return next(new Error('Something went wrong', { cause: error }));
+            }
 
-          if (!user) {
-            if (self.onUnauthorized) return next(self.onUnauthorized({ ...info, ...options }));
-            return next(new Error(options.message ?? info?.message ?? 'Unauthorized'));
-          }
+            if (!user) {
+              if (self.onUnauthorized) return next(self.onUnauthorized({ ...info, ...options }));
+              return next(new Error(options.message ?? info?.message ?? 'Unauthorized'));
+            }
 
-          req.user = user;
-          return next();
-        }
-      )(req, res, next);
+            req.user = user;
+            return next();
+          }
+        )(req, res, next);
+      }
     };
   }
 }

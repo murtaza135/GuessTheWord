@@ -32,7 +32,22 @@ router.use(express.json());
 router.use(cookieParser());
 router.use(compression());
 router.use(helmet());
+
+const whitelist = [config.CLIENT_URL, 'https://github.com'];
+// TODO ts-ignore
+// @ts-ignore
+// router.use(cors({
+//   origin(origin, callback) {
+//     if (whitelist.indexOf(origin ?? '') !== -1) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   credentials: true
+// }));
 router.use(cors({ origin: config.CLIENT_URL, credentials: true }));
+
 router.use(hpp());
 router.use(rateLimit({ maxAttempts: 25, duration: 1 }));
 

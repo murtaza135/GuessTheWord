@@ -24,6 +24,22 @@ router.post(
 );
 
 router.get(
+  '/auth/login/github',
+  auth.authenticate({ strategy: 'github', scope: ['user:email', 'read:user'] })
+);
+
+router.get(
+  '/auth/callback/github',
+  auth.authenticate({ strategy: 'github' }),
+  // function (req, res, next) {
+  //   const user = req.user!;
+  //   // res.status(200).json({ success: true, user });
+  //   res.cookie()
+  // }
+  authController.redirectAccessToken
+);
+
+router.get(
   '/auth/me',
   auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
   authController.sendUser

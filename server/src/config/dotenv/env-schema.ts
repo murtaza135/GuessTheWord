@@ -8,7 +8,9 @@ const envSchema = z.object({
   VERSION: z.string().regex(/^[0-9]+\.[0-9]+\.[0-9]+$/), // e.g. 11.2.456
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'http', 'debug']),
   DATABASE_URL: z.string(),
-  ACCESS_TOKEN_SECRET: z.string()
+  ACCESS_TOKEN_SECRET: z.string(),
+  GITHUB_CLIENT_ID: z.string(),
+  GITHUB_CLIENT_SECRET: z.string(),
 });
 
 export default envSchema;

@@ -1,6 +1,7 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as CustomStrategy } from 'passport-custom';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
+import { Strategy as GithubStrategy } from 'passport-github2';
 import { Request } from 'express';
 import { User } from '@prisma/client';
 import { StrategyConfig } from '../../lib/auth';
@@ -64,5 +65,21 @@ export const strategyConfig: StrategyConfig[] = [
         return submit(error, false);
       }
     })
+  },
+  {
+    name: 'github',
+    strategy: new GithubStrategy(
+      {
+        clientID: config.GITHUB_CLIENT_ID,
+        clientSecret: config.GITHUB_CLIENT_SECRET,
+        callbackURL: `${config.API_URL}/auth/callback/github`
+      },
+      // TODO ts-ignore
+      // @ts-ignore
+      function verify<any>(accessToken, refreshToken, profile, submit) {
+        console.log(profile);
+        submit(null, { user: 1 });
+      }
+    )
   }
 ];

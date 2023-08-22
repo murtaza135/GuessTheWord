@@ -8,10 +8,20 @@ import { Link } from 'react-router-dom';
 import useLogin from '@/components/auth/useLogin';
 import GithubButton from '@/components/ui/buttons/GithubButton';
 import GoogleButton from '@/components/ui/buttons/GoogleButton';
+import { useMutation } from '@tanstack/react-query';
+import API from '@/app/api/api';
 
 export default function LoginPage() {
   const { mutate } = useLogin({ successRedirect: '/' });
   const handleSubmit = (data: LoginSchema) => mutate(data);
+
+  const { mutate: mutate2 } = useMutation({
+    mutationFn: () => API.get('/auth/login/github'),
+    onSuccess: () => { console.log("success world"); },
+    onError: () => { console.log("error world"); }
+  });
+
+  const githubSubmit = () => mutate2();
 
   return (
     <div className='h-full flex flex-col py-10 items-center justify-center mx-4'>
@@ -24,7 +34,7 @@ export default function LoginPage() {
           <Input name='username' label='Username' type='text' />
           <Input name='password' label='Password' type='password' />
           <Button type='submit'>Login</Button>
-          <GithubButton type='button'>Sign in with Github</GithubButton>
+          <a href="http://localhost:5000/api/v1/auth/login/github"><GithubButton type='button'>Sign in with Github</GithubButton></a>
           <GoogleButton type='button'>Sign in with Google</GoogleButton>
         </Form>
 
