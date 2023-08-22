@@ -6,6 +6,8 @@ import schema, { LoginSchema } from './schema';
 import Text from '@/components/ui/text/Text';
 import { Link } from 'react-router-dom';
 import useLogin from '@/components/auth/useLogin';
+import GithubButton from '@/components/ui/buttons/GithubButton';
+import GoogleButton from '@/components/ui/buttons/GoogleButton';
 
 export default function LoginPage() {
   const { mutate } = useLogin({ successRedirect: '/' });
@@ -21,7 +23,9 @@ export default function LoginPage() {
         >
           <Input name='username' label='Username' type='text' />
           <Input name='password' label='Password' type='password' />
-          <Button type='submit'>Submit</Button>
+          <Button type='submit'>Login</Button>
+          <GithubButton type='button'>Sign in with Github</GithubButton>
+          <GoogleButton type='button'>Sign in with Google</GoogleButton>
         </Form>
 
         <div className='flex flex-col gap-4 w-full max-w-xl'>
