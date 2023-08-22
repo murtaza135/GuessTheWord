@@ -1,6 +1,8 @@
 import IconText from '../text/IconText';
 import { RxCheck } from "react-icons/rx";
 import { TiTimes } from "react-icons/ti";
+import Avatar from '../Avatar';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   return (
@@ -10,7 +12,9 @@ export default function Navbar() {
         <IconText text='9999' icon={<TiTimes />} className='bg-red-600 text-white' />
         <IconText text='9999' icon={<RxCheck />} className='bg-green-400' />
       </div>
-      <p className='text-3xl text-primary-900 bg-white px-2.5 pt-0.5 rounded-full aspect-square'>H</p>
+      <Link to='/account'>
+        <Avatar alt='Avatar' fallback='AV' />
+      </Link>
     </nav>
   );
 }
