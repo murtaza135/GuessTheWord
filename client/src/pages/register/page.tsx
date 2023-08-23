@@ -5,6 +5,7 @@ import Button from '@/components/ui/buttons/Button';
 import schema from './schema';
 import useRegister from '@/components/auth/useRegister';
 import { RegisterSchema } from './schema';
+import Text from '@/components/ui/text/Text';
 
 export default function RegisterPage() {
   const { mutate } = useRegister({ successRedirect: '/' });
@@ -12,7 +13,9 @@ export default function RegisterPage() {
 
   return (
     <div className='h-full flex flex-col py-10 items-center justify-center mx-4'>
-      <Card className='w-full max-w-xl'>
+      <Card className='flex flex-col gap-10 w-full max-w-sm'>
+        <Text className='text-primary-900 text-3xl'>Register</Text>
+
         <Form
           schema={schema.register}
           onSubmit={handleSubmit}
