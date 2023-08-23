@@ -53,5 +53,9 @@ router.get(
 );
 
 // TODO add logout
+router.post(
+  '/auth/logout',
+  authController.clearAuthCookie
+);
 
 export default router;
