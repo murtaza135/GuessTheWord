@@ -1,8 +1,8 @@
 import Router from 'express-promise-router';
 import auth from '../../lib/auth';
 import validate from '../../middleware/validate';
-import winLossSchemas from './win-loss.schema';
-import winLossController from './win-loss.controller';
+import * as winLossSchemas from './win-loss.schema';
+import * as winLossController from './win-loss.controller';
 
 const router = Router();
 

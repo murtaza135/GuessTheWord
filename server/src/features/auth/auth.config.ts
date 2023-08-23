@@ -9,11 +9,11 @@ import { User } from '@prisma/client';
 import { StrategyConfig } from '../../lib/auth';
 import { RegisterSchema } from './auth.schema';
 import config from '../../config/config';
-import authServices from './auth.services';
+import * as authServices from './auth.services';
 
 type JwtUserId = { userId: User['userId']; };
 
-export const strategyConfig: StrategyConfig[] = [
+const strategyConfig: StrategyConfig[] = [
   {
     name: 'protect',
     strategy: new JwtStrategy(
@@ -118,3 +118,5 @@ export const strategyConfig: StrategyConfig[] = [
     )
   }
 ];
+
+export default strategyConfig;

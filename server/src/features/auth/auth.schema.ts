@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import validator from 'validator';
 
-const register = z.object({
+export const register = z.object({
   email: z.string().email({ message: 'Please provide a valid email' }),
   username: z.string({ required_error: 'Please provide a valid username' })
     .trim()
@@ -20,7 +20,7 @@ const register = z.object({
     return rest;
   });
 
-const login = z.object({
+export const login = z.object({
   username: z.string()
     .trim()
     .max(25, { message: 'Invalid Credentials' })
@@ -30,10 +30,3 @@ const login = z.object({
 
 export type RegisterSchema = z.infer<typeof register>;
 export type LoginSchema = z.infer<typeof login>;
-
-const authSchemas = {
-  register,
-  login
-};
-
-export default authSchemas;

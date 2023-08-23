@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import winLossServices from './win-loss.services';
+import * as winLossServices from './win-loss.services';
 import { IncrementWinsSchema, IncrementLossesSchema } from './win-loss.schema';
 
-async function incrementWins(
+export async function incrementWins(
   req: Request<unknown, unknown, IncrementWinsSchema>,
   res: Response,
 ) {
@@ -11,7 +11,7 @@ async function incrementWins(
   res.status(200).json(winLoss);
 }
 
-async function incrementLosses(
+export async function incrementLosses(
   req: Request<unknown, unknown, IncrementLossesSchema>,
   res: Response,
 ) {
@@ -19,10 +19,3 @@ async function incrementLosses(
   const winLoss = await winLossServices.incrementLosses(req.user.userId, req.body.losses);
   res.status(200).json(winLoss);
 }
-
-const winLossController = {
-  incrementWins,
-  incrementLosses
-};
-
-export default winLossController;

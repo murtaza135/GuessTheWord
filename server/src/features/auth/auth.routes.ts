@@ -1,8 +1,8 @@
 import Router from 'express-promise-router';
 import rateLimit from '../../middleware/rateLimit';
 import auth from '../../lib/auth';
-import authController from './auth.controller';
-import authSchemas from './auth.schema';
+import * as authController from './auth.controller';
+import * as authSchemas from './auth.schema';
 import validate from '../../middleware/validate';
 import config from '../../config/config';
 
@@ -52,7 +52,6 @@ router.get(
   authController.sendUser
 );
 
-// TODO add logout
 router.post(
   '/auth/logout',
   authController.clearAuthCookie
