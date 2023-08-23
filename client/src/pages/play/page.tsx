@@ -63,8 +63,8 @@ export default function PlayPage() {
               </div>
               <Keyboard onClick={handleLetterClick} />
               <div className="flex gap-3 flex-1">
-                <Button onClick={handlePlayAgain}>Reset</Button>
                 <Link to="/"><Button>Main Menu</Button></Link>
+                <Button onClick={handlePlayAgain}>Reset</Button>
               </div>
             </>
           )

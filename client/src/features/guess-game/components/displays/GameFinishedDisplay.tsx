@@ -26,10 +26,10 @@ export default function GameFinishedDisplay({ isWin, onPlayAgain }: Props) {
       </div>
 
       <div className='flex gap-3'>
-        <Button onClick={onPlayAgain}>Play Again?</Button>
         <Link to="/">
           <Button>Main Menu</Button>
         </Link>
+        <Button onClick={onPlayAgain}>Play Again?</Button>
       </div>
     </div>
   );
