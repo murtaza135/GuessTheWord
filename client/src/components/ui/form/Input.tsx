@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { ReactNode, useRef } from "react";
 import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
 import { useTextField, AriaTextFieldProps } from "react-aria";
 import capitalize from 'lodash/capitalize';
@@ -7,6 +7,7 @@ type Props = Omit<AriaTextFieldProps, "defaultValue" | "errorMessage" | "name" |
   name: string;
   label: string;
   type: React.HTMLInputTypeAttribute;
+  icon?: ReactNode;
 };
 
 function getFormError(
@@ -21,7 +22,7 @@ function getFormError(
 }
 
 export default function Input(props: Props) {
-  const { name, label } = props;
+  const { name, label, icon } = props;
 
   const { register, formState } = useFormContext();
   const error = getFormError(name, formState.errors[name]?.message);
@@ -38,11 +39,14 @@ export default function Input(props: Props) {
         {label}
       </label>
 
-      <input
-        className='border-[1px] border-primary-900 rounded-md bg-transparent outline-none px-3 py-1.5 text-primary-900'
-        {...inputProps}
-        {...register(name)}
-      />
+      <div className='flex gap-3 px-2 pb-2 border-b-[1px] border-primary-900 text-primary-900'>
+        {icon && <i className='flex justify-center items-center text-lg'>{icon}</i>}
+        <input
+          className='w-full bg-transparent outline-none'
+          {...inputProps}
+          {...register(name)}
+        />
+      </div>
 
       {isError && (
         <p className='text-sm text-red-700' {...errorMessageProps}>
