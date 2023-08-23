@@ -9,7 +9,7 @@ import config from '../../config/config';
 const router = Router();
 
 router.post(
-  '/auth/register',
+  '/auth/register/local',
   rateLimit({ maxAttempts: 5, duration: 60 }),
   validate.body(authSchemas.register),
   auth.authenticate({ strategy: 'local-register' }),
@@ -17,7 +17,7 @@ router.post(
 );
 
 router.post(
-  '/auth/login',
+  '/auth/login/local',
   rateLimit({ maxAttempts: 5, duration: 60 }),
   validate.body(authSchemas.login),
   auth.authenticate({ strategy: 'local-login' }),
@@ -47,7 +47,7 @@ router.get(
 );
 
 router.get(
-  '/auth/me',
+  '/auth/profile',
   auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
   authController.sendUser
 );

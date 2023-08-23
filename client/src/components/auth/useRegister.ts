@@ -13,7 +13,7 @@ type Options = {
 export default function useRegister(options?: Options) {
   const navigate = useNavigate();
   const mutation = useMutation<null, ErrorResponse, RegisterSchema>({
-    mutationFn: (args) => API.post('/auth/register', { body: args }),
+    mutationFn: (args) => API.post('/auth/register/local', { body: args }),
     onSuccess: () => {
       if (options?.successRedirect) navigate(options.successRedirect);
     }

@@ -13,9 +13,8 @@ type Options = {
 export default function useLogin(options?: Options) {
   const navigate = useNavigate();
   const mutation = useMutation<null, ErrorResponse, LoginSchema>({
-    mutationFn: (args) => API.post('/auth/login', { body: args }),
+    mutationFn: (args) => API.post('/auth/login/local', { body: args }),
     onSuccess: () => {
-      console.log("hello world");
       if (options?.successRedirect) navigate(options.successRedirect);
     }
   });

@@ -6,7 +6,7 @@ import { ErrorResponse } from '@/app/api/types';
 export default function useProfile() {
   const query = useQuery<ProfileResponse, ErrorResponse>({
     queryKey: ['profile'],
-    queryFn: () => API.get('/auth/me'),
+    queryFn: () => API.get('/auth/profile'),
   });
   return query;
 }
