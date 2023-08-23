@@ -7,7 +7,6 @@ import { VerifyCallback } from 'passport-oauth2';
 import { Request } from 'express';
 import { User } from '@prisma/client';
 import { StrategyConfig } from '../../lib/auth';
-import xprisma from '../../config/db';
 import { RegisterSchema } from './auth.schema';
 import config from '../../config/config';
 import authServices from './auth.services';
@@ -32,11 +31,9 @@ export const strategyConfig: StrategyConfig[] = [
       },
       async function (jwtPayload: JwtUserId, submit) {
         try {
-          const user = await xprisma.user.findUnique(
-            { where: { userId: jwtPayload.userId } }
-          );
+          const user = await authServices.getUser(jwtPayload.userId);
           if (!user) return submit(null, false);
-          return submit(null, { userId: user.userId });
+          return submit(null, user);
         } catch (error: unknown) {
           return submit(error, false);
         }
@@ -48,8 +45,8 @@ export const strategyConfig: StrategyConfig[] = [
     strategy: new CustomStrategy(
       async function (req: Request<unknown, unknown, RegisterSchema>, submit) {
         try {
-          const account = await authServices.localRegister(req.body);
-          return submit(null, { id: account.userId });
+          const { user } = await authServices.localRegister(req.body);
+          return submit(null, user);
         } catch (error: unknown) {
           return submit(error, false);
         }
@@ -60,9 +57,9 @@ export const strategyConfig: StrategyConfig[] = [
     name: 'local-login',
     strategy: new LocalStrategy(async function (username, password, submit) {
       try {
-        const account = await authServices.localLogin({ username, password });
+        const { user, account } = await authServices.localLogin({ username, password });
         if (!account) return submit(null, false, { message: 'Invalid Credentials' });
-        return submit(null, { userId: account.userId });
+        return submit(null, user);
       } catch (error: unknown) {
         return submit(error, false);
       }
@@ -83,10 +80,10 @@ export const strategyConfig: StrategyConfig[] = [
         submit: VerifyCallback,
       ) {
         try {
-          const existingAccount = await authServices.oauthLogin(profile);
-          if (existingAccount) return submit(null, { userId: existingAccount.userId });
-          const newAccount = await authServices.oauthRegister(profile);
-          return submit(null, { userId: newAccount.userId });
+          const { user: existingUser, account } = await authServices.oauthLogin(profile);
+          if (account) return submit(null, existingUser);
+          const { user: newUser } = await authServices.oauthRegister(profile);
+          return submit(null, newUser);
         } catch (error: unknown) {
           if (error instanceof Error) return submit(error);
           return submit(new Error('Something went wrong', { cause: error }));
@@ -109,10 +106,10 @@ export const strategyConfig: StrategyConfig[] = [
         submit: VerifyCallback,
       ) {
         try {
-          const existingAccount = await authServices.oauthLogin(profile);
-          if (existingAccount) return submit(null, { userId: existingAccount.userId });
-          const newAccount = await authServices.oauthRegister(profile);
-          return submit(null, { userId: newAccount.userId });
+          const { user: exsitingUser, account } = await authServices.oauthLogin(profile);
+          if (account) return submit(null, exsitingUser);
+          const { user: newUser } = await authServices.oauthRegister(profile);
+          return submit(null, newUser);
         } catch (error: unknown) {
           if (error instanceof Error) return submit(error);
           return submit(new Error('Something went wrong', { cause: error }));

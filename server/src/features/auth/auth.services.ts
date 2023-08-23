@@ -15,40 +15,57 @@ function generateAccessToken(userId: User['userId']) {
   );
 }
 
+// TODO figure out a way to return user via req.user instead of making an extra request to the db
+async function getUser(userId: User['userId']) {
+  const user = await xprisma.user.findUnique({
+    where: { userId },
+    select: { userId: true, name: true, email: true, image: true }
+  });
+  return user;
+}
+
 async function localRegister(data: RegisterSchema) {
   const userData = pick(data, ['name', 'email']);
   const accountData = pick(data, ['username', 'password']);
-  const account = await xprisma.$transaction(async (tx) => {
-    const newUser = await tx.user.create({ data: userData });
+  const { user, account } = await xprisma.$transaction(async (tx) => {
+    const newUser = await tx.user.create({
+      data: userData,
+      select: { userId: true, name: true, email: true, image: true }
+    });
     const newAccount = await tx.localAccount.create({
       data: { ...accountData, userId: newUser.userId }
     });
-    return newAccount;
+    return { user: newUser, account: newAccount };
   });
-  return account;
+  return { user, account };
 }
 
 async function localLogin(data: LoginSchema) {
   const account = await xprisma.localAccount.findUnique({ where: { username: data.username } });
-  if (!account) return null;
+  if (!account) return { user: null, account: null };
   const isPasswordCorrect = await account.comparePassword(data.password);
-  if (!isPasswordCorrect) return null;
-  return account;
+  if (!isPasswordCorrect) return { user: null, account: null };
+  const user = await getUser(account.userId);
+  if (!user) throw new Error(`User ${account.userId} is null despite the existence of LocalAccount ${account.accountId}`);
+  return { user, account };
 }
 
 async function oauthRegister(profile: Profile) {
   const { userData, accountData } = authUtils.transformProfile(profile);
 
   // TODO convert transaction to prisma's nested statement queries
-  const account = await xprisma.$transaction(async (tx) => {
-    const newUser = await tx.user.create({ data: userData });
+  const { user, account } = await xprisma.$transaction(async (tx) => {
+    const newUser = await tx.user.create({
+      data: userData,
+      select: { userId: true, name: true, email: true, image: true }
+    });
     const newAccount = await tx.oAuthAccount.create({
       data: { ...accountData, userId: newUser.userId }
     });
-    return newAccount;
+    return { user: newUser, account: newAccount };
   });
 
-  return account;
+  return { user, account };
 }
 
 async function oauthLogin(profile: Profile) {
@@ -60,16 +77,10 @@ async function oauthLogin(profile: Profile) {
       }
     }
   });
-  return account;
-}
-
-// TODO figure out a way to return user via req.user instead of making an extra request to the db
-async function getUser(userId: User['userId']) {
-  const user = await xprisma.user.findUniqueOrThrow({
-    where: { userId },
-    select: { userId: true, name: true, email: true, image: true }
-  });
-  return user;
+  if (!account) return { user: null, account: null };
+  const user = await getUser(account.userId);
+  if (!user) throw new Error(`User ${account.userId} is null despite the existence of LocalAccount ${account.accountId}`);
+  return { user, account };
 }
 
 const authServices = {

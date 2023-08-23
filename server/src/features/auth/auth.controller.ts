@@ -25,8 +25,7 @@ function sendAuthCookie(options?: { redirect?: string; }) {
 
 async function sendUser(req: Request, res: Response) {
   if (!req.user) throw new Error('req.user does not exist in sendUser in auth.controller.ts');
-  const user = await authServices.getUser(req.user.userId);
-  res.status(200).json(user);
+  res.status(200).json(req.user);
 }
 
 const authController = {
