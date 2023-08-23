@@ -6,7 +6,7 @@ import Navbar from '@/components/ui/navbar/Navbar';
 
 queryClient.prefetchQuery({ queryKey: ['wins'], queryFn: getWins });
 queryClient.prefetchQuery({ queryKey: ['losses'], queryFn: getLosses });
-queryClient.prefetchQuery({ queryKey: ['profile'], queryFn: () => API.get('/auth/me') });
+queryClient.prefetchQuery({ queryKey: ['profile'], queryFn: () => API.get('/auth/profile') });
 
 export default function App() {
   return (
