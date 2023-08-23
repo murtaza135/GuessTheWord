@@ -4,12 +4,10 @@ import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
 import useWinsQuery from '@/features/win-loss/hooks/useWinsQuery';
 import useLossesQuery from '@/features/win-loss/hooks/useLossesQuery';
-import useProfile from '@/features/auth/hooks/useProfile';
 
 export default function MainMenuPage() {
   const { wins } = useWinsQuery();
   const { losses } = useLossesQuery();
-  const { data } = useProfile();
 
   return (
     <div className='h-full flex flex-col py-10 items-center justify-center'>
@@ -20,7 +18,7 @@ export default function MainMenuPage() {
           <Text className='text-red-800 font-bold text-2xl md:text-2xl'>Losses: {losses || '...'}</Text>
         </div>
         <Link to="/play" className='w-full mt-1'>
-          <Button className='w-full text-3xl px-2 py-3'>Play</Button>
+          <Button size='lg' className='w-full'>Play</Button>
         </Link>
       </Card>
     </div>

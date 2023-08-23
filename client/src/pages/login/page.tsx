@@ -2,8 +2,8 @@ import Card from '@/ui/cards/Card';
 import Button from '@/ui/buttons/Button';
 import Text from '@/ui/text/Text';
 import { Link } from 'react-router-dom';
-import OAuthButton from '@/ui/buttons/OAuthButton';
 import { LoginForm } from '@/features/auth';
+import { GithubButton, GoogleButton } from '@/features/auth';
 
 export default function LoginPage() {
   return (
@@ -16,8 +16,8 @@ export default function LoginPage() {
         <div className='flex flex-col justify-center items-center gap-3'>
           <p className='text-md text-primary-900 cursor-default'>Or login with</p>
           <div className="flex gap-4 justify-center">
-            <OAuthButton variant='github' to='http://localhost:5000/api/v1/auth/login/github' />
-            <OAuthButton variant='google' to='http://localhost:5000/api/v1/auth/login/google' />
+            <GithubButton />
+            <GoogleButton />
           </div>
         </div>
 
@@ -27,7 +27,7 @@ export default function LoginPage() {
           </Link>
 
           <Link to="/">
-            <Button className='border-2 border-gray-300 bg-transparent text-gray-400 w-auto'>Play as Guest</Button>
+            <Button color='greyedOut' className='w-auto'>Play as Guest</Button>
           </Link>
         </div>
       </Card>
