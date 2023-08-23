@@ -1,4 +1,4 @@
-import useProfile from '../../components/auth/useProfile';
+import useProfile from '../../features/auth/hooks/useProfile';
 import Spinner from '../../components/ui/spinner/Spinner';
 import { Outlet } from 'react-router-dom';
 import { Navigate, useLocation } from 'react-router-dom';

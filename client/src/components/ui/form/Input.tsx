@@ -26,7 +26,6 @@ export default function Input(props: Props) {
 
   const { register, formState } = useFormContext();
   const error = getFormError(name, formState.errors[name]?.message);
-  const isError = !!error;
 
   const ref = useRef(null);
   const { labelProps, inputProps, errorMessageProps } = useTextField({ ...props, errorMessage: error }, ref);
@@ -48,7 +47,7 @@ export default function Input(props: Props) {
         />
       </div>
 
-      {isError && (
+      {error && (
         <p className='text-sm text-red-700' {...errorMessageProps}>
           {error}
         </p>

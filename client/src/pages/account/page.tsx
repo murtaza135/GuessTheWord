@@ -1,5 +1,5 @@
 import Card from '@/components/ui/cards/Card';
-import useProfile from '@/components/auth/useProfile';
+import useProfile from '@/features/auth/hooks/useProfile';
 
 export default function AccountPage() {
   const { data } = useProfile();

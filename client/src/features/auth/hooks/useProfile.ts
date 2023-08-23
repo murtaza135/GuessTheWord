@@ -1,5 +1,5 @@
 import API from '@/app/api/api';
-import { ProfileResponse } from './types';
+import { ProfileResponse } from '../types';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorResponse } from '@/app/api/types';
 

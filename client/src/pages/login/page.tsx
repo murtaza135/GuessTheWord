@@ -1,33 +1,17 @@
-import Form from '@/components/ui/form/Form';
-import Input from '@/components/ui/form/Input';
 import Card from '@/components/ui/cards/Card';
 import Button from '@/components/ui/buttons/Button';
-import schema, { LoginSchema } from './schema';
 import Text from '@/components/ui/text/Text';
 import { Link } from 'react-router-dom';
-import useLogin from '@/components/auth/useLogin';
 import OAuthButton from '@/components/ui/buttons/OAuthButton';
-import { BsPerson } from "react-icons/bs";
-import { BiLock } from "react-icons/bi";
+import { LoginForm } from '@/features/auth';
 
 export default function LoginPage() {
-  const { mutate } = useLogin({ successRedirect: '/' });
-  const handleSubmit = (data: LoginSchema) => mutate(data);
-
   return (
     <div className='h-full flex flex-col py-10 items-center justify-center mx-4'>
       <Card className='flex flex-col gap-10 items-center w-full max-w-sm'>
         <Text className='text-primary-900 text-3xl cursor-default'>Login</Text>
 
-        <Form
-          schema={schema.login}
-          onSubmit={handleSubmit}
-          className='flex flex-col gap-6 w-full max-w-xl'
-        >
-          <Input name='username' label='Username' placeholder='Username' type='text' icon={<BsPerson />} />
-          <Input name='password' label='Password' placeholder='Password' type='password' icon={<BiLock />} />
-          <Button type='submit' className='mt-3'>Login</Button>
-        </Form>
+        <LoginForm />
 
         <div className='flex flex-col justify-center items-center gap-3'>
           <p className='text-md text-primary-900 cursor-default'>Or login with</p>
