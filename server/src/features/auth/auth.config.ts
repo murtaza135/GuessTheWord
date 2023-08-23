@@ -6,7 +6,6 @@ import { Strategy as GoogleStrategy, Profile as GoogleProfile } from 'passport-g
 import { VerifyCallback } from 'passport-oauth2';
 import { Request } from 'express';
 import { User } from '@prisma/client';
-import { Profile } from 'passport';
 import { StrategyConfig } from '../../lib/auth';
 import xprisma from '../../config/db';
 import { RegisterSchema } from './auth.schema';
@@ -14,29 +13,6 @@ import config from '../../config/config';
 import authServices from './auth.services';
 
 type JwtUserId = { userId: User['userId']; };
-
-const profileUtil = {
-  getName(profile: Profile) {
-    if (profile.name?.familyName && profile.name?.givenName) {
-      return `${profile.name.givenName} ${profile.name.familyName}`;
-    }
-    if (profile.name?.givenName) return profile.name.givenName;
-    if (profile.name?.familyName) return profile.name.familyName;
-    return null;
-  },
-  getEmail(profile: Profile) {
-    if (profile.emails && profile.emails.length > 0) {
-      return profile.emails[0].value ?? null;
-    }
-    return null;
-  },
-  getImage(profile: Profile) {
-    if (profile.photos && profile.photos.length > 0) {
-      return profile.photos[0].value ?? null;
-    }
-    return null;
-  }
-};
 
 export const strategyConfig: StrategyConfig[] = [
   {
@@ -56,11 +32,11 @@ export const strategyConfig: StrategyConfig[] = [
       },
       async function (jwtPayload: JwtUserId, submit) {
         try {
-          const account = await xprisma.user.findUnique(
+          const user = await xprisma.user.findUnique(
             { where: { userId: jwtPayload.userId } }
           );
-          if (!account) return submit(null, false);
-          return submit(null, { userId: account.userId });
+          if (!user) return submit(null, false);
+          return submit(null, { userId: user.userId });
         } catch (error: unknown) {
           return submit(error, false);
         }
@@ -107,39 +83,13 @@ export const strategyConfig: StrategyConfig[] = [
         submit: VerifyCallback,
       ) {
         try {
-          const account = await xprisma.oAuthAccount.findUnique({
-            where: {
-              provider_accountId: {
-                provider: profile.provider,
-                accountId: profile.id
-              }
-            }
-          });
-          if (account) return submit(null, { userId: account.userId });
-
-          const userData = {
-            name: profileUtil.getName(profile) ?? profile.displayName ?? profile.username ?? 'Unknown',
-            email: profileUtil.getEmail(profile),
-            image: profileUtil.getImage(profile)
-          };
-
-          const oauthAccountData = {
-            accountId: profile.id,
-            provider: profile.provider,
-            username: profile.username
-          };
-
-          const account2 = await xprisma.$transaction(async (tx) => {
-            const newUser = await tx.user.create({ data: userData });
-            const newAccount = await tx.oAuthAccount.create({
-              data: { ...oauthAccountData, userId: newUser.userId }
-            });
-            return newAccount;
-          });
-
-          return submit(null, { userId: account2.userId });
+          const existingAccount = await authServices.oauthLogin(profile);
+          if (existingAccount) return submit(null, { userId: existingAccount.userId });
+          const newAccount = await authServices.oauthRegister(profile);
+          return submit(null, { userId: newAccount.userId });
         } catch (error: unknown) {
-          return submit(error as Error);
+          if (error instanceof Error) return submit(error);
+          return submit(new Error('Something went wrong', { cause: error }));
         }
       }
     )
@@ -159,39 +109,13 @@ export const strategyConfig: StrategyConfig[] = [
         submit: VerifyCallback,
       ) {
         try {
-          const account = await xprisma.oAuthAccount.findUnique({
-            where: {
-              provider_accountId: {
-                provider: profile.provider,
-                accountId: profile.id
-              }
-            }
-          });
-          if (account) return submit(null, { userId: account.userId });
-
-          const userData = {
-            name: profileUtil.getName(profile) ?? profile.displayName ?? profile.username ?? 'Unknown',
-            email: profileUtil.getEmail(profile),
-            image: profileUtil.getImage(profile)
-          };
-
-          const oauthAccountData = {
-            accountId: profile.id,
-            provider: profile.provider,
-            username: profile.username
-          };
-
-          const account2 = await xprisma.$transaction(async (tx) => {
-            const newUser = await tx.user.create({ data: userData });
-            const newAccount = await tx.oAuthAccount.create({
-              data: { ...oauthAccountData, userId: newUser.userId }
-            });
-            return newAccount;
-          });
-
-          return submit(null, { userId: account2.userId });
+          const existingAccount = await authServices.oauthLogin(profile);
+          if (existingAccount) return submit(null, { userId: existingAccount.userId });
+          const newAccount = await authServices.oauthRegister(profile);
+          return submit(null, { userId: newAccount.userId });
         } catch (error: unknown) {
-          return submit(error as Error);
+          if (error instanceof Error) return submit(error);
+          return submit(new Error('Something went wrong', { cause: error }));
         }
       }
     )

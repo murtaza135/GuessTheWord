@@ -4,6 +4,7 @@ import auth from '../../lib/auth';
 import authController from './auth.controller';
 import authSchemas from './auth.schema';
 import validate from '../../middleware/validate';
+import config from '../../config/config';
 
 const router = Router();
 
@@ -12,7 +13,7 @@ router.post(
   rateLimit({ maxAttempts: 5, duration: 60 }),
   validate.body(authSchemas.register),
   auth.authenticate({ strategy: 'local-register' }),
-  authController.sendAccessToken,
+  authController.sendAuthCookie(),
 );
 
 router.post(
@@ -20,7 +21,7 @@ router.post(
   rateLimit({ maxAttempts: 5, duration: 60 }),
   validate.body(authSchemas.login),
   auth.authenticate({ strategy: 'local-login' }),
-  authController.sendAccessToken,
+  authController.sendAuthCookie(),
 );
 
 router.get(
@@ -31,7 +32,7 @@ router.get(
 router.get(
   '/auth/callback/github',
   auth.authenticate({ strategy: 'github' }),
-  authController.redirectAccessToken
+  authController.sendAuthCookie({ redirect: config.CLIENT_URL })
 );
 
 router.get(
@@ -42,7 +43,7 @@ router.get(
 router.get(
   '/auth/callback/google',
   auth.authenticate({ strategy: 'google' }),
-  authController.redirectAccessToken
+  authController.sendAuthCookie({ redirect: config.CLIENT_URL })
 );
 
 router.get(
@@ -50,5 +51,7 @@ router.get(
   auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
   authController.sendUser
 );
+
+// TODO add logout
 
 export default router;
