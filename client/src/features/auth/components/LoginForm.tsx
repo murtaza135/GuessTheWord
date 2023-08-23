@@ -1,6 +1,6 @@
-import Form from '@/components/ui/form/Form';
-import Input from '@/components/ui/form/Input';
-import Button from '@/components/ui/buttons/Button';
+import Form from '@/ui/form/Form';
+import Input from '@/ui/form/Input';
+import Button from '@/ui/buttons/Button';
 import { BsPerson } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
 import useLogin from '../hooks/useLogin';

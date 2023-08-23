@@ -1,8 +1,8 @@
-import Card from '@/components/ui/cards/Card';
-import Button from '@/components/ui/buttons/Button';
-import Text from '@/components/ui/text/Text';
+import Card from '@/ui/cards/Card';
+import Button from '@/ui/buttons/Button';
+import Text from '@/ui/text/Text';
 import { Link } from 'react-router-dom';
-import OAuthButton from '@/components/ui/buttons/OAuthButton';
+import OAuthButton from '@/ui/buttons/OAuthButton';
 import { LoginForm } from '@/features/auth';
 
 export default function LoginPage() {

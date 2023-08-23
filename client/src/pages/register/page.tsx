@@ -1,5 +1,5 @@
-import Card from '@/components/ui/cards/Card';
-import Text from '@/components/ui/text/Text';
+import Card from '@/ui/cards/Card';
+import Text from '@/ui/text/Text';
 import RegisterForm from '@/features/auth/components/RegisterForm';
 
 export default function RegisterPage() {

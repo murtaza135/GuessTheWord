@@ -1,7 +1,7 @@
-import IconText from '../text/IconText';
+import IconText from '../../../ui/text/IconText';
 import { RxCheck } from "react-icons/rx";
 import { TiTimes } from "react-icons/ti";
-import Avatar from '../Avatar';
+import Avatar from '../../../ui/avatars/Avatar';
 import { Link } from 'react-router-dom';
 
 export default function Navbar() {

@@ -1,8 +1,8 @@
-import Button from '@/components/ui/buttons/Button';
-import Text from '@/components/ui/text/Text';
+import Button from '@/ui/buttons/Button';
+import Text from '@/ui/text/Text';
 import { Link } from 'react-router-dom';
-import useWinsQuery from '@/hooks/useWinsQuery';
-import useLossesQuery from '@/hooks/useLossesQuery';
+import useWinsQuery from '@/features/win-loss/hooks/useWinsQuery';
+import useLossesQuery from '@/features/win-loss/hooks/useLossesQuery';
 
 type Props = {
   isWin: boolean;

@@ -1,4 +1,4 @@
-import Card from '@/components/ui/cards/Card';
+import Card from '@/ui/cards/Card';
 import useProfile from '@/features/auth/hooks/useProfile';
 
 export default function AccountPage() {

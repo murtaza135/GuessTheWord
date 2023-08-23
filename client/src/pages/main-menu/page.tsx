@@ -1,9 +1,9 @@
-import Card from '@/components/ui/cards/Card';
-import Text from '@/components/ui/text/Text';
-import Button from '@/components/ui/buttons/Button';
+import Card from '@/ui/cards/Card';
+import Text from '@/ui/text/Text';
+import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
-import useWinsQuery from '@/hooks/useWinsQuery';
-import useLossesQuery from '@/hooks/useLossesQuery';
+import useWinsQuery from '@/features/win-loss/hooks/useWinsQuery';
+import useLossesQuery from '@/features/win-loss/hooks/useLossesQuery';
 import useProfile from '@/features/auth/hooks/useProfile';
 
 export default function MainMenuPage() {
