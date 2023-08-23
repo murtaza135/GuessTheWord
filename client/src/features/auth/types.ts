@@ -4,6 +4,7 @@ export type TokenResponse = {
 
 export type ProfileResponse = {
   userId: number;
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
+  image?: string;
 };
