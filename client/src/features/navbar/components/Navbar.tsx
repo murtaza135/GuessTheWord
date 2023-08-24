@@ -10,7 +10,7 @@ export default function Navbar() {
   const { data } = useProfile();
 
   return (
-    <nav className='fixed w-full py-6 -z-10'>
+    <nav className='absolute w-full py-6'>
       <Container className="flex justify-around items-center">
         <p className='hidden md:block text-3xl text-primary-900 bg-white px-2.5 pt-0.5 rounded-full aspect-square'>G</p>
         <div className='flex gap-8'>
