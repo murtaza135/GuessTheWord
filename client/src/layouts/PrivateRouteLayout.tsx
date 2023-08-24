@@ -9,10 +9,16 @@ import { useEffect } from 'react';
 
 export default function PrivateRouteLayout() {
   const location = useLocation();
-  const { data, error, isLoading } = useProfile();
+  const { data, error, isLoading, isSuccess, isError, isLoadingError, isRefetchError } = useProfile();
+
+  console.log('data:', data);
+  console.log('isSuccess:', isSuccess);
+  console.log('isError:', isError);
+  console.log('isLoadingError:', isLoadingError);
+  console.log('isRefetchError:', isRefetchError);
 
   useEffect(() => {
-    if (!isLoading && !data) toast.error(error?.message ?? 'Something went wrong');
+    if (!isLoading && (!data || error)) toast.error(error?.message ?? 'Something went wrong');
   }, [data, error, isLoading]);
 
   if (isLoading) {
@@ -23,7 +29,7 @@ export default function PrivateRouteLayout() {
     );
   }
 
-  if (!data) return <Navigate to="/login" state={{ from: location }} replace />;;
+  if (!data || error) return <Navigate to="/login" state={{ from: location }} replace />;;
 
   return (
     <>
