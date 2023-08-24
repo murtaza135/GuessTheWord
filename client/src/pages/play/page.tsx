@@ -49,27 +49,25 @@ export default function PlayPage() {
   };
 
   return (
-    <div className='h-full flex flex-col py-10 items-center justify-center'>
-      <Card className='flex flex-col gap-8 items-center'>
-        <GuessDisplay guess={guess} showAll={isGameOver} />
+    <Card className='flex flex-col gap-8 items-center'>
+      <GuessDisplay guess={guess} showAll={isGameOver} />
 
-        {isGameOver
-          ? <GameFinishedDisplay isWin={isGuessCorrect} onPlayAgain={handlePlayAgain} />
-          : (
-            <>
-              <div className='flex flex-col gap-1 items-center'>
-                {import.meta.env.DEV && <AnswerDisplay guess={guess} />}
-                <IncorrectGuessesDisplay value={numGuesses} />
-              </div>
-              <Keyboard onClick={handleLetterClick} />
-              <div className="flex gap-3 flex-1">
-                <Link to="/"><Button>Main Menu</Button></Link>
-                <Button onClick={handlePlayAgain}>Reset</Button>
-              </div>
-            </>
-          )
-        }
-      </Card>
-    </div>
+      {isGameOver
+        ? <GameFinishedDisplay isWin={isGuessCorrect} onPlayAgain={handlePlayAgain} />
+        : (
+          <>
+            <div className='flex flex-col gap-1 items-center'>
+              {import.meta.env.DEV && <AnswerDisplay guess={guess} />}
+              <IncorrectGuessesDisplay value={numGuesses} />
+            </div>
+            <Keyboard onClick={handleLetterClick} />
+            <div className="flex gap-3 flex-1">
+              <Link to="/"><Button>Main Menu</Button></Link>
+              <Button onClick={handlePlayAgain}>Reset</Button>
+            </div>
+          </>
+        )
+      }
+    </Card>
   );
 }

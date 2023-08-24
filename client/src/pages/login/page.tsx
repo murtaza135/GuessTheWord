@@ -7,30 +7,28 @@ import { GithubButton, GoogleButton } from '@/features/auth';
 
 export default function LoginPage() {
   return (
-    <div className='h-full flex flex-col py-10 items-center justify-center mx-4'>
-      <Card className='flex flex-col gap-10 items-center w-full max-w-sm'>
-        <Text className='text-primary-900 text-3xl cursor-default'>Login</Text>
+    <Card className='flex flex-col gap-10 items-center w-full max-w-sm'>
+      <Text className='text-primary-900 text-3xl cursor-default'>Login</Text>
 
-        <LoginForm />
+      <LoginForm />
 
-        <div className='flex flex-col justify-center items-center gap-3'>
-          <p className='text-md text-primary-900 cursor-default'>Or login with</p>
-          <div className="flex gap-4 justify-center">
-            <GithubButton />
-            <GoogleButton />
-          </div>
+      <div className='flex flex-col justify-center items-center gap-3'>
+        <p className='text-md text-primary-900 cursor-default'>Or login with</p>
+        <div className="flex gap-4 justify-center">
+          <GithubButton />
+          <GoogleButton />
         </div>
+      </div>
 
-        <div className='flex flex-col items-center gap-4 w-full max-w-xl'>
-          <Link to="/register">
-            <Text className='text-primary-900 hover:opacity-75 transition-opacity'>Don't have an account? Sign Up</Text>
-          </Link>
+      <div className='flex flex-col items-center gap-4 w-full max-w-xl'>
+        <Link to="/register">
+          <Text className='text-primary-900 hover:opacity-75 transition-opacity'>Don't have an account? Sign Up</Text>
+        </Link>
 
-          <Link to="/">
-            <Button color='greyedOut' className='w-auto'>Play as Guest</Button>
-          </Link>
-        </div>
-      </Card>
-    </div>
+        <Link to="/">
+          <Button color='greyedOut' className='w-auto'>Play as Guest</Button>
+        </Link>
+      </div>
+    </Card>
   );
 }

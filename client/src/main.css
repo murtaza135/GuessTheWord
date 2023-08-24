@@ -5,14 +5,18 @@
 html,
 body {
   @apply h-full;
+  @apply min-h-full;
 }
 
 body {
-  @apply h-full bg-primary-900;
+  @apply h-full;
+  @apply min-h-full;
+  @apply bg-primary-900;
 }
 
 #root {
   @apply h-full;
+  @apply min-h-full;
 }
 
 .nowrap {

@@ -1,21 +1,22 @@
-import { createBrowserRouter, Outlet } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import App from "@/app/App";
-import ErrorPage from '@/pages/error/page';
 import pages from './pages';
-import PrivateOutlet from '@/app/router/PrivateOutlet';
+import PrivateRouteLayout from '@/layouts/PrivateRouteLayout';
+import PublicRouteLayout from '@/layouts/PublicRouteLayout';
+import ErrorRouteLayout from '@/layouts/ErrorRouteLayout';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <ErrorPage />,
+    errorElement: <ErrorRouteLayout />,
     children: [
       {
-        element: <Outlet />,
+        element: <PublicRouteLayout />,
         children: pages.public
       },
       {
-        element: <PrivateOutlet />,
+        element: <PrivateRouteLayout />,
         children: pages.private
       },
     ]
