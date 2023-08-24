@@ -1,9 +1,9 @@
-import useProfile from '@/features/auth/hooks/useProfile';
+import { useProfile } from '@/features/auth';
 import Spinner from '@/ui/spinners/Spinner';
 import { Outlet } from 'react-router-dom';
 import { Navigate, useLocation } from 'react-router-dom';
 import Container from '@/ui/containers/Container';
-import Navbar from '@/features/navbar/components/Navbar';
+import { Navbar } from '@/features/navbar';
 import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
 

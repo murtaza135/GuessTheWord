@@ -1,5 +1,4 @@
-import Form from '@/ui/form/Form';
-import Input from '@/ui/form/Input';
+import { Form, Input } from '@/ui/form';
 import Button from '@/ui/buttons/Button';
 import { AiOutlineMail } from "react-icons/ai";
 import { BsPerson, BsPersonCircle } from "react-icons/bs";

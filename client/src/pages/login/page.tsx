@@ -1,8 +1,7 @@
 import Card from '@/ui/cards/Card';
 import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
-import { LoginForm } from '@/features/auth';
-import { GithubButton, GoogleButton } from '@/features/auth';
+import { LoginForm, GithubButton, GoogleButton } from '@/features/auth';
 
 export default function LoginPage() {
   return (

@@ -1,20 +1,14 @@
 import Card from '@/ui/cards/Card';
-import useGuessWord from '@/features/guess-game/hooks/useGuessWord';
 import Letter from '@/types/Letter';
 import useIncrement from '@/hooks/useIncrement';
-import Keyboard from '@/features/guess-game/components/keyboard/Keyboard';
-import IncorrectGuessesDisplay from '@/features/guess-game/components/displays/IncorrectGuessesDisplay';
-import AnswerDisplay from '@/features/guess-game/components/displays/AnswerDisplay';
-import GuessDisplay from '@/features/guess-game/components/displays/GuessDisplay';
-import GameFinishedDisplay from '@/features/guess-game/components/displays/GameFinishedDisplay';
+import { useGuessWord, Keyboard, IncorrectGuessesDisplay, AnswerDisplay, GuessDisplay, GameFinishedDisplay } from '@/features/guess-game';
 import config from '@/config/config';
 import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { getLosses, getWins } from '@/app/api/old-api';
-import useWinsMutation from '@/features/win-loss/hooks/useWinsMutation';
-import useLossesMutation from '@/features/win-loss/hooks/useLossesMutation';
+import { useWinsMutation, useLossesMutation } from '@/features/win-loss';
 
 export default function PlayPage() {
   const queryClient = useQueryClient();

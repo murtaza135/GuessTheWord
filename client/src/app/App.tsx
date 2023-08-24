@@ -11,7 +11,7 @@ queryClient.prefetchQuery({ queryKey: ['profile'], queryFn: () => API.get('/auth
 export default function App() {
   return (
     <>
-      <Toaster position='bottom-left' />
+      <Toaster position='bottom-center' />
       <Outlet />
     </>
   );

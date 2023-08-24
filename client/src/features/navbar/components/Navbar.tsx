@@ -1,7 +1,7 @@
-import Stat from '../../../ui/stats/Stat';
+import Stat from '@/ui/stats/Stat';
 import { RxCheck } from "react-icons/rx";
 import { TiTimes } from "react-icons/ti";
-import Avatar from '../../../ui/avatars/Avatar';
+import Avatar from '@/ui/avatars/Avatar';
 import { Link } from 'react-router-dom';
 import useProfile from '@/features/auth/hooks/useProfile';
 import Container from '@/ui/containers/Container';

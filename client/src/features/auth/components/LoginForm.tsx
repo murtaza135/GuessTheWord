@@ -1,5 +1,4 @@
-import Form from '@/ui/form/Form';
-import Input from '@/ui/form/Input';
+import { Form, Input } from '@/ui/form';
 import Button from '@/ui/buttons/Button';
 import { BsPerson } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
