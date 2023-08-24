@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { ErrorResponse } from '@/app/api/types';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
 
 export default function useLogout() {
   const queryClient = useQueryClient();
@@ -12,7 +13,8 @@ export default function useLogout() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       navigate('/');
-    }
+    },
+    onError: (error) => toast.error(error.message ?? 'Something went wrong', { id: 'logout' })
   });
   return mutation;
 }

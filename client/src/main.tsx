@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} panelPosition='bottom' />
+      <ReactQueryDevtools initialIsOpen={false} panelPosition='bottom' position='bottom-right' />
     </QueryClientProvider>
   </React.StrictMode>,
 );

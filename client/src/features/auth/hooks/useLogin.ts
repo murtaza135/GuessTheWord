@@ -4,6 +4,7 @@ import { LoginSchema } from '@/features/auth/schema';
 import { ErrorResponse } from '@/app/api/types';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
 
 // TODO add redirect based on params
 
@@ -19,7 +20,8 @@ export default function useLogin(options?: Options) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       if (options?.successRedirect) navigate(options.successRedirect);
-    }
+    },
+    onError: (error) => toast.error(error.message ?? 'Something went wrong', { id: 'login' })
   });
   return mutation;
 }

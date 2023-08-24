@@ -4,10 +4,16 @@ import { Outlet } from 'react-router-dom';
 import { Navigate, useLocation } from 'react-router-dom';
 import Container from '@/ui/containers/Container';
 import Navbar from '@/features/navbar/components/Navbar';
+import { toast } from 'react-hot-toast';
+import { useEffect } from 'react';
 
 export default function PrivateRouteLayout() {
   const location = useLocation();
-  const { data, isLoading } = useProfile();
+  const { data, error, isLoading } = useProfile();
+
+  useEffect(() => {
+    if (!isLoading && !data) toast.error(error?.message ?? 'Something went wrong');
+  }, [data, error, isLoading]);
 
   if (isLoading) {
     return (
@@ -17,7 +23,7 @@ export default function PrivateRouteLayout() {
     );
   }
 
-  if (!data) return <Navigate to="/login" state={{ from: location }} replace />;
+  if (!data) return <Navigate to="/login" state={{ from: location }} replace />;;
 
   return (
     <>
