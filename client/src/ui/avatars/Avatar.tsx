@@ -12,7 +12,7 @@ type Props = {
 
 export default function Avatar({ src, alt, fallback, className }: Props) {
   return (
-    <RadixUIAvatar.Root className="inline-flex justify-center items-center align-middle overflow-hidden select-none w-10 h-10 aspect-square rounded-full">
+    <RadixUIAvatar.Root className="inline-flex justify-center items-center align-middle overflow-hidden select-none w-10 h-10 aspect-square rounded-full hover:opacity-75 transition-opacity">
       <RadixUIAvatar.Image
         className="w-full h-full object-cover rounded-full"
         src={src}
