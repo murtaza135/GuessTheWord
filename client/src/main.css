@@ -23,3 +23,11 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* TODO replace with tailwind if possible */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgb(249 250 251 / var(--tw-bg-opacity)) inset !important;
+}

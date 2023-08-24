@@ -29,7 +29,7 @@ export default function Input(props: Props) {
       <div className='flex gap-3 px-2 pb-2 border-b-[1px] border-primary-900 text-primary-900'>
         {icon && <i className='flex justify-center items-center text-lg'>{icon}</i>}
         <input
-          className='w-full bg-transparent outline-none'
+          className='w-full bg-transparent outline-none shadow-none'
           {...inputProps}
           {...register(name)}
         />
