@@ -10,11 +10,11 @@ type Props = {
   textSize?: FontSize;
 };
 
-function Spinner({ text = "Loading", alt = "Loading...", imgSize = 200, textSize = "2xl" }: Props) {
+function Spinner({ text = "Loading", alt = "Loading", imgSize = 100, textSize = "lg" }: Props) {
   return (
     <span className='flex flex-col gap-0 items-center'>
       <img src={spinner} alt={alt} width={imgSize} />
-      <p className={`text-primary-400 text-${textSize} font-semibold font-cursive -translate-y-4`}>
+      <p className={`text-gray-50 text-${textSize} font-semibold font-cursive -translate-y-4`}>
         {text}
       </p>
     </span>
