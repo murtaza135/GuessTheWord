@@ -1,6 +1,6 @@
 import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
-import { useWinsQuery, useLossesQuery } from '@/features/win-loss';
+import { useWinLoss } from '@/features/win-loss';
 
 type Props = {
   isWin: boolean;
@@ -8,8 +8,7 @@ type Props = {
 };
 
 export default function GameFinishedDisplay({ isWin, onPlayAgain }: Props) {
-  const { wins } = useWinsQuery();
-  const { losses } = useLossesQuery();
+  const { wins, losses } = useWinLoss();
 
   return (
     <div className='flex flex-col gap-6 text-center'>
@@ -19,8 +18,8 @@ export default function GameFinishedDisplay({ isWin, onPlayAgain }: Props) {
       }
 
       <div>
-        <p className='text-center text-green-700 font-bold text-xl md:text-xl'>Wins: {wins || '...'}</p>
-        <p className='text-center text-red-800 font-bold text-xl md:text-xl'>Losses: {losses || '...'}</p>
+        <p className='text-center text-green-700 font-bold text-xl md:text-xl'>Wins: {wins ?? '...'}</p>
+        <p className='text-center text-red-800 font-bold text-xl md:text-xl'>Losses: {losses ?? '...'}</p>
       </div>
 
       <div className='flex gap-3'>

@@ -7,11 +7,13 @@ import useProfile from '@/features/auth/hooks/useProfile';
 import Container from '@/ui/containers/Container';
 import { useLocation } from 'react-router-dom';
 import icon from "/images/icon.png";
+import { useWinLoss } from '../win-loss';
 
 export default function Navbar() {
   const location = useLocation();
   const isPlayingGame = location.pathname === '/play';
   const { data } = useProfile();
+  const { wins, losses } = useWinLoss();
 
   return (
     <nav className='absolute w-full py-6'>
@@ -25,8 +27,9 @@ export default function Navbar() {
             )
             : (
               <>
-                <Stat value='9999' icon={<TiTimes />} color='red' />
-                <Stat value='9999' icon={<RxCheck />} color='green' />
+                {/* TODO find a better alternative than '?? 0' */}
+                <Stat value={losses ?? 0} icon={<TiTimes />} color='red' />
+                <Stat value={wins ?? 0} icon={<RxCheck />} color='green' />
               </>
             )}
         </div>

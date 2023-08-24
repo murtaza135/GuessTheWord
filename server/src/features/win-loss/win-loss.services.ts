@@ -1,5 +1,16 @@
 import { User } from '@prisma/client';
 import xprisma from '../../config/db';
+import APIError from '../../errors/APIError';
+
+export async function getWinLoss(userId: User['userId']) {
+  const userWinLoss = await xprisma.user.findUnique({
+    where: { userId },
+    select: { wins: true, losses: true }
+  });
+
+  if (!userWinLoss) throw new APIError({ statusText: 'Not Found', message: 'Could not retrieve data' });
+  return userWinLoss;
+}
 
 export async function incrementWins(userId: User['userId'], wins?: User['wins']) {
   const userWinLoss = await xprisma.user.update({

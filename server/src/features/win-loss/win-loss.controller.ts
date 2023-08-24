@@ -2,6 +2,12 @@ import { Request, Response } from 'express';
 import * as winLossServices from './win-loss.services';
 import { IncrementWinsSchema, IncrementLossesSchema } from './win-loss.schema';
 
+export async function sendWinsLosses(req: Request, res: Response) {
+  if (!req.user) throw new Error('req.user does not exist in sendWinsLosses in win-loss.controller.ts');
+  const winLoss = await winLossServices.getWinLoss(req.user.userId);
+  res.status(200).json(winLoss);
+}
+
 export async function incrementWins(
   req: Request<unknown, unknown, IncrementWinsSchema>,
   res: Response,

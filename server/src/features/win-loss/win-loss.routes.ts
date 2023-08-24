@@ -6,6 +6,12 @@ import * as winLossController from './win-loss.controller';
 
 const router = Router();
 
+router.get(
+  '/winLoss',
+  auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
+  winLossController.sendWinsLosses
+);
+
 router.post(
   '/wins/increment',
   validate.body(winLossSchemas.incrementWins),
