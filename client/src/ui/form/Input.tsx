@@ -1,7 +1,6 @@
 import { ReactNode, useRef } from "react";
-import { FieldError, FieldErrorsImpl, Merge, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { useTextField, AriaTextFieldProps } from "react-aria";
-import capitalize from 'lodash/capitalize';
 
 type Props = Omit<AriaTextFieldProps, "defaultValue" | "errorMessage" | "name" | "label" | "type"> & {
   name: string;
@@ -10,22 +9,11 @@ type Props = Omit<AriaTextFieldProps, "defaultValue" | "errorMessage" | "name" |
   icon?: ReactNode;
 };
 
-function getFormError(
-  name: string,
-  value: string
-    | FieldError
-    | Merge<FieldError, FieldErrorsImpl<any>>
-    | undefined
-) {
-  if (!value || typeof value === 'string') return value;
-  return `${capitalize(name)} invalid`;
-}
-
 export default function Input(props: Props) {
   const { name, label, icon } = props;
 
   const { register, formState } = useFormContext();
-  const error = getFormError(name, formState.errors[name]?.message);
+  const error = formState.errors[name]?.message?.toString();
 
   const ref = useRef(null);
   const { labelProps, inputProps, errorMessageProps } = useTextField({ ...props, errorMessage: error }, ref);
