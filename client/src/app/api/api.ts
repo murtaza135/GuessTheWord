@@ -1,6 +1,6 @@
-import { API_URL } from '@/config/constants';
 import APIError from './APIError';
 import { ErrorResponse } from './types';
+import appConfig from '@/config/config';
 
 type APIMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'CONNECT' | 'OPTIONS' | 'TRACE';
 type APIBody = BodyInit | Record<string, unknown>;
@@ -19,7 +19,7 @@ const JSON_MIME_TYPE = 'application/json';
 
 export default class API {
   private static async handleRequest<SuccessResponse>(endpoint: string, method: APIMethod, { body, config }: APIConfigWithBody): Promise<SuccessResponse> {
-    const url = `${API_URL}${endpoint}`;
+    const url = `${appConfig.VITE_API_URL}${endpoint}`;
 
     const headers = new Headers({
       ...config?.headers,

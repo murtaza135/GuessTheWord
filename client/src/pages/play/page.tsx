@@ -7,7 +7,7 @@ import IncorrectGuessesDisplay from '@/features/guess-game/components/displays/I
 import AnswerDisplay from '@/features/guess-game/components/displays/AnswerDisplay';
 import GuessDisplay from '@/features/guess-game/components/displays/GuessDisplay';
 import GameFinishedDisplay from '@/features/guess-game/components/displays/GameFinishedDisplay';
-import { NUM_TRIES } from '@/config/constants';
+import config from '@/config/config';
 import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -20,7 +20,7 @@ export default function PlayPage() {
   const queryClient = useQueryClient();
   const { guess, isGuessCorrect, updateGuessWithLetter, resetWord } = useGuessWord();
   const [numGuesses, incrementNumGuesses, resetNumGuesses] = useIncrement(0);
-  const isGameOver = isGuessCorrect || numGuesses >= NUM_TRIES;
+  const isGameOver = isGuessCorrect || numGuesses >= config.NUM_TRIES;
   const { mutate: mutateWins } = useWinsMutation();
   const { mutate: mutateLosses } = useLossesMutation();
 
