@@ -6,8 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 
-// TODO add redirect based on params
-
 type Options = {
   successRedirect?: string;
 };

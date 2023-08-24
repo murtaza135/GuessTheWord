@@ -6,9 +6,12 @@ import { BiLock } from "react-icons/bi";
 import useRegister from '../hooks/useRegister';
 import * as authSchema from '../schema';
 import { type RegisterSchema } from "../schema";
+import { useSearchParams } from "react-router-dom";
 
 export default function RegisterForm() {
-  const { mutate } = useRegister({ successRedirect: '/' });
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get('redirect') ?? '/';
+  const { mutate } = useRegister({ successRedirect: redirect });
   const handleSubmit = (data: RegisterSchema) => mutate(data);
 
   return (

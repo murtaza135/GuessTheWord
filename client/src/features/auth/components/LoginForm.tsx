@@ -5,9 +5,12 @@ import { BiLock } from "react-icons/bi";
 import useLogin from '../hooks/useLogin';
 import * as authSchema from '../schema';
 import { type LoginSchema } from "../schema";
+import { useSearchParams } from "react-router-dom";
 
 export default function LoginForm() {
-  const { mutate } = useLogin({ successRedirect: '/' });
+  const [searchParams] = useSearchParams();
+  const redirect = searchParams.get('redirect') ?? '/';
+  const { mutate } = useLogin({ successRedirect: redirect });
   const handleSubmit = (data: LoginSchema) => mutate(data);
 
   return (
