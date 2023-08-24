@@ -1,6 +1,5 @@
 import Card from '@/ui/cards/Card';
 import Button from '@/ui/buttons/Button';
-import Text from '@/ui/text/Text';
 import { Link } from 'react-router-dom';
 import { LoginForm } from '@/features/auth';
 import { GithubButton, GoogleButton } from '@/features/auth';
@@ -8,7 +7,7 @@ import { GithubButton, GoogleButton } from '@/features/auth';
 export default function LoginPage() {
   return (
     <Card className='flex flex-col gap-10 items-center w-full max-w-sm'>
-      <Text className='text-primary-900 text-3xl cursor-default'>Login</Text>
+      <p className='font-semibold text-center text-primary-900 text-3xl cursor-default'>Login</p>
 
       <LoginForm />
 
@@ -22,7 +21,7 @@ export default function LoginPage() {
 
       <div className='flex flex-col items-center gap-4 w-full max-w-xl'>
         <Link to="/register">
-          <Text className='text-primary-900 hover:opacity-75 transition-opacity'>Don't have an account? Sign Up</Text>
+          <p className='md:text-lg font-semibold text-center text-primary-900 hover:opacity-75 transition-opacity'>Don't have an account? Sign Up</p>
         </Link>
 
         <Link to="/">

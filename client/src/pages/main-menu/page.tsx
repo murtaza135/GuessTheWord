@@ -1,5 +1,4 @@
 import Card from '@/ui/cards/Card';
-import Text from '@/ui/text/Text';
 import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
 import useWinsQuery from '@/features/win-loss/hooks/useWinsQuery';
@@ -11,10 +10,10 @@ export default function MainMenuPage() {
 
   return (
     <Card className='flex flex-col gap-10 items-center'>
-      <Text className='text-primary-900 font-bold text-4xl md:text-4xl'>Guess the Word!</Text>
+      <p className='text-center text-primary-900 font-bold text-4xl md:text-4xl'>Guess the Word!</p>
       <div className='flex flex-col gap-2 items-center'>
-        <Text className='text-green-700 font-bold text-2xl md:text-2xl'>Wins: {wins || '...'}</Text>
-        <Text className='text-red-800 font-bold text-2xl md:text-2xl'>Losses: {losses || '...'}</Text>
+        <p className='text-center text-green-700 font-bold text-2xl md:text-2xl'>Wins: {wins || '...'}</p>
+        <p className='text-center text-red-800 font-bold text-2xl md:text-2xl'>Losses: {losses || '...'}</p>
       </div>
       <Link to="/play" className='w-full mt-1'>
         <Button size='lg' className='w-full'>Play</Button>

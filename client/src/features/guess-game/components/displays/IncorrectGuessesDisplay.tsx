@@ -1,4 +1,3 @@
-import Text from '@/ui/text/Text';
 import { NUM_TRIES } from '@/config/constants';
 
 type Props = {
@@ -8,8 +7,8 @@ type Props = {
 export default function IncorrectGuessesDisplay({ value }: Props) {
   return (
     <div className='flex gap-1'>
-      <Text>Incorrect Guesses: </Text>
-      <Text>{value}/{NUM_TRIES}</Text>
+      <p className='md:text-lg font-semibold text-center'>Incorrect Guesses: </p>
+      <p className='md:text-lg font-semibold text-center'>{value}/{NUM_TRIES}</p>
     </div>
   );
 }
