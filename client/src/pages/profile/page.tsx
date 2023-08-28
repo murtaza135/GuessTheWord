@@ -1,7 +1,7 @@
 import Card from '@/ui/cards/Card';
 import { useProfile } from '@/features/auth';
 import Avatar from '@/ui/avatars/Avatar2';
-import { GithubButton, GoogleButton } from '@/features/auth';
+import { GithubButton, GoogleButton, GuessButton } from '@/features/auth';
 import TextGroup from '@/ui/text/TextGroup';
 import { AiOutlineMail } from "react-icons/ai";
 import { BsPerson, BsPersonCircle } from "react-icons/bs";
@@ -34,10 +34,11 @@ export default function ProfilePage() {
       </div>
 
       <div className='flex flex-col w-full justify-center items-center gap-4 border-[1px] p-8 rounded-md border-gray-300'>
-        <p className='text-sm text-primary-900 font-semibold'>Connect with other providers</p>
+        <p className='text-sm text-primary-900 font-semibold'>Your connections</p>
         <div className='flex gap-5'>
-          <GithubButton />
-          <GoogleButton />
+          <GuessButton isAuthorized={false} />
+          <GithubButton isAuthorized={false} />
+          <GoogleButton isAuthorized={false} />
         </div>
       </div>
 
