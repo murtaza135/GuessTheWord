@@ -23,6 +23,20 @@ export async function getUser(userId: User['userId']) {
   return user;
 }
 
+export async function getAccounts(userId: User['userId']) {
+  const localAccount = await xprisma.localAccount.findUnique({
+    where: { userId },
+    select: { username: true },
+  });
+
+  const oAuthAccounts = await xprisma.oAuthAccount.findMany({
+    where: { userId },
+    select: { username: true, provider: true }
+  });
+
+  return { localAccount, oAuthAccounts };
+}
+
 export async function localRegister(data: RegisterSchema) {
   const userData = pick(data, ['name', 'email']);
   const accountData = pick(data, ['username', 'password']);

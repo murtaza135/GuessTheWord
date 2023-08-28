@@ -52,6 +52,12 @@ router.get(
   authController.sendUser
 );
 
+router.get(
+  '/auth/accounts',
+  auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
+  authController.sendAccounts
+);
+
 router.post(
   '/auth/logout',
   authController.clearAuthCookie

@@ -21,8 +21,8 @@ export default function Navbar() {
         <div className='flex gap-8'>
           {!isPlayingGame
             ? (
-              <Link to='/' className='hover:opacity-75 transition-opacity bg-white rounded-full'>
-                <img src={icon} alt="Guess! Icon" width={40} />
+              <Link to='/' className='hover:opacity-75 transition-opacity bg-white rounded-full w-10 h-10'>
+                <img src={icon} alt="Guess! Icon" />
               </Link>
             )
             : (
