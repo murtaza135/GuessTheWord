@@ -11,6 +11,7 @@ export default function PrivateRouteLayout() {
   const location = useLocation();
   const { data, error, isLoading, isSuccess, isError, isLoadingError, isRefetchError } = useProfile();
 
+  // TODO remove
   console.log('data:', data);
   console.log('isSuccess:', isSuccess);
   console.log('isError:', isError);

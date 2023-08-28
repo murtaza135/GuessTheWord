@@ -1,6 +1,6 @@
 import loginRoute from '@/pages/login';
 import registerRoute from '@/pages/register';
-import accountRoute from '@/pages/account';
+import profileRoute from '@/pages/profile';
 import mainMenuRoute from '@/pages/main-menu';
 import playRoute from '@/pages/play';
 
@@ -10,7 +10,7 @@ const pages = {
     registerRoute
   ],
   private: [
-    accountRoute,
+    profileRoute,
     mainMenuRoute,
     playRoute
   ]

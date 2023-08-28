@@ -22,7 +22,8 @@ export default function Input(props: Props) {
     <div className='flex flex-col gap-2'>
       <label
         className='font-semibold text-primary-900'
-        {...labelProps}>
+        {...labelProps}
+      >
         {label}
       </label>
 

@@ -33,7 +33,7 @@ export default function Navbar() {
               </>
             )}
         </div>
-        <Link to='/account'>
+        <Link to='/profile'>
           <Avatar alt={data?.name ?? 'Avatar'} src={data?.image} fallback={data?.name} />
         </Link>
       </Container>
