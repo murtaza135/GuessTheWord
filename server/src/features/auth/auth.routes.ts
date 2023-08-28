@@ -55,7 +55,7 @@ router.get(
 router.get(
   '/auth/accounts',
   auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
-  authController.sendAccounts
+  authController.sendAccounts,
 );
 
 router.post(
