@@ -1,4 +1,5 @@
 import Router from 'express-promise-router';
+import passport from 'passport';
 import rateLimit from '../../middleware/rateLimit';
 import auth from '../../lib/auth';
 import * as authController from './auth.controller';
@@ -38,12 +39,15 @@ router.get(
 router.get(
   '/auth/authorize/github',
   auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
-  auth.authenticate({ strategy: 'github-authorize', scope: ['user:email', 'read:user'], user: true })
+  auth.authenticate({ strategy: 'github-authorize', scope: ['user:email', 'read:user'] })
 );
 
 router.get(
   '/auth/authorize-callback/github',
-  auth.authenticate({ strategy: 'github-authorize' }),
+  function (req, res, next) { console.log('DONKEYYY hello world'); next(); },
+  auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
+  // auth.authenticate({ strategy: 'github-authorize' }),
+  passport.authorize('github-authorize', { successRedirect: `${config.CLIENT_URL}/profile`, failureRedirect: `${config.CLIENT_URL}/profile` }),
   // authController.sendAuthCookie({ redirect: config.CLIENT_URL })
   (req, res) => res.redirect(config.CLIENT_URL)
 );

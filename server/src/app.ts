@@ -7,6 +7,8 @@ import hpp from 'hpp';
 import helmet from 'helmet';
 import cors from 'cors';
 import compression from 'compression';
+import cookieSession from 'cookie-session';
+import passport from 'passport';
 import config from './config/config';
 import { morgan } from './config/logger';
 import APIError from './errors/APIError';
@@ -15,15 +17,34 @@ import rateLimit from './middleware/rateLimit';
 import { authRouter, strategyConfig } from './features/auth';
 import { winLossRouter } from './features/win-loss';
 import auth from './lib/auth';
+import xprisma from './config/db';
 
 const app = express();
 const router = Router();
 app.use(`/api/v${config.VERSION_MAJOR}`, router);
 
+// router.use(cookieSession({
+//   name: 'session',
+//   keys: ['key1', 'key2']
+// }));
+
 auth.init({
   config: strategyConfig,
   onUnauthorized: ({ message }) => new APIError({ statusText: 'Unauthorized', message })
 });
+
+// passport.serializeUser(function (user, cb) {
+//   process.nextTick(function () {
+//     cb(null, { userId: user.userId });
+//   });
+// });
+
+// passport.deserializeUser(function (userArg: { userId: number; }, cb) {
+//   process.nextTick(async function () {
+//     const user = await xprisma.user.findUnique({ where: { userId: userArg.userId } });
+//     return cb(null, user);
+//   });
+// });
 
 router.use(express.static(path.join(__dirname, 'public')));
 

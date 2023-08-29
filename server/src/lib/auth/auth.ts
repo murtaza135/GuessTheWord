@@ -47,12 +47,16 @@ class Auth {
     return function (req: Request, res: Response, next: NextFunction) {
       if (options.scope || options.user) {
         passport.authenticate(options.strategy, {
-          scope: options.scope, state: req.user?.userId.toString()
+          scope: options.scope,
+          // state: req.user?.userId.toString()
         })(req, res, next);
       } else {
         passport.authenticate(
           options.strategy,
           function (error: unknown, user: Express.User, info?: StrategyInfo) {
+            // console.log(req.cookies);
+            // console.log(req.user);
+
             if (error) {
               if (error instanceof Error) return next(error);
               return next(new Error('Something went wrong', { cause: error }));

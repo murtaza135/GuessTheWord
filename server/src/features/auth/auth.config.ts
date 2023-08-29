@@ -71,22 +71,35 @@ const strategyConfig: StrategyConfig[] = [
       {
         clientID: config.GITHUB_CLIENT_ID,
         clientSecret: config.GITHUB_CLIENT_SECRET,
-        callbackURL: `${config.API_URL}/auth/callback/github`
+        callbackURL: `${config.API_URL}/auth/callback/github`,
+        passReqToCallback: true
       },
       async function (
+        req: Request,
         accessToken: string,
         refreshToken: string,
         profile: GithubProfile,
         submit: VerifyCallback,
       ) {
-        try {
-          const { user: existingUser, account } = await authServices.oauthLogin(profile);
-          if (account) return submit(null, existingUser);
-          const { user: newUser } = await authServices.oauthRegister(profile);
-          return submit(null, newUser);
-        } catch (error: unknown) {
-          if (error instanceof Error) return submit(error);
-          return submit(new Error('Something went wrong', { cause: error }));
+        if (req.user?.userId) {
+          try {
+            const { user } = await authServices.oauthAuthorize(req.user.userId, profile);
+            if (!user) return submit();
+            return submit(null, user);
+          } catch (error: unknown) {
+            if (error instanceof Error) return submit(error);
+            return submit(new Error('Something went wrong', { cause: error }));
+          }
+        } else {
+          try {
+            const { user: existingUser, account } = await authServices.oauthLogin(profile);
+            if (account) return submit(null, existingUser);
+            const { user: newUser } = await authServices.oauthRegister(profile);
+            return submit(null, newUser);
+          } catch (error: unknown) {
+            if (error instanceof Error) return submit(error);
+            return submit(new Error('Something went wrong', { cause: error }));
+          }
         }
       }
     )
@@ -109,9 +122,8 @@ const strategyConfig: StrategyConfig[] = [
         submit: VerifyCallback,
       ) {
         // TODO validate
-        console.log(req.user);
-        const userId = Number(req.query.state?.toString());
-        if (!userId) return submit(new Error('Could not extract userId from req.query after oauth authentication'));
+        const userId = req.user?.userId;
+        if (!userId) return submit(new Error('Could not extract userId from req.user after oauth authentication'));
         try {
           const { user } = await authServices.oauthAuthorize(userId, profile);
           if (!user) return submit();

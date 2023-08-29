@@ -13,6 +13,9 @@ export function sendAuthCookie(options?: { redirect?: string; }) {
       maxAge: config.ACCESS_TOKEN_COOKIE_MAX_AGE
     });
 
+    // @ts-ignore
+    // req.session.accessToken = accessToken;
+
     if (options?.redirect) {
       res.redirect(options.redirect);
     } else {
