@@ -95,3 +95,26 @@ export async function oauthLogin(profile: Profile) {
   if (!user) throw new Error(`User ${account.userId} is null despite the existence of LocalAccount ${account.accountId}`);
   return { user, account };
 }
+
+export async function oauthAuthorize(userId: User['userId'], profile: Profile) {
+  const account = await xprisma.oAuthAccount.findUnique({
+    where: {
+      provider_accountId: {
+        provider: profile.provider,
+        accountId: profile.id
+      }
+    }
+  });
+  if (account) return { user: null, account: null };
+
+  const { accountData } = authUtils.transformProfile(profile);
+
+  const updatedUser = await xprisma.user.update({
+    where: { userId },
+    data: { Account: { create: accountData } },
+    select: { userId: true, name: true, email: true, image: true }
+  });
+
+  const newAccount = { ...accountData, userId };
+  return { user: updatedUser, account: newAccount };
+}

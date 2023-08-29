@@ -92,6 +92,38 @@ const strategyConfig: StrategyConfig[] = [
     )
   },
   {
+    name: 'github-authorize',
+    strategy: new GithubStrategy(
+      {
+        // TODO change the following
+        clientID: config.GITHUB_CLIENT_ID_AUTHORIZE,
+        clientSecret: config.GITHUB_CLIENT_SECRET_AUTHORIZE,
+        callbackURL: `${config.API_URL}/auth/authorize-callback/github`,
+        passReqToCallback: true
+      },
+      async function (
+        req: Request,
+        accessToken: string,
+        refreshToken: string,
+        profile: GithubProfile,
+        submit: VerifyCallback,
+      ) {
+        // TODO validate
+        console.log(req.user);
+        const userId = Number(req.query.state?.toString());
+        if (!userId) return submit(new Error('Could not extract userId from req.query after oauth authentication'));
+        try {
+          const { user } = await authServices.oauthAuthorize(userId, profile);
+          if (!user) return submit();
+          return submit(null, user);
+        } catch (error: unknown) {
+          if (error instanceof Error) return submit(error);
+          return submit(new Error('Something went wrong', { cause: error }));
+        }
+      }
+    )
+  },
+  {
     name: 'google',
     strategy: new GoogleStrategy(
       {

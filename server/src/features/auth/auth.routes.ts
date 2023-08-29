@@ -36,6 +36,19 @@ router.get(
 );
 
 router.get(
+  '/auth/authorize/github',
+  auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
+  auth.authenticate({ strategy: 'github-authorize', scope: ['user:email', 'read:user'], user: true })
+);
+
+router.get(
+  '/auth/authorize-callback/github',
+  auth.authenticate({ strategy: 'github-authorize' }),
+  // authController.sendAuthCookie({ redirect: config.CLIENT_URL })
+  (req, res) => res.redirect(config.CLIENT_URL)
+);
+
+router.get(
   '/auth/login/google',
   auth.authenticate({ strategy: 'google', scope: ['profile', 'email'] })
 );

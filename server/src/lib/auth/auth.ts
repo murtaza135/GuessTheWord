@@ -4,7 +4,7 @@ import { type XOR } from 'ts-essentials';
 
 type AuthenticateMiddlewareOptions = { strategy: string | string[] | Strategy; }
   & XOR<
-    { scope?: AuthenticateOptions['scope']; },
+    { scope?: AuthenticateOptions['scope']; user?: boolean; },
     { message?: string; }
   >;
 
@@ -45,8 +45,10 @@ class Auth {
   authenticate(options: AuthenticateMiddlewareOptions) {
     const self = this;
     return function (req: Request, res: Response, next: NextFunction) {
-      if (options.scope) {
-        passport.authenticate(options.strategy, { scope: options.scope })(req, res, next);
+      if (options.scope || options.user) {
+        passport.authenticate(options.strategy, {
+          scope: options.scope, state: req.user?.userId.toString()
+        })(req, res, next);
       } else {
         passport.authenticate(
           options.strategy,
