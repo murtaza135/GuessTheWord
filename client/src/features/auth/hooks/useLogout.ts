@@ -11,8 +11,8 @@ export default function useLogout() {
   const mutation = useMutation<null, ErrorResponse, null>({
     mutationFn: () => API.post('/auth/logout'),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
-      navigate('/');
+      queryClient.clear();
+      navigate('/login');
     },
     onError: (error) => toast.error(error.message ?? 'Something went wrong', { id: 'logout' })
   });
