@@ -1,14 +1,13 @@
 import { useProfile } from '@/features/auth';
 import Spinner from '@/ui/spinners/Spinner';
 import { Outlet } from 'react-router-dom';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import Container from '@/ui/containers/Container';
 import { Navbar } from '@/features/navbar';
 import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
 
 export default function PrivateRouteLayout() {
-  const location = useLocation();
   const { error, isLoading } = useProfile();
 
   useEffect(() => {
