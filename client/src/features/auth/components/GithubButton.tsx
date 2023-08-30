@@ -4,16 +4,17 @@ import { TiTimes } from "react-icons/ti";
 import cn from '@/utils/cn';
 
 type Props = {
-  isAuthorized?: boolean;
   to?: string;
+  isAuthorized?: boolean;
 };
 
 
-export default function GithubButton({ isAuthorized, to }: Props) {
+export default function GithubButton({ to, isAuthorized }: Props) {
   return (
     <a
       href={to ?? "http://localhost:5000/api/v1/auth/login/github"}
       className='relative  aspect-square rounded-full w-12 h-12 cursor-pointer hover:opacity-75 transition-opacity border-[1px] border-transparent bg-white text-black'
+      onClick={(event) => isAuthorized && event.preventDefault()}
     >
       <span className='overflow-hidden inline-flex justify-center items-center align-middle aspect-square rounded-full text-6xl w-12 h-12'>
         <FaGithub />
