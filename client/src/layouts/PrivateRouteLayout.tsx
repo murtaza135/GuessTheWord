@@ -13,7 +13,7 @@ export default function PrivateRouteLayout() {
 
   useEffect(() => {
     if (!isLoading && error) {
-      toast.error(error?.message ?? 'Something went wrong');
+      toast.error(error?.message ?? 'Something went wrong', { id: 'private-route-layout' });
     }
   }, [error, isLoading]);
 
@@ -25,9 +25,8 @@ export default function PrivateRouteLayout() {
     );
   }
 
-  // TODO is state needed?
   if (error) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return (
