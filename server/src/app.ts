@@ -65,10 +65,11 @@ router.use(actuator({
   }
 }));
 
+// router.use((req, res, next) => { console.log(req.originalUrl); next(); });
 router.use(authRouter);
 router.use(winLossRouter);
 
-router.use(() => {
+router.use((req) => {
   throw new APIError({
     statusText: 'Not Found',
     message: 'API route not found',

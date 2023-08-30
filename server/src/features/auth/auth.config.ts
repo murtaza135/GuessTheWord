@@ -10,6 +10,7 @@ import { StrategyConfig } from '../../lib/auth';
 import { RegisterSchema } from './auth.schema';
 import config from '../../config/config';
 import * as authServices from './auth.services';
+import APIError from '../../errors/APIError';
 
 type JwtUserId = { userId: User['userId']; };
 
@@ -46,6 +47,23 @@ const strategyConfig: StrategyConfig[] = [
       async function (req: Request<unknown, unknown, RegisterSchema>, submit) {
         try {
           const { user } = await authServices.localRegister(req.body);
+          return submit(null, user);
+        } catch (error: unknown) {
+          return submit(error, false);
+        }
+      }
+    )
+  },
+  {
+    name: 'local-authorize',
+    strategy: new CustomStrategy(
+      async function (req: Request<unknown, unknown, RegisterSchema>, submit) {
+        try {
+          // TODO check if null
+          const userId = req.user?.userId!;
+          const { user } = await authServices.localAuthorize(userId, req.body);
+          // TODO submit error instead?
+          if (!user) submit(new APIError({ statusText: 'Bad Request' }));
           return submit(null, user);
         } catch (error: unknown) {
           return submit(error, false);

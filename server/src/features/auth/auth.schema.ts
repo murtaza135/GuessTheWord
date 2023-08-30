@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import validator from 'validator';
 
+export const userId = z.object({
+  userId: z.number().positive()
+});
+
 export const register = z.object({
   email: z.string().email({ message: 'Please provide a valid email' }),
   username: z.string({ required_error: 'Please provide a valid username' })
@@ -28,5 +32,6 @@ export const login = z.object({
   password: z.string().trim().min(6, 'Invalid Credentials'),
 });
 
+export type UserIdSchema = z.infer<typeof userId>;
 export type RegisterSchema = z.infer<typeof register>;
 export type LoginSchema = z.infer<typeof login>;

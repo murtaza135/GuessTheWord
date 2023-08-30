@@ -37,6 +37,7 @@ export async function getAccounts(userId: User['userId']) {
   return { localAccount, oAuthAccounts };
 }
 
+// TODO use upsert instead of create and merge localAuthorize and localRegister together
 export async function localRegister(data: RegisterSchema) {
   const userData = pick(data, ['name', 'email']);
   const accountData = pick(data, ['username', 'password']);
@@ -60,6 +61,25 @@ export async function localLogin(data: LoginSchema) {
   if (!isPasswordCorrect) return { user: null, account: null };
   const user = await getUser(account.userId);
   if (!user) throw new Error(`User ${account.userId} is null despite the existence of LocalAccount ${account.accountId}`);
+  return { user, account };
+}
+
+export async function localAuthorize(userId: User['userId'], data: RegisterSchema) {
+  const oldAccount = await xprisma.localAccount.findUnique({ where: { userId } });
+  if (oldAccount) return { user: null, account: null };
+  const userData = pick(data, ['name', 'email']);
+  const accountData = pick(data, ['username', 'password']);
+  const { user, account } = await xprisma.$transaction(async (tx) => {
+    const updatedUser = await tx.user.update({
+      where: { userId },
+      data: userData,
+      select: { userId: true, name: true, email: true, image: true }
+    });
+    const newAccount = await tx.localAccount.create({
+      data: { ...accountData, userId }
+    });
+    return { user: updatedUser, account: newAccount };
+  });
   return { user, account };
 }
 

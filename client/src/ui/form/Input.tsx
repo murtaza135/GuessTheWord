@@ -2,7 +2,7 @@ import { ReactNode, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTextField, AriaTextFieldProps } from "react-aria";
 
-type Props = Omit<AriaTextFieldProps, "defaultValue" | "errorMessage" | "name" | "label" | "type"> & {
+type Props = Omit<AriaTextFieldProps, "errorMessage" | "name" | "label" | "type"> & {
   name: string;
   label: string;
   type: React.HTMLInputTypeAttribute;

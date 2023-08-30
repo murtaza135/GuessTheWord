@@ -3,6 +3,7 @@ import registerRoute from '@/pages/register';
 import profileRoute from '@/pages/profile';
 import mainMenuRoute from '@/pages/main-menu';
 import playRoute from '@/pages/play';
+import connectLocalAccountRoute from "@/pages/connect-local-account";
 
 const pages = {
   public: [
@@ -12,7 +13,8 @@ const pages = {
   private: [
     profileRoute,
     mainMenuRoute,
-    playRoute
+    playRoute,
+    connectLocalAccountRoute
   ]
 };
 

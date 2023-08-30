@@ -18,6 +18,14 @@ router.post(
 );
 
 router.post(
+  '/auth/authorize/local',
+  auth.authenticate({ strategy: 'protect', message: 'You must login to access this route' }),
+  validate.body(authSchemas.register),
+  passport.authorize('local-authorize', { failureRedirect: `${config.CLIENT_URL}/profile` }),
+  (req, res) => res.status(204).end()
+);
+
+router.post(
   '/auth/login/local',
   rateLimit({ maxAttempts: 5, duration: 60 }),
   validate.body(authSchemas.login),
