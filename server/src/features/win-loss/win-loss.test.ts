@@ -1,7 +1,7 @@
 /* eslint-env jest */
-import request from 'supertest';
 // TODO change dotenv so that it loads different env files for prod, dev and test
 import '../../config/dotenv';
+import request from 'supertest';
 import app from '../../app';
 import * as authServices from '../auth/auth.services';
 import config from '../../config/config';
