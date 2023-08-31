@@ -8,7 +8,7 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname
   },
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'node_modules'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'node_modules', 'jest.config.js'],
   plugins: [
     '@typescript-eslint',
     'import',
@@ -62,7 +62,8 @@ module.exports = {
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
     'no-shadow': 'off',
-    '@typescript-eslint/no-shadow': 'warn'
+    '@typescript-eslint/no-shadow': 'warn',
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   },
   settings: {
     'import/resolver': {

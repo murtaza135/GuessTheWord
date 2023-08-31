@@ -1,3 +1,5 @@
+// TODO change dotenv so that it loads different env files for prod, dev and test
+
 import path from 'path';
 import dotenv from 'dotenv';
 import { ZodError } from 'zod';
