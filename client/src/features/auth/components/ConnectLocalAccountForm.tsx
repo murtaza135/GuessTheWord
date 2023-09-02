@@ -6,13 +6,10 @@ import { BiLock } from "react-icons/bi";
 import useConnectLocalAccount from '../hooks/useConnectLocalAccount';
 import * as authSchema from '../schema';
 import { type RegisterSchema } from "../schema";
-import { useSearchParams } from "react-router-dom";
 import useProfile from '../hooks/useProfile';
 
 export default function ConnectLocalAccountForm() {
-  const [searchParams] = useSearchParams();
-  const redirect = searchParams.get('redirect') ?? '/profile';
-  const { mutate } = useConnectLocalAccount({ successRedirect: redirect });
+  const { mutate } = useConnectLocalAccount({ successRedirect: '/profile' });
   const { data } = useProfile();
   const handleSubmit = (data: RegisterSchema) => mutate(data);
 
