@@ -68,6 +68,8 @@ class Auth {
             }
 
             req.user = user;
+            // @ts-ignore
+            // req.session.accessToken = user.userId;
             return next();
           }
         )(req, res, next);

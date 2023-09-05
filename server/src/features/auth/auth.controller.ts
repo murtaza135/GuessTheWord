@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import * as authServices from './auth.services';
 import config from '../../config/config';
 
@@ -13,8 +13,14 @@ export function sendAuthCookie(options?: { redirect?: string; }) {
       maxAge: config.ACCESS_TOKEN_COOKIE_MAX_AGE
     });
 
+    // console.log(req.session);
+
     // @ts-ignore
     // req.session.accessToken = accessToken;
+    // req.session.data = req.user.userId;
+    // req.session.save();
+    // console.log(req.session);
+    // req.session.data = 1;
 
     if (options?.redirect) {
       res.redirect(options.redirect);

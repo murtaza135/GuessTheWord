@@ -9,6 +9,21 @@ import config from '../../config/config';
 
 const router = Router();
 
+// router.get(
+//   '/auth/fail',
+//   function (req, res) {
+//     console.log('auth failed');
+//     res.status(401).json({ message: 'auth failed' });
+//   }
+// );
+
+// router.post(
+//   '/auth/login/local',
+//   validate.body(authSchemas.login),
+//   passport.authenticate('local-login', { failureRedirect: `${config.API_URL}/auth/fail`, session: false }),
+//   authController.sendAuthCookie(),
+// );
+
 router.post(
   '/auth/register/local',
   rateLimit({ maxAttempts: 5, duration: 60 }),

@@ -9,6 +9,8 @@ import cors from 'cors';
 import compression from 'compression';
 import cookieSession from 'cookie-session';
 import passport from 'passport';
+import expressSession from 'express-session';
+import { PrismaSessionStore } from '@quixo3/prisma-session-store';
 import config from './config/config';
 import { morgan } from './config/logger';
 import APIError from './errors/APIError';
@@ -50,12 +52,38 @@ router.use(express.static(path.join(__dirname, 'public')));
 
 router.use(morgan());
 router.use(express.json());
-router.use(cookieParser());
+// router.use(cookieParser());
 router.use(compression());
 router.use(helmet());
 router.use(cors({ origin: config.CLIENT_URL, credentials: true }));
 router.use(hpp());
 router.use(rateLimit({ maxAttempts: 25, duration: 1 }));
+
+router.use(expressSession({
+  cookie: {
+    secure: false,
+    httpOnly: true,
+    sameSite: 'strict',
+    maxAge: config.ACCESS_TOKEN_COOKIE_MAX_AGE
+  },
+  secret: 'a santa at nasa',
+  resave: true,
+  saveUninitialized: true,
+  store: new PrismaSessionStore(
+    xprisma,
+    {
+      checkPeriod: 2 * 60 * 1000, // ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    },
+  )
+}));
+
+router.use(function (req, res, next) {
+  // console.log(JSON.stringify(req.cookies));
+  console.log(req.session.id);
+  next();
+});
 
 router.use(actuator({
   basePath: '/_app',
