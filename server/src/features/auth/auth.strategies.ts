@@ -6,7 +6,7 @@ import { Strategy as GoogleStrategy, Profile as GoogleProfile } from 'passport-g
 import { VerifyCallback } from 'passport-oauth2';
 import { Request } from 'express';
 import { User } from '@prisma/client';
-import { StrategyConfig } from '../../lib/auth';
+import passport, { Strategy } from 'passport';
 import { RegisterSchema } from './auth.schema';
 import config from '../../config/config';
 import * as authServices from './auth.services';
@@ -14,7 +14,12 @@ import APIError from '../../errors/APIError';
 
 type JwtUserId = { userId: User['userId']; };
 
-const strategyConfig: StrategyConfig[] = [
+export type AuthStrategy = {
+  name?: string;
+  strategy: Strategy;
+};
+
+const strategies: AuthStrategy[] = [
   {
     name: 'protect',
     strategy: new JwtStrategy(
@@ -76,6 +81,7 @@ const strategyConfig: StrategyConfig[] = [
     strategy: new LocalStrategy(async function (username, password, submit) {
       try {
         const { user, account } = await authServices.localLogin({ username, password });
+        // TODO remove message
         if (!account) return submit(null, false, { message: 'Invalid Credentials' });
         return submit(null, user);
       } catch (error: unknown) {
@@ -181,4 +187,12 @@ const strategyConfig: StrategyConfig[] = [
   }
 ];
 
-export default strategyConfig;
+export default function initAuthStrategies() {
+  strategies.forEach(({ name, strategy }) => {
+    if (name) {
+      passport.use(name, strategy);
+    } else {
+      passport.use(strategy);
+    }
+  });
+}

@@ -41,10 +41,3 @@ model OAuthAccount {
   @@id([provider, accountId])
   @@index([userId])
 }
-
-model Session {
-  id        String   @id
-  sid       String   @unique
-  data      String
-  expiresAt DateTime
-}

@@ -1,79 +1,77 @@
 import { Express, Request, Response, NextFunction } from 'express';
 import passport, { Strategy, AuthenticateOptions } from 'passport';
-import { type XOR } from 'ts-essentials';
-
-type AuthenticateMiddlewareOptions = { strategy: string | string[] | Strategy; }
-  & XOR<
-    { scope?: AuthenticateOptions['scope']; user?: boolean; },
-    { message?: string; }
-  >;
-
-type StrategyInfo = {
-  message?: string;
-  [x: string]: unknown;
-};
-
-type OnUnauthorizedOptions = Omit<AuthenticateMiddlewareOptions, 'scope'> & StrategyInfo;
-type OnUnauthorizedFn = (options: OnUnauthorizedOptions) => Error;
+import isEmpty from 'lodash/isEmpty';
 
 export type StrategyConfig = {
   name?: string;
   strategy: Strategy;
 };
 
-type InitOptions = {
+type InitOptions<T extends Record<string, any> = Record<string, any>> = {
   config: StrategyConfig | StrategyConfig[];
-  onUnauthorized?: OnUnauthorizedFn;
+  serializeFn: (user: Express.User) => T;
+  deserializeFn: (session: T) => Express.User;
+  unauthorizedFn?: (options: { message: string; }) => Error;
+};
+
+type AuthOptions = {
+  strategy: string | string[] | Strategy;
+  message?: string;
+  session?: boolean;
+};
+
+type StartOAuthOptions = {
+  scope: AuthenticateOptions['scope'];
 };
 
 class Auth {
-  private onUnauthorized?: OnUnauthorizedFn;
+  private serializeFn?: (user: Express.User) => Record<string, any>;
+  private deserializeFn?: (session: Record<string, any>) => Express.User;
+  private unauthorizedFn?: (options: { message: string; }) => Error;
 
-  init({ config, onUnauthorized }: InitOptions) {
-    this.onUnauthorized = onUnauthorized;
+  // eslint-disable-next-line max-len
+  init<T extends Record<string, any> = Record<string, any>>({ config, serializeFn, deserializeFn, unauthorizedFn }: InitOptions<T>) {
+    this.serializeFn = serializeFn;
+    this.deserializeFn = deserializeFn;
+    this.unauthorizedFn = unauthorizedFn;
 
     const configs = config instanceof Array ? config : [config];
-    configs.forEach((strategyConfig) => {
-      if (strategyConfig.name) {
-        passport.use(strategyConfig.name, strategyConfig.strategy);
+    configs.forEach(({ name, strategy }) => {
+      if (name) {
+        passport.use(name, strategy);
       } else {
-        passport.use(strategyConfig.strategy);
+        passport.use(strategy);
       }
     });
   }
 
-  authenticate(options: AuthenticateMiddlewareOptions) {
+  authenticate(options: AuthOptions) {
     const self = this;
     return function (req: Request, res: Response, next: NextFunction) {
-      if (options.scope || options.user) {
-        passport.authenticate(options.strategy, {
-          scope: options.scope,
-          // state: req.user?.userId.toString()
-        })(req, res, next);
-      } else {
-        passport.authenticate(
-          options.strategy,
-          function (error: unknown, user: Express.User, info?: StrategyInfo) {
-            // console.log(req.cookies);
-            // console.log(req.user);
-
-            if (error) {
-              if (error instanceof Error) return next(error);
-              return next(new Error('Something went wrong', { cause: error }));
-            }
-
-            if (!user) {
-              if (self.onUnauthorized) return next(self.onUnauthorized({ ...info, ...options }));
-              return next(new Error(options.message ?? info?.message ?? 'Unauthorized'));
-            }
-
-            req.user = user;
-            // @ts-ignore
-            // req.session.accessToken = user.userId;
-            return next();
+      passport.authenticate(
+        options.strategy,
+        function (error: unknown, user: Express.User) {
+          if (error) {
+            if (error instanceof Error) return next(error);
+            return next(new Error('Something went wrong', { cause: error }));
           }
-        )(req, res, next);
-      }
+
+          if (!user) {
+            const message = options.message ?? 'Unauthorized';
+            if (self.unauthorizedFn) return next(self.unauthorizedFn({ message }));
+            return next(new Error(options.message ?? 'Unauthorized'));
+          }
+
+          req.user = user;
+
+          if (req.session) {
+            const newSession = { ...req.session, ...self.serializeFn?.(req.user) };
+            if (!isEmpty(newSession)) req.session = newSession;
+          }
+
+          return next();
+        }
+      )(req, res, next);
     };
   }
 }

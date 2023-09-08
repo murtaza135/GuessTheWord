@@ -14,9 +14,10 @@ export function sendAuthCookie(options?: { redirect?: string; }) {
     });
 
     // console.log(req.session);
+    console.log('HERE');
 
     // @ts-ignore
-    // req.session.accessToken = accessToken;
+    req.session.accessToken = accessToken;
     // req.session.data = req.user.userId;
     // req.session.save();
     // console.log(req.session);
