@@ -6,7 +6,7 @@ import { Strategy as GoogleStrategy, Profile as GoogleProfile } from 'passport-g
 import { VerifyCallback } from 'passport-oauth2';
 import { Request } from 'express';
 import { User } from '@prisma/client';
-import passport, { Strategy } from 'passport';
+import passport from 'passport';
 import { RegisterSchema } from './auth.schema';
 import config from '../../config/config';
 import * as authServices from './auth.services';
@@ -14,12 +14,9 @@ import APIError from '../../errors/APIError';
 
 type JwtUserId = { userId: User['userId']; };
 
-export type AuthStrategy = {
-  name?: string;
-  strategy: Strategy;
-};
+export type Strategy = typeof strategies[number]['name'];
 
-const strategies: AuthStrategy[] = [
+const strategies = [
   {
     name: 'protect',
     strategy: new JwtStrategy(
@@ -49,8 +46,8 @@ const strategies: AuthStrategy[] = [
     strategy: new CustomStrategy(
       async function (req: Request<unknown, unknown, RegisterSchema>, submit) {
         try {
-          const { user } = await authServices.localRegister(req.body);
-          return submit(null, user);
+          const userId = await authServices.localRegister(req.body);
+          return submit(null, { userId });
         } catch (error: unknown) {
           return submit(error, false);
         }
@@ -62,12 +59,10 @@ const strategies: AuthStrategy[] = [
     strategy: new CustomStrategy(
       async function (req: Request<unknown, unknown, RegisterSchema>, submit) {
         try {
-          // TODO check if null
-          const userId = req.user?.userId!;
-          const { user } = await authServices.localAuthorize(userId, req.body);
-          // TODO submit error instead?
-          if (!user) submit(new APIError({ statusText: 'Bad Request' }));
-          return submit(null, user);
+          if (!req.user?.userId) throw new Error('req.user does not exist in local-authorize in auth.strategies.ts');
+          const userId = await authServices.localAuthorize(req.user.userId, req.body);
+          if (!userId) return submit(new APIError({ statusText: 'Bad Request' }));
+          return submit(null, { userId });
         } catch (error: unknown) {
           return submit(error, false);
         }
@@ -78,10 +73,9 @@ const strategies: AuthStrategy[] = [
     name: 'local-login',
     strategy: new LocalStrategy(async function (username, password, submit) {
       try {
-        const { user, account } = await authServices.localLogin({ username, password });
-        // TODO remove message
-        if (!account) return submit(null, false, { message: 'Invalid Credentials' });
-        return submit(null, user);
+        const userId = await authServices.localLogin({ username, password });
+        if (!userId) return submit(null, false);
+        return submit(null, { userId });
       } catch (error: unknown) {
         return submit(error, false);
       }
@@ -105,19 +99,19 @@ const strategies: AuthStrategy[] = [
       ) {
         if (req.user?.userId) {
           try {
-            const { user } = await authServices.oauthAuthorize(req.user.userId, profile);
-            if (!user) return submit();
-            return submit(null, user);
+            const userId = await authServices.oauthAuthorize(req.user.userId, profile);
+            if (!userId) return submit(new APIError({ statusText: 'Forbidden', message: 'Cannot connect OAuth account' }));
+            return submit(null, { userId });
           } catch (error: unknown) {
             if (error instanceof Error) return submit(error);
             return submit(new Error('Something went wrong', { cause: error }));
           }
         } else {
           try {
-            const { user: existingUser, account } = await authServices.oauthLogin(profile);
-            if (account) return submit(null, existingUser);
-            const { user: newUser } = await authServices.oauthRegister(profile);
-            return submit(null, newUser);
+            const userId = await authServices.oauthLogin(profile);
+            if (userId) return submit(null, { userId });
+            const newUserId = await authServices.oauthRegister(profile);
+            return submit(null, { userId: newUserId });
           } catch (error: unknown) {
             if (error instanceof Error) return submit(error);
             return submit(new Error('Something went wrong', { cause: error }));
@@ -126,37 +120,37 @@ const strategies: AuthStrategy[] = [
       }
     )
   },
-  {
-    name: 'github-authorize',
-    strategy: new GithubStrategy(
-      {
-        // TODO change the following
-        clientID: config.GITHUB_CLIENT_ID_AUTHORIZE,
-        clientSecret: config.GITHUB_CLIENT_SECRET_AUTHORIZE,
-        callbackURL: `${config.API_URL}/auth/authorize-callback/github`,
-        passReqToCallback: true
-      },
-      async function (
-        req: Request,
-        accessToken: string,
-        refreshToken: string,
-        profile: GithubProfile,
-        submit: VerifyCallback,
-      ) {
-        // TODO validate
-        const userId = req.user?.userId;
-        if (!userId) return submit(new Error('Could not extract userId from req.user after oauth authentication'));
-        try {
-          const { user } = await authServices.oauthAuthorize(userId, profile);
-          if (!user) return submit();
-          return submit(null, user);
-        } catch (error: unknown) {
-          if (error instanceof Error) return submit(error);
-          return submit(new Error('Something went wrong', { cause: error }));
-        }
-      }
-    )
-  },
+  // {
+  //   name: 'github-authorize',
+  //   strategy: new GithubStrategy(
+  //     {
+  //       // TODO change the following
+  //       clientID: config.GITHUB_CLIENT_ID_AUTHORIZE,
+  //       clientSecret: config.GITHUB_CLIENT_SECRET_AUTHORIZE,
+  //       callbackURL: `${config.API_URL}/auth/authorize-callback/github`,
+  //       passReqToCallback: true
+  //     },
+  //     async function (
+  //       req: Request,
+  //       accessToken: string,
+  //       refreshToken: string,
+  //       profile: GithubProfile,
+  //       submit: VerifyCallback,
+  //     ) {
+  //       // TODO validate
+  //       const userId = req.user?.userId;
+  //       if (!userId) return submit(new Error('Could not extract userId from req.user after oauth authentication'));
+  //       try {
+  //         const { user } = await authServices.oauthAuthorize(userId, profile);
+  //         if (!user) return submit();
+  //         return submit(null, user);
+  //       } catch (error: unknown) {
+  //         if (error instanceof Error) return submit(error);
+  //         return submit(new Error('Something went wrong', { cause: error }));
+  //       }
+  //     }
+  //   )
+  // },
   {
     name: 'google',
     strategy: new GoogleStrategy(
@@ -172,10 +166,10 @@ const strategies: AuthStrategy[] = [
         submit: VerifyCallback,
       ) {
         try {
-          const { user: exsitingUser, account } = await authServices.oauthLogin(profile);
-          if (account) return submit(null, exsitingUser);
-          const { user: newUser } = await authServices.oauthRegister(profile);
-          return submit(null, newUser);
+          const userId = await authServices.oauthLogin(profile);
+          if (userId) return submit(null, { userId });
+          const newUserId = await authServices.oauthRegister(profile);
+          return submit(null, { userId: newUserId });
         } catch (error: unknown) {
           if (error instanceof Error) return submit(error);
           return submit(new Error('Something went wrong', { cause: error }));
@@ -183,7 +177,7 @@ const strategies: AuthStrategy[] = [
       }
     )
   }
-];
+] as const;
 
 export default function initAuthStrategies() {
   strategies.forEach(({ name, strategy }) => {

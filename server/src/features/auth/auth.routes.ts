@@ -44,7 +44,7 @@ router.post(
   '/auth/login/local',
   rateLimit({ maxAttempts: 5, duration: 60 }),
   validate.body(authSchemas.login),
-  authenticate({ strategy: 'local-login' }),
+  authenticate({ strategy: 'local-login', message: 'Invalid Credentials' }),
   (_req, res) => res.status(204).end()
 );
 
@@ -62,7 +62,7 @@ router.get(
 router.get(
   '/auth/authorize/github',
   protect({ message: 'You must login to access this route' }),
-  startOAuth({ strategy: 'github-authorize', scope: ['user:email', 'read:user'] })
+  startOAuth({ strategy: 'github', scope: ['user:email', 'read:user'] })
 );
 
 router.get(
@@ -70,7 +70,7 @@ router.get(
   function (req, res, next) { console.log('DONKEYYY hello world'); next(); },
   protect({ message: 'You must login to access this route' }),
   // TODO is redirect needed for oauth in the case of failure
-  authenticate({ strategy: 'github-authorize', session: false }),
+  authenticate({ strategy: 'github', session: false }),
   // passport.authorize('github-authorize', { successRedirect: `${config.CLIENT_URL}/profile`, failureRedirect: `${config.CLIENT_URL}/profile` }),
   // (_req, res) => res.redirect(config.CLIENT_URL)
   (_req, res) => res.redirect(config.CLIENT_URL)

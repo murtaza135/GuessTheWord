@@ -1,16 +1,17 @@
 import { Express, Request, Response, NextFunction } from 'express';
-import passport, { Strategy, AuthenticateOptions } from 'passport';
+import passport, { AuthenticateOptions } from 'passport';
 import APIError from '../../errors/APIError';
 import * as authServices from './auth.services';
+import type { Strategy } from './auth.strategies';
 
 export type AuthOptions = {
-  strategy: string | string[] | Strategy;
+  strategy: Strategy;
   session?: boolean;
   message?: string;
 };
 
 export type StartOAuthOptions = {
-  strategy: string | string[] | Strategy;
+  strategy: Strategy;
   scope: NonNullable<AuthenticateOptions['scope']>;
 };
 
