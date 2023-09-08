@@ -26,9 +26,7 @@ const strategies: AuthStrategy[] = [
       {
         // TODO move function out and clean up
         jwtFromRequest: (req: Request) => {
-          if (req && req.cookies) {
-            return req.cookies[config.ACCESS_TOKEN_COOKIE_NAME];
-          }
+          if (req && req.session) return req.session.accessToken;
           return null;
         },
         // TODO add secretOrKeyProvider instead of secretOrKey?

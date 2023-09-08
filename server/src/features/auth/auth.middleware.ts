@@ -1,6 +1,7 @@
 import { Express, Request, Response, NextFunction } from 'express';
 import passport, { Strategy, AuthenticateOptions } from 'passport';
 import APIError from '../../errors/APIError';
+import * as authServices from './auth.services';
 
 export type AuthOptions = {
   strategy: string | string[] | Strategy;
@@ -33,7 +34,7 @@ export function authenticate({ strategy, session = true, message }: AuthOptions)
         if (session) {
           req.user = user;
           if (!req.session) req.session = {};
-          req.session.userId = user.userId;
+          req.session.accessToken = authServices.generateAccessToken(user.userId);
         }
 
         return next();
@@ -46,10 +47,11 @@ export function protect({ message }: Pick<AuthOptions, 'message'>) {
   return authenticate({ strategy: 'protect', session: true, message });
 }
 
-export function connect({ strategy, message }: Omit<AuthOptions, 'session'>) {
-  return authenticate({ strategy, session: false, message });
-}
-
 export function startOAuth({ strategy, scope }: StartOAuthOptions) {
   return passport.authenticate(strategy, { scope });
+}
+
+export function logout(req: Request, res: Response, next: NextFunction) {
+  req.session = null;
+  next();
 }
