@@ -6,8 +6,9 @@ import type { Strategy } from './auth.strategies';
 
 export type AuthOptions = {
   strategy: Strategy;
-  session?: boolean;
   message?: string;
+  session?: boolean;
+  unauthenticatedRedirect?: string;
 };
 
 export type StartOAuthOptions = {
@@ -15,17 +16,26 @@ export type StartOAuthOptions = {
   scope: NonNullable<AuthenticateOptions['scope']>;
 };
 
-export function authenticate({ strategy, session = true, message }: AuthOptions) {
+export function authenticate({
+  strategy,
+  message,
+  session = true,
+  unauthenticatedRedirect,
+}: AuthOptions) {
   return function (req: Request, res: Response, next: NextFunction) {
     passport.authenticate(
       strategy,
       function (error: unknown, user: Express.User) {
         if (error) {
+          // TODO change redirect on error
+          if (unauthenticatedRedirect) return res.redirect(`${unauthenticatedRedirect}?error=Error`);
           if (error instanceof Error) return next(error);
           return next(new Error('Something went wrong', { cause: error }));
         }
 
         if (!user) {
+          // TODO change redirect on error
+          if (unauthenticatedRedirect) return res.redirect(`${unauthenticatedRedirect}?error=${message ?? 'Unauthorized'}`);
           return next(new APIError({
             statusText: 'Unauthorized',
             message: message ?? 'Unauthorized',

@@ -39,7 +39,7 @@ router.get(
 
 router.get(
   '/auth/github/login/callback',
-  authenticate({ strategy: 'github-login' }),
+  authenticate({ strategy: 'github-login', unauthenticatedRedirect: config.CLIENT_URL }),
   (_req, res) => res.redirect(config.CLIENT_URL)
 );
 
@@ -52,7 +52,7 @@ router.get(
 router.get(
   '/auth/github/link/callback',
   protect({ message: 'You must login to access this route' }),
-  authenticate({ strategy: 'github-link', session: false }),
+  authenticate({ strategy: 'github-link', session: false, unauthenticatedRedirect: config.CLIENT_URL }),
   (_req, res) => res.redirect(config.CLIENT_URL)
 );
 
@@ -63,7 +63,7 @@ router.get(
 
 router.get(
   '/auth/google/login/callback',
-  authenticate({ strategy: 'google-login' }),
+  authenticate({ strategy: 'google-login', unauthenticatedRedirect: config.CLIENT_URL }),
   (_req, res) => res.redirect(config.CLIENT_URL)
 );
 
@@ -76,7 +76,8 @@ router.get(
 router.get(
   '/auth/google/link/callback',
   protect({ message: 'You must login to access this route' }),
-  authenticate({ strategy: 'google-link', session: false }),
+  // (req, res, next) => { req.user = { userId: 3 }; next(); },
+  authenticate({ strategy: 'google-link', session: false, unauthenticatedRedirect: config.CLIENT_URL }),
   (_req, res) => res.redirect(config.CLIENT_URL)
 );
 

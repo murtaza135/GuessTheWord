@@ -4,13 +4,14 @@ import { TiTimes } from "react-icons/ti";
 import cn from '@/utils/cn';
 
 type Props = {
+  to?: string;
   isAuthorized?: boolean;
 };
 
-export default function GithubButton({ isAuthorized }: Props) {
+export default function GoogleButton({ to, isAuthorized }: Props) {
   return (
     <a
-      href="http://localhost:5000/api/v1/auth/google/login"
+      href={to ?? "http://localhost:5000/api/v1/auth/google/login"}
       className='relative inline-flex justify-center items-center align-middle w-12 h-12 aspect-square rounded-full cursor-pointer hover:opacity-75 transition-opacity border-[1px] bg-white text-black border-gray-300'
       onClick={(event) => isAuthorized && event.preventDefault()}
     >
