@@ -1,5 +1,6 @@
 /* eslint-env jest */
 import '../../config/dotenv';
+import { Buffer } from 'node:buffer';
 import request from 'supertest';
 import app from '../../app';
 import config from '../../config/config';
@@ -17,7 +18,7 @@ describe('auth', () => {
     describe('given that the body is valid and registering the user succeeds', () => {
       it('should return status 204 and Set-Cookie to be defined', async () => {
         const userId = 1;
-        prismaMock.$transaction.mockResolvedValueOnce({ user: { userId } } as any);
+        prismaMock.$transaction.mockResolvedValueOnce(userId);
 
         const response = await request(app)
           .post('/api/v1/auth/local/register')
@@ -41,10 +42,10 @@ describe('auth', () => {
       it('should return status 400', async () => {
         const userId = 1;
         const accessToken = authServices.generateAccessToken(userId);
-        const cookie = `${config.SESSION_COOKIE_NAME}=${accessToken}`;
+        const accessTokenBase64 = Buffer.from(JSON.stringify(accessToken)).toString('base64');
+        const cookie = `${config.SESSION_COOKIE_NAME}=${accessTokenBase64}`;
 
         prismaMock.user.findUnique.mockResolvedValueOnce({ userId } as any);
-
         const { statusCode } = await request(app)
           .post('/api/v1/auth/local/link')
           .set('Cookie', [cookie]);
@@ -179,7 +180,7 @@ describe('auth', () => {
       const response = await request(app).post('/api/v1/auth/logout');
 
       expect(response.statusCode).toBe(204);
-      expect(response.get('Set-Cookie')[0]).toMatch(/^access=;.*/);
+      expect(response.get('Set-Cookie')[0]).toMatch(/^session=;.*/);
     });
   });
 });
