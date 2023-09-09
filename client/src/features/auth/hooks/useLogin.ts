@@ -14,7 +14,7 @@ export default function useLogin(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const mutation = useMutation<null, ErrorResponse, LoginSchema>({
-    mutationFn: (args) => API.post('/auth/login/local', { body: args }),
+    mutationFn: (args) => API.post('/auth/local/login', { body: args }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       if (options?.successRedirect) navigate(options.successRedirect);

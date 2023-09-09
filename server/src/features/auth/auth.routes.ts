@@ -8,23 +8,8 @@ import { authenticate, protect, startOAuth, logout } from './auth.middleware';
 
 const router = Router();
 
-// router.get(
-//   '/auth/fail',
-//   function (req, res) {
-//     console.log('auth failed');
-//     res.status(401).json({ message: 'auth failed' });
-//   }
-// );
-
-// router.post(
-//   '/auth/login/local',
-//   validate.body(authSchemas.login),
-//   passport.authenticate('local-login', { failureRedirect: `${config.API_URL}/auth/fail`, session: false }),
-//   (_req, res) => res.status(204).end(),
-// );
-
 router.post(
-  '/auth/register/local',
+  '/auth/local/register',
   rateLimit({ maxAttempts: 5, duration: 60 }),
   validate.body(authSchemas.register),
   authenticate({ strategy: 'local-register' }),
@@ -32,57 +17,52 @@ router.post(
 );
 
 router.post(
-  '/auth/authorize/local',
-  protect({ message: 'You must login to access this route' }),
-  validate.body(authSchemas.register),
-  // passport.authorize('local-authorize', { failureRedirect: `${config.CLIENT_URL}/profile` }),
-  authenticate({ strategy: 'local-authorize', session: false }),
-  (_req, res) => res.status(204).end()
-);
-
-router.post(
-  '/auth/login/local',
+  '/auth/local/login',
   rateLimit({ maxAttempts: 5, duration: 60 }),
   validate.body(authSchemas.login),
   authenticate({ strategy: 'local-login', message: 'Invalid Credentials' }),
   (_req, res) => res.status(204).end()
 );
 
+router.post(
+  '/auth/local/link',
+  protect({ message: 'You must login to access this route' }),
+  validate.body(authSchemas.register),
+  authenticate({ strategy: 'local-connect', session: false }),
+  (_req, res) => res.status(204).end()
+);
+
 router.get(
-  '/auth/login/github',
+  '/auth/github/login',
   startOAuth({ strategy: 'github', scope: ['user:email', 'read:user'] })
 );
 
 router.get(
-  '/auth/callback/github',
+  '/auth/github/login/callback',
   authenticate({ strategy: 'github' }),
   (_req, res) => res.redirect(config.CLIENT_URL)
 );
 
 router.get(
-  '/auth/authorize/github',
+  '/auth/github/link',
   protect({ message: 'You must login to access this route' }),
-  startOAuth({ strategy: 'github', scope: ['user:email', 'read:user'] })
+  startOAuth({ strategy: 'github-authorize', scope: ['user:email', 'read:user'] })
 );
 
 router.get(
-  '/auth/authorize-callback/github',
-  function (req, res, next) { console.log('DONKEYYY hello world'); next(); },
+  '/auth/github/link/callback',
   protect({ message: 'You must login to access this route' }),
-  // TODO is redirect needed for oauth in the case of failure
-  authenticate({ strategy: 'github', session: false }),
-  // passport.authorize('github-authorize', { successRedirect: `${config.CLIENT_URL}/profile`, failureRedirect: `${config.CLIENT_URL}/profile` }),
-  // (_req, res) => res.redirect(config.CLIENT_URL)
+  authenticate({ strategy: 'github-authorize', session: false }),
   (_req, res) => res.redirect(config.CLIENT_URL)
 );
 
 router.get(
-  '/auth/login/google',
+  '/auth/google/login',
   startOAuth({ strategy: 'google', scope: ['profile', 'email'] })
 );
 
 router.get(
-  '/auth/callback/google',
+  '/auth/google/login/callback',
   authenticate({ strategy: 'google' }),
   (_req, res) => res.redirect(config.CLIENT_URL)
 );

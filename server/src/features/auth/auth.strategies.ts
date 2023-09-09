@@ -55,11 +55,11 @@ const strategies = [
     )
   },
   {
-    name: 'local-authorize',
+    name: 'local-connect',
     strategy: new CustomStrategy(
       async function (req: Request<unknown, unknown, RegisterSchema>, submit) {
         try {
-          if (!req.user?.userId) throw new Error('req.user does not exist in local-authorize in auth.strategies.ts');
+          if (!req.user?.userId) return submit(new Error('req.user does not exist in local-authorize in auth.strategies.ts'));
           const userId = await authServices.localAuthorize(req.user.userId, req.body);
           if (!userId) return submit(new APIError({ statusText: 'Bad Request' }));
           return submit(null, { userId });
@@ -120,37 +120,35 @@ const strategies = [
       }
     )
   },
-  // {
-  //   name: 'github-authorize',
-  //   strategy: new GithubStrategy(
-  //     {
-  //       // TODO change the following
-  //       clientID: config.GITHUB_CLIENT_ID_AUTHORIZE,
-  //       clientSecret: config.GITHUB_CLIENT_SECRET_AUTHORIZE,
-  //       callbackURL: `${config.API_URL}/auth/authorize-callback/github`,
-  //       passReqToCallback: true
-  //     },
-  //     async function (
-  //       req: Request,
-  //       accessToken: string,
-  //       refreshToken: string,
-  //       profile: GithubProfile,
-  //       submit: VerifyCallback,
-  //     ) {
-  //       // TODO validate
-  //       const userId = req.user?.userId;
-  //       if (!userId) return submit(new Error('Could not extract userId from req.user after oauth authentication'));
-  //       try {
-  //         const { user } = await authServices.oauthAuthorize(userId, profile);
-  //         if (!user) return submit();
-  //         return submit(null, user);
-  //       } catch (error: unknown) {
-  //         if (error instanceof Error) return submit(error);
-  //         return submit(new Error('Something went wrong', { cause: error }));
-  //       }
-  //     }
-  //   )
-  // },
+  {
+    name: 'github-authorize',
+    strategy: new GithubStrategy(
+      {
+        // TODO change the following
+        clientID: config.GITHUB_CLIENT_ID_AUTHORIZE,
+        clientSecret: config.GITHUB_CLIENT_SECRET_AUTHORIZE,
+        callbackURL: `${config.API_URL}/auth/authorize-callback/github`,
+        passReqToCallback: true
+      },
+      async function (
+        req: Request,
+        accessToken: string,
+        refreshToken: string,
+        profile: GithubProfile,
+        submit: VerifyCallback,
+      ) {
+        try {
+          if (!req.user?.userId) return submit(new Error('Could not extract userId from req.user after oauth authentication'));
+          const userId = await authServices.oauthAuthorize(req.user.userId, profile);
+          if (!userId) return submit(new APIError({ statusText: 'Forbidden', message: 'Cannot connect OAuth account' }));
+          return submit(null, { userId });
+        } catch (error: unknown) {
+          if (error instanceof Error) return submit(error);
+          return submit(new Error('Something went wrong', { cause: error }));
+        }
+      }
+    )
+  },
   {
     name: 'google',
     strategy: new GoogleStrategy(

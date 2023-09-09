@@ -14,7 +14,7 @@ export default function useRegister(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const mutation = useMutation<null, ErrorResponse, RegisterSchema>({
-    mutationFn: (args) => API.post('/auth/register/local', { body: args }),
+    mutationFn: (args) => API.post('/auth/local/register', { body: args }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       if (options?.successRedirect) navigate(options.successRedirect);

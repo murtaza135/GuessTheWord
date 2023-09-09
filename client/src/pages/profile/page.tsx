@@ -43,7 +43,7 @@ export default function ProfilePage() {
         <p className='text-sm text-primary-900 font-semibold'>Your connections</p>
         <div className='flex gap-5'>
           <GuessButton isAuthorized={!!accounts?.localAccount} />
-          <GithubButton to='http://localhost:5000/api/v1/auth/authorize/github' isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'github')} />
+          <GithubButton to='http://localhost:5000/api/v1/auth/github/link' isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'github')} />
           <GoogleButton isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'google')} />
         </div>
       </div>
