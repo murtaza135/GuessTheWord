@@ -1,3 +1,3 @@
 import './dotenv';
 
-export { default as env } from './dotenv';
+export { default as validateEnv } from './validate';

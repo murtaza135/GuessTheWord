@@ -1,7 +1,7 @@
 import '@colors/colors';
 import './config/dotenv';
-import app from './app';
 import config from './config/config';
+import app from './app';
 import { logger } from './config/logger';
 import GracefulShutdown from './config/graceful-shutdown';
 

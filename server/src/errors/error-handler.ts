@@ -14,7 +14,11 @@ const errorHandler = async (
     res.status(error.status).json(error);
     logger.info(error);
   } else {
-    const internalServerError = new APIError({ statusText: 'Internal Server Error', cause: error });
+    const internalServerError = new APIError({
+      statusText: 'Internal Server Error',
+      message: 'Internal Server Error',
+      cause: error,
+    });
     res.status(internalServerError.status).json(internalServerError);
     logger.error(error);
     shutdownGracefully();
