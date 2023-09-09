@@ -3,6 +3,7 @@ import pick from 'lodash/pick';
 import { User } from '@prisma/client';
 import { Profile } from 'passport';
 import config from '../../config/config';
+import * as authSchemas from './auth.schema';
 import { LoginSchema, RegisterSchema } from './auth.schema';
 import xprisma from '../../config/db';
 import * as authUtils from './auth.utils';
@@ -13,6 +14,17 @@ export function generateAccessToken(userId: User['userId']) {
     config.ACCESS_TOKEN_SECRET,
     { expiresIn: config.ACCESS_TOKEN_MAX_AGE },
   );
+}
+
+export function verifyAccessToken(accessToken: string | null | undefined) {
+  if (!accessToken) return null;
+  try {
+    const payload = jwt.verify(accessToken, config.ACCESS_TOKEN_SECRET);
+    const verifiedPayload = authSchemas.userId.parse(payload);
+    return verifiedPayload;
+  } catch (error: unknown) {
+    return null;
+  }
 }
 
 export async function getUser(userId: User['userId']) {

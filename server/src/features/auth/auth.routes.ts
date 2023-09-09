@@ -28,42 +28,42 @@ router.post(
   '/auth/local/link',
   protect({ message: 'You must login to access this route' }),
   validate.body(authSchemas.register),
-  authenticate({ strategy: 'local-connect', session: false }),
+  authenticate({ strategy: 'local-link', session: false }),
   (_req, res) => res.status(204).end()
 );
 
 router.get(
   '/auth/github/login',
-  startOAuth({ strategy: 'github', scope: ['user:email', 'read:user'] })
+  startOAuth({ strategy: 'github-login', scope: ['user:email', 'read:user'] })
 );
 
 router.get(
   '/auth/github/login/callback',
-  authenticate({ strategy: 'github' }),
+  authenticate({ strategy: 'github-login' }),
   (_req, res) => res.redirect(config.CLIENT_URL)
 );
 
 router.get(
   '/auth/github/link',
   protect({ message: 'You must login to access this route' }),
-  startOAuth({ strategy: 'github-authorize', scope: ['user:email', 'read:user'] })
+  startOAuth({ strategy: 'github-link', scope: ['user:email', 'read:user'] })
 );
 
 router.get(
   '/auth/github/link/callback',
   protect({ message: 'You must login to access this route' }),
-  authenticate({ strategy: 'github-authorize', session: false }),
+  authenticate({ strategy: 'github-link', session: false }),
   (_req, res) => res.redirect(config.CLIENT_URL)
 );
 
 router.get(
   '/auth/google/login',
-  startOAuth({ strategy: 'google', scope: ['profile', 'email'] })
+  startOAuth({ strategy: 'google-login', scope: ['profile', 'email'] })
 );
 
 router.get(
   '/auth/google/login/callback',
-  authenticate({ strategy: 'google' }),
+  authenticate({ strategy: 'google-login' }),
   (_req, res) => res.redirect(config.CLIENT_URL)
 );
 
