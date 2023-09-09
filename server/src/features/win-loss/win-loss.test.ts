@@ -25,7 +25,7 @@ describe('win-loss', () => {
           .mockResolvedValueOnce(winsLosses as any);
 
         const accessToken = authServices.generateAccessToken(userId);
-        const cookie = `${config.ACCESS_TOKEN_COOKIE_NAME}=${accessToken}`;
+        const cookie = `${config.SESSION_COOKIE_NAME}=${accessToken}`;
         const { body, statusCode } = await request(app)
           .get('/api/v1/winLoss')
           .set('Cookie', [cookie]);
@@ -62,7 +62,7 @@ describe('win-loss', () => {
         const incrementWins = 3;
         const winsLosses = { wins: incrementWins, losses: 0 };
         const accessToken = authServices.generateAccessToken(userId);
-        const cookie = `${config.ACCESS_TOKEN_COOKIE_NAME}=${accessToken}`;
+        const cookie = `${config.SESSION_COOKIE_NAME}=${accessToken}`;
 
         prismaMock.user.findUnique.mockResolvedValueOnce({ userId } as any);
         prismaMock.user.update.mockResolvedValueOnce(winsLosses as any);
@@ -105,7 +105,7 @@ describe('win-loss', () => {
         const incrementLosses = 3;
         const winsLosses = { wins: 0, losses: incrementLosses };
         const accessToken = authServices.generateAccessToken(userId);
-        const cookie = `${config.ACCESS_TOKEN_COOKIE_NAME}=${accessToken}`;
+        const cookie = `${config.SESSION_COOKIE_NAME}=${accessToken}`;
 
         prismaMock.user.findUnique.mockResolvedValueOnce({ userId } as any);
         prismaMock.user.update.mockResolvedValueOnce(winsLosses as any);

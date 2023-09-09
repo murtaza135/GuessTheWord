@@ -7,10 +7,10 @@ import { prismaMock } from '../../singleton';
 import * as authServices from './auth.services';
 
 describe('auth', () => {
-  describe('POST /auth/register/local', () => {
+  describe('POST /auth/local/register', () => {
     describe('given that the body is invalid', () => {
       it('should return status 400', async () => {
-        await request(app).post('/api/v1/auth/register/local').expect(400);
+        await request(app).post('/api/v1/auth/local/register').expect(400);
       });
     });
 
@@ -20,7 +20,7 @@ describe('auth', () => {
         prismaMock.$transaction.mockResolvedValueOnce({ user: { userId } } as any);
 
         const response = await request(app)
-          .post('/api/v1/auth/register/local')
+          .post('/api/v1/auth/local/register')
           .send({ email: 'test@test.com', username: 'test', name: 'test', password: '123456', confirmPassword: '123456' });
 
         expect(prismaMock.$transaction).toHaveBeenCalledTimes(1);
@@ -30,10 +30,10 @@ describe('auth', () => {
     });
   });
 
-  describe('POST /auth/authorize/local', () => {
+  describe('POST /auth/local/link', () => {
     describe('given that authentication fails', () => {
       it('should return status 401', async () => {
-        await request(app).post('/api/v1/auth/authorize/local').expect(401);
+        await request(app).post('/api/v1/auth/local/link').expect(401);
       });
     });
 
@@ -41,12 +41,12 @@ describe('auth', () => {
       it('should return status 400', async () => {
         const userId = 1;
         const accessToken = authServices.generateAccessToken(userId);
-        const cookie = `${config.ACCESS_TOKEN_COOKIE_NAME}=${accessToken}`;
+        const cookie = `${config.SESSION_COOKIE_NAME}=${accessToken}`;
 
         prismaMock.user.findUnique.mockResolvedValueOnce({ userId } as any);
 
         const { statusCode } = await request(app)
-          .post('/api/v1/auth/authorize/local')
+          .post('/api/v1/auth/local/link')
           .set('Cookie', [cookie]);
 
         expect(prismaMock.user.findUnique).toHaveBeenCalledTimes(1);
@@ -58,14 +58,14 @@ describe('auth', () => {
       it('should return a status 204', async () => {
         const userId = 1;
         const accessToken = authServices.generateAccessToken(userId);
-        const cookie = `${config.ACCESS_TOKEN_COOKIE_NAME}=${accessToken}`;
+        const cookie = `${config.SESSION_COOKIE_NAME}=${accessToken}`;
 
         prismaMock.user.findUnique.mockResolvedValueOnce({ userId } as any);
         prismaMock.localAccount.findUnique.mockResolvedValueOnce(null);
         prismaMock.$transaction.mockResolvedValueOnce({ user: { userId } } as any);
 
         const { statusCode } = await request(app)
-          .post('/api/v1/auth/authorize/local')
+          .post('/api/v1/auth/local/link')
           .set('Cookie', [cookie])
           .send({ email: 'test@test.com', username: 'test', name: 'test', password: '123456', confirmPassword: '123456' });
 
@@ -77,10 +77,10 @@ describe('auth', () => {
     });
   });
 
-  describe('POST /auth/login/local', () => {
+  describe('POST /auth/local/login', () => {
     describe('given that the body is invalid', () => {
       it('should return status 400', async () => {
-        await request(app).post('/api/v1/auth/login/local').expect(400);
+        await request(app).post('/api/v1/auth/local/login').expect(400);
       });
     });
 
@@ -89,7 +89,7 @@ describe('auth', () => {
         prismaMock.localAccount.findUnique.mockResolvedValueOnce(null);
 
         await request(app)
-          .post('/api/v1/auth/login/local')
+          .post('/api/v1/auth/local/login')
           .send({ username: 'test', password: '123456' })
           .expect(401);
       });
@@ -106,7 +106,7 @@ describe('auth', () => {
           .mockResolvedValueOnce({ user, account } as any);
 
         const response = await request(app)
-          .post('/api/v1/auth/login/local')
+          .post('/api/v1/auth/local/login')
           .send(body);
 
         expect(localLoginServiceMock).toHaveBeenCalledWith(body);
@@ -128,7 +128,7 @@ describe('auth', () => {
       it('should return status 200 and body with profile information', async () => {
         const user = { userId: 1 };
         const accessToken = authServices.generateAccessToken(user.userId);
-        const cookie = `${config.ACCESS_TOKEN_COOKIE_NAME}=${accessToken}`;
+        const cookie = `${config.SESSION_COOKIE_NAME}=${accessToken}`;
 
         prismaMock.user.findUnique.mockResolvedValueOnce(user as any);
 
@@ -155,7 +155,7 @@ describe('auth', () => {
         const accounts = { localAccount: null, oAuthAccounts: [] as any };
         const user = { userId: 1 };
         const accessToken = authServices.generateAccessToken(user.userId);
-        const cookie = `${config.ACCESS_TOKEN_COOKIE_NAME}=${accessToken}`;
+        const cookie = `${config.SESSION_COOKIE_NAME}=${accessToken}`;
 
         prismaMock.user.findUnique.mockResolvedValueOnce(user as any);
         prismaMock.localAccount.findUnique.mockResolvedValueOnce(accounts.localAccount);

@@ -141,7 +141,6 @@ yarn-error.log*
 .DS_Store
 *.sqlite3
 *.sqlite3-journal
-db.json
 files/
 temp/
 notes/

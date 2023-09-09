@@ -39,5 +39,5 @@ model OAuthAccount {
   user      User    @relation(fields: [userId], references: [userId], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([provider, accountId])
-  @@index([userId])
+  @@index([userId, provider])
 }
