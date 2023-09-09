@@ -5,7 +5,7 @@ import { Strategy as GoogleStrategy, Profile as GoogleProfile } from 'passport-g
 import { VerifyCallback } from 'passport-oauth2';
 import { Request } from 'express';
 import passport from 'passport';
-import { RegisterSchema } from './auth.schema';
+import { CreateSchema } from './auth.schema';
 import config from '../../config/config';
 import * as authServices from './auth.services';
 import APIError from '../../errors/APIError';
@@ -26,7 +26,7 @@ const strategies = [
   {
     name: 'local-register',
     strategy: new CustomStrategy(
-      async function (req: Request<unknown, unknown, RegisterSchema>, submit) {
+      async function (req: Request<unknown, unknown, CreateSchema>, submit) {
         try {
           const userId = await authServices.localRegister(req.body);
           return submit(null, { userId });
@@ -39,10 +39,10 @@ const strategies = [
   {
     name: 'local-link',
     strategy: new CustomStrategy(
-      async function (req: Request<unknown, unknown, RegisterSchema>, submit) {
+      async function (req: Request<unknown, unknown, CreateSchema>, submit) {
         try {
           if (!req.user) return submit(new Error('req.user does not exist in local-authorize in auth.strategies.ts'));
-          const userId = await authServices.localAuthorize(req.user.userId, req.body);
+          const userId = await authServices.localLink(req.user.userId, req.body);
           if (!userId) return submit(new APIError({ statusText: 'Bad Request' }));
           return submit(null, { userId });
         } catch (error: unknown) {
@@ -80,9 +80,9 @@ const strategies = [
         submit: VerifyCallback,
       ) {
         try {
-          const userId = await authServices.oauthLogin(profile);
+          const userId = await authServices.oAuthLogin(profile);
           if (userId) return submit(null, { userId });
-          const newUserId = await authServices.oauthRegister(profile);
+          const newUserId = await authServices.oAuthRegister(profile);
           return submit(null, { userId: newUserId });
         } catch (error: unknown) {
           if (error instanceof Error) return submit(error);
@@ -109,7 +109,7 @@ const strategies = [
       ) {
         try {
           if (!req.user) return submit(new Error('Could not extract userId from req.user after oauth authentication'));
-          const userId = await authServices.oauthAuthorize(req.user.userId, profile);
+          const userId = await authServices.oAuthLink(req.user.userId, profile);
           if (!userId) return submit(new APIError({ statusText: 'Forbidden', message: 'Cannot connect OAuth account' }));
           return submit(null, { userId });
         } catch (error: unknown) {
@@ -134,9 +134,9 @@ const strategies = [
         submit: VerifyCallback,
       ) {
         try {
-          const userId = await authServices.oauthLogin(profile);
+          const userId = await authServices.oAuthLogin(profile);
           if (userId) return submit(null, { userId });
-          const newUserId = await authServices.oauthRegister(profile);
+          const newUserId = await authServices.oAuthRegister(profile);
           return submit(null, { userId: newUserId });
         } catch (error: unknown) {
           if (error instanceof Error) return submit(error);

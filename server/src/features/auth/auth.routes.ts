@@ -11,7 +11,7 @@ const router = Router();
 router.post(
   '/auth/local/register',
   rateLimit({ maxAttempts: 5, duration: 60 }),
-  validate.body(authSchemas.register),
+  validate.body(authSchemas.create),
   authenticate({ strategy: 'local-register' }),
   (_req, res) => res.status(204).end()
 );
@@ -27,7 +27,7 @@ router.post(
 router.post(
   '/auth/local/link',
   protect({ message: 'You must login to access this route' }),
-  validate.body(authSchemas.register),
+  validate.body(authSchemas.create),
   authenticate({ strategy: 'local-link', session: false }),
   (_req, res) => res.status(204).end()
 );

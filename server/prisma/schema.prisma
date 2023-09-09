@@ -9,15 +9,15 @@ datasource db {
 }
 
 model User {
-  userId       Int            @id @default(autoincrement())
-  name         String?
-  email        String?        @unique
-  image        String?
-  wins         Int            @default(0)
-  losses       Int            @default(0)
-  createdAt    DateTime       @default(now())
-  Account      OAuthAccount[]
-  LocalAccount LocalAccount?
+  userId        Int            @id @default(autoincrement())
+  name          String?
+  email         String?        @unique
+  image         String?
+  wins          Int            @default(0)
+  losses        Int            @default(0)
+  createdAt     DateTime       @default(now())
+  oAuthAccounts OAuthAccount[]
+  localAccount  LocalAccount?
 }
 
 model LocalAccount {

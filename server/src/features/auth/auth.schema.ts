@@ -5,7 +5,7 @@ export const userId = z.object({
   userId: z.number().positive()
 });
 
-export const register = z.object({
+export const create = z.object({
   email: z.string().email({ message: 'Please provide a valid email' }),
   username: z.string({ required_error: 'Please provide a valid username' })
     .trim()
@@ -33,5 +33,5 @@ export const login = z.object({
 });
 
 export type UserIdSchema = z.infer<typeof userId>;
-export type RegisterSchema = z.infer<typeof register>;
+export type CreateSchema = z.infer<typeof create>;
 export type LoginSchema = z.infer<typeof login>;

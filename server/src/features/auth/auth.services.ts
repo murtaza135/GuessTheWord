@@ -1,10 +1,9 @@
 import jwt from 'jsonwebtoken';
-import pick from 'lodash/pick';
 import { User } from '@prisma/client';
 import { Profile } from 'passport';
 import config from '../../config/config';
 import * as authSchemas from './auth.schema';
-import { LoginSchema, RegisterSchema } from './auth.schema';
+import { LoginSchema, CreateSchema } from './auth.schema';
 import xprisma from '../../config/db';
 import * as authUtils from './auth.utils';
 
@@ -52,69 +51,76 @@ export async function getOAuthAccounts(userId: User['userId']) {
   return oAuthAccounts;
 }
 
-// TODO use upsert instead of create and merge localAuthorize and localRegister together
-export async function localRegister(data: RegisterSchema) {
-  const userData = pick(data, ['name', 'email']);
-  const accountData = pick(data, ['username', 'password']);
+export async function localRegister({ name, email, username, password }: CreateSchema) {
+  // NOTE for some reason prisma does not run the query extensions implemented in xprisma
+  // NOTE the query extension is required for automatically encrypting the password
+  // NOTE therefore the query must be run via transactions
   const userId = await xprisma.$transaction(async (tx) => {
     const newUser = await tx.user.create({
-      data: userData,
+      data: { name, email },
       select: { userId: true }
     });
+
     await tx.localAccount.create({
-      data: { ...accountData, userId: newUser.userId }
+      data: { userId: newUser.userId, username, password }
     });
+
     return newUser.userId;
   });
+
   return userId;
 }
 
-export async function localLogin(data: LoginSchema) {
-  const account = await xprisma.localAccount.findUnique({ where: { username: data.username } });
+export async function localLogin({ username, password }: LoginSchema) {
+  const account = await xprisma.localAccount.findUnique({ where: { username } });
   if (!account) return null;
-  const isPasswordCorrect = await account.comparePassword(data.password);
+
+  const isPasswordCorrect = await account.comparePassword(password);
   if (!isPasswordCorrect) return null;
+
   const user = await getUser(account.userId);
-  if (!user) throw new Error(`User ${account.userId} is null despite the existence of LocalAccount ${account.accountId}`);
+  if (!user) {
+    throw new Error(
+      `User ${account.userId} is null despite the existence of LocalAccount ${account.accountId}`
+    );
+  }
+
   return user.userId;
 }
 
-export async function localAuthorize(userId: User['userId'], data: RegisterSchema) {
+export async function localLink(
+  userId: User['userId'],
+  { name, email, username, password }: CreateSchema
+) {
   const oldAccount = await xprisma.localAccount.findUnique({ where: { userId } });
   if (oldAccount) return null;
-  const userData = pick(data, ['name', 'email']);
-  const accountData = pick(data, ['username', 'password']);
+
   await xprisma.$transaction(async (tx) => {
     await tx.user.update({
       where: { userId },
-      data: userData
+      data: { name, email }
     });
+
     await tx.localAccount.create({
-      data: { ...accountData, userId }
+      data: { userId, username, password }
     });
   });
+
   return userId;
 }
 
-export async function oauthRegister(profile: Profile) {
+export async function oAuthRegister(profile: Profile) {
   const { userData, accountData } = authUtils.transformProfile(profile);
 
-  // TODO convert transaction to prisma's nested statement queries
-  const userId = await xprisma.$transaction(async (tx) => {
-    const newUser = await tx.user.create({
-      data: userData,
-      select: { userId: true }
-    });
-    await tx.oAuthAccount.create({
-      data: { ...accountData, userId: newUser.userId }
-    });
-    return newUser.userId;
+  const user = await xprisma.user.create({
+    data: { ...userData, oAuthAccounts: { create: [accountData] } },
+    select: { userId: true }
   });
 
-  return userId;
+  return user.userId;
 }
 
-export async function oauthLogin(profile: Profile) {
+export async function oAuthLogin(profile: Profile) {
   const account = await xprisma.oAuthAccount.findUnique({
     where: {
       provider_accountId: {
@@ -124,12 +130,18 @@ export async function oauthLogin(profile: Profile) {
     }
   });
   if (!account) return null;
+
   const user = await getUser(account.userId);
-  if (!user) throw new Error(`User ${account.userId} is null despite the existence of LocalAccount ${account.accountId}`);
+  if (!user) {
+    throw new Error(
+      `User ${account.userId} is null despite the existence of LocalAccount ${account.accountId}`
+    );
+  }
+
   return user.userId;
 }
 
-export async function oauthAuthorize(userId: User['userId'], profile: Profile) {
+export async function oAuthLink(userId: User['userId'], profile: Profile) {
   const account = await xprisma.oAuthAccount.findUnique({
     where: {
       provider_accountId: {
@@ -144,7 +156,7 @@ export async function oauthAuthorize(userId: User['userId'], profile: Profile) {
 
   await xprisma.user.update({
     where: { userId },
-    data: { Account: { create: accountData } },
+    data: { oAuthAccounts: { create: accountData } },
   });
 
   return userId;
