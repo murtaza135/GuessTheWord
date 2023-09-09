@@ -68,6 +68,19 @@ router.get(
 );
 
 router.get(
+  '/auth/google/link',
+  protect({ message: 'You must login to access this route' }),
+  startOAuth({ strategy: 'google-link', scope: ['profile', 'email'] })
+);
+
+router.get(
+  '/auth/google/link/callback',
+  protect({ message: 'You must login to access this route' }),
+  authenticate({ strategy: 'google-link', session: false }),
+  (_req, res) => res.redirect(config.CLIENT_URL)
+);
+
+router.get(
   '/auth/profile',
   protect({ message: 'You must login to access this route' }),
   authController.sendUser

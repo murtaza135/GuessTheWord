@@ -18,7 +18,7 @@ const strategies = [
     strategy: new CustomStrategy(
       async function (req: Request, submit) {
         const payload = authServices.verifyAccessToken(req.session?.accessToken);
-        if (!payload) return submit(null, null);
+        if (!payload) return submit(null);
         return submit(null, payload);
       }
     )
@@ -31,7 +31,7 @@ const strategies = [
           const userId = await authServices.localRegister(req.body);
           return submit(null, { userId });
         } catch (error: unknown) {
-          return submit(error, false);
+          return submit(error);
         }
       }
     )
@@ -43,7 +43,7 @@ const strategies = [
         try {
           if (!req.user) return submit(new Error('req.user does not exist in local-authorize in auth.strategies.ts'));
           const userId = await authServices.localLink(req.user.userId, req.body);
-          if (!userId) return submit(new APIError({ statusText: 'Bad Request' }));
+          if (!userId) return submit(new APIError({ statusText: 'Forbidden', message: 'Could not connect account' }));
           return submit(null, { userId });
         } catch (error: unknown) {
           return submit(error, false);
@@ -56,10 +56,10 @@ const strategies = [
     strategy: new LocalStrategy(async function (username, password, submit) {
       try {
         const userId = await authServices.localLogin({ username, password });
-        if (!userId) return submit(null, false);
+        if (!userId) return submit(null);
         return submit(null, { userId });
       } catch (error: unknown) {
-        return submit(error, false);
+        return submit(error);
       }
     })
   },
@@ -67,8 +67,8 @@ const strategies = [
     name: 'github-login',
     strategy: new GithubStrategy(
       {
-        clientID: config.GITHUB_CLIENT_ID,
-        clientSecret: config.GITHUB_CLIENT_SECRET,
+        clientID: config.GITHUB_CLIENT_ID_LOGIN,
+        clientSecret: config.GITHUB_CLIENT_SECRET_LOGIN,
         callbackURL: `${config.API_URL}/auth/github/login/callback`,
         passReqToCallback: true
       },
@@ -95,8 +95,8 @@ const strategies = [
     name: 'github-link',
     strategy: new GithubStrategy(
       {
-        clientID: config.GITHUB_CLIENT_ID_AUTHORIZE,
-        clientSecret: config.GITHUB_CLIENT_SECRET_AUTHORIZE,
+        clientID: config.GITHUB_CLIENT_ID_LINK,
+        clientSecret: config.GITHUB_CLIENT_SECRET_LINK,
         callbackURL: `${config.API_URL}/auth/github/link/callback`,
         passReqToCallback: true
       },
@@ -110,7 +110,7 @@ const strategies = [
         try {
           if (!req.user) return submit(new Error('Could not extract userId from req.user after oauth authentication'));
           const userId = await authServices.oAuthLink(req.user.userId, profile);
-          if (!userId) return submit(new APIError({ statusText: 'Forbidden', message: 'Cannot connect OAuth account' }));
+          if (!userId) return submit(new APIError({ statusText: 'Forbidden', message: 'Could not connect account' }));
           return submit(null, { userId });
         } catch (error: unknown) {
           if (error instanceof Error) return submit(error);
@@ -138,6 +138,34 @@ const strategies = [
           if (userId) return submit(null, { userId });
           const newUserId = await authServices.oAuthRegister(profile);
           return submit(null, { userId: newUserId });
+        } catch (error: unknown) {
+          if (error instanceof Error) return submit(error);
+          return submit(new Error('Something went wrong', { cause: error }));
+        }
+      }
+    )
+  },
+  {
+    name: 'google-link',
+    strategy: new GoogleStrategy(
+      {
+        clientID: config.GOOGLE_CLIENT_ID,
+        clientSecret: config.GOOGLE_CLIENT_SECRET,
+        callbackURL: `${config.API_URL}/auth/google/link/callback`,
+        passReqToCallback: true
+      },
+      async function (
+        req: Request,
+        accessToken: string,
+        refreshToken: string,
+        profile: GoogleProfile,
+        submit: VerifyCallback,
+      ) {
+        try {
+          if (!req.user) return submit(new Error('Could not extract userId from req.user after oauth authentication'));
+          const userId = await authServices.oAuthLink(req.user.userId, profile);
+          if (!userId) return submit(new APIError({ statusText: 'Forbidden', message: 'Could not connect account' }));
+          return submit(null, { userId });
         } catch (error: unknown) {
           if (error instanceof Error) return submit(error);
           return submit(new Error('Something went wrong', { cause: error }));
