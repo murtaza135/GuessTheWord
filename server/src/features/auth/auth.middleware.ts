@@ -54,8 +54,8 @@ export function authenticate({
   };
 }
 
-export function protect({ message }: Pick<AuthOptions, 'message'>) {
-  return authenticate({ strategy: 'protect', session: true, message });
+export function protect({ message, unauthenticatedRedirect }: Pick<AuthOptions, 'message' | 'unauthenticatedRedirect'>) {
+  return authenticate({ strategy: 'protect', session: true, message, unauthenticatedRedirect });
 }
 
 export function startOAuth({ strategy, scope }: StartOAuthOptions) {

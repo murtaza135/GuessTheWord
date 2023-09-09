@@ -45,15 +45,15 @@ router.get(
 
 router.get(
   '/auth/github/link',
-  protect({ message: 'You must login to access this route' }),
+  protect({ message: 'You must login to access this route', unauthenticatedRedirect: `${config.CLIENT_URL}/profile` }),
   startOAuth({ strategy: 'github-link', scope: ['user:email', 'read:user'] })
 );
 
 router.get(
   '/auth/github/link/callback',
-  protect({ message: 'You must login to access this route' }),
-  authenticate({ strategy: 'github-link', session: false, unauthenticatedRedirect: config.CLIENT_URL }),
-  (_req, res) => res.redirect(config.CLIENT_URL)
+  protect({ message: 'You must login to access this route', unauthenticatedRedirect: `${config.CLIENT_URL}/profile` }),
+  authenticate({ strategy: 'github-link', session: false, unauthenticatedRedirect: `${config.CLIENT_URL}/profile` }),
+  (_req, res) => res.redirect(`${config.CLIENT_URL}/profile`)
 );
 
 router.get(
@@ -69,16 +69,16 @@ router.get(
 
 router.get(
   '/auth/google/link',
-  protect({ message: 'You must login to access this route' }),
+  protect({ message: 'You must login to access this route', unauthenticatedRedirect: `${config.CLIENT_URL}/profile` }),
   startOAuth({ strategy: 'google-link', scope: ['profile', 'email'] })
 );
 
 router.get(
   '/auth/google/link/callback',
-  protect({ message: 'You must login to access this route' }),
-  // (req, res, next) => { req.user = { userId: 3 }; next(); },
-  authenticate({ strategy: 'google-link', session: false, unauthenticatedRedirect: config.CLIENT_URL }),
-  (_req, res) => res.redirect(config.CLIENT_URL)
+  // protect({ message: 'You must login to access this route', unauthenticatedRedirect: `${config.CLIENT_URL}/profile` }),
+  (req, res, next) => { req.user = { userId: 3 }; next(); },
+  authenticate({ strategy: 'google-link', session: false, unauthenticatedRedirect: `${config.CLIENT_URL}/profile` }),
+  (_req, res) => res.redirect(`${config.CLIENT_URL}/profile`)
 );
 
 router.get(
