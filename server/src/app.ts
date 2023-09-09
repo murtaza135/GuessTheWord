@@ -26,7 +26,7 @@ router.use(express.static(path.join(__dirname, 'public')));
 
 router.use(morgan());
 router.use(express.json());
-router.use(cookieParser());
+router.use(cookieParser([config.COOKIE_SECRET]));
 router.use(compression());
 router.use(helmet());
 router.use(cors({ origin: config.CLIENT_URL, credentials: true }));
@@ -34,22 +34,13 @@ router.use(hpp());
 router.use(rateLimit({ maxAttempts: 25, duration: 1 }));
 
 router.use(cookieSession({
-  name: 'session',
-  keys: ['key1', 'key2'],
+  name: config.SESSION_COOKIE_NAME,
+  keys: [config.COOKIE_SECRET],
   httpOnly: true,
   secure: !config.IS_DEVELOPMENT,
-  sameSite: 'strict',
-  maxAge: config.ACCESS_TOKEN_COOKIE_MAX_AGE
+  sameSite: 'lax',
+  maxAge: config.SESSION_COOKIE_MAX_AGE
 }));
-
-// router.use(function (req, res, next) {
-//   // console.log(JSON.stringify(req.cookies));
-//   // console.log(req.session?.isChanged);
-//   // console.log(req.session?.isPopulated);
-//   // console.log(req.session?.isNew);
-//   // console.log(req.session?.accessToken);
-//   next();
-// });
 
 router.use(actuator({
   basePath: '/_app',

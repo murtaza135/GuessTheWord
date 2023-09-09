@@ -4,4 +4,4 @@ export { authenticate, protect, startOAuth, logout } from './auth.middleware';
 
 export type { Strategy } from './auth.strategies';
 export type { AuthOptions, StartOAuthOptions } from './auth.middleware';
-export type { UserData } from './auth.types';
+export type { ExpressUser } from './auth.types';

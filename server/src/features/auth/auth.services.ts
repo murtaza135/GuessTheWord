@@ -3,7 +3,7 @@ import { User } from '@prisma/client';
 import { Profile } from 'passport';
 import config from '../../config/config';
 import * as authSchemas from './auth.schema';
-import { LoginSchema, CreateSchema } from './auth.schema';
+import { LoginSchema, CreateLocalAccountSchema } from './auth.schema';
 import xprisma from '../../config/db';
 import * as authUtils from './auth.utils';
 
@@ -51,7 +51,9 @@ export async function getOAuthAccounts(userId: User['userId']) {
   return oAuthAccounts;
 }
 
-export async function localRegister({ name, email, username, password }: CreateSchema) {
+export async function localRegister(
+  { name, email, username, password }: CreateLocalAccountSchema
+) {
   // NOTE for some reason prisma does not run the query extensions implemented in xprisma
   // NOTE the query extension is required for automatically encrypting the password
   // NOTE therefore the query must be run via transactions
@@ -90,7 +92,7 @@ export async function localLogin({ username, password }: LoginSchema) {
 
 export async function localLink(
   userId: User['userId'],
-  { name, email, username, password }: CreateSchema
+  { name, email, username, password }: CreateLocalAccountSchema
 ) {
   const oldAccount = await xprisma.localAccount.findUnique({ where: { userId } });
   if (oldAccount) return null;

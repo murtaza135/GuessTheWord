@@ -8,7 +8,7 @@ export type AuthOptions = {
   strategy: Strategy;
   message?: string;
   session?: boolean;
-  unauthenticatedRedirect?: string;
+  failRedirect?: string;
 };
 
 export type StartOAuthOptions = {
@@ -20,7 +20,7 @@ export function authenticate({
   strategy,
   message,
   session = true,
-  unauthenticatedRedirect,
+  failRedirect,
 }: AuthOptions) {
   return function (req: Request, res: Response, next: NextFunction) {
     passport.authenticate(
@@ -28,14 +28,14 @@ export function authenticate({
       function (error: unknown, user: Express.User) {
         if (error) {
           // TODO change redirect on error
-          if (unauthenticatedRedirect) return res.redirect(`${unauthenticatedRedirect}?error=Error`);
+          if (failRedirect) return res.redirect(`${failRedirect}?error=Error`);
           if (error instanceof Error) return next(error);
           return next(new Error('Something went wrong', { cause: error }));
         }
 
         if (!user) {
           // TODO change redirect on error
-          if (unauthenticatedRedirect) return res.redirect(`${unauthenticatedRedirect}?error=${message ?? 'Unauthorized'}`);
+          if (failRedirect) return res.redirect(`${failRedirect}?error=${message ?? 'Unauthorized'}`);
           return next(new APIError({
             statusText: 'Unauthorized',
             message: message ?? 'Unauthorized',
@@ -54,8 +54,8 @@ export function authenticate({
   };
 }
 
-export function protect({ message, unauthenticatedRedirect }: Pick<AuthOptions, 'message' | 'unauthenticatedRedirect'>) {
-  return authenticate({ strategy: 'protect', session: true, message, unauthenticatedRedirect });
+export function protect({ message, failRedirect }: Pick<AuthOptions, 'message' | 'failRedirect'>) {
+  return authenticate({ strategy: 'protect', session: true, message, failRedirect });
 }
 
 export function startOAuth({ strategy, scope }: StartOAuthOptions) {

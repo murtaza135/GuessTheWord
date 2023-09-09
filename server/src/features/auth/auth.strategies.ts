@@ -5,7 +5,7 @@ import { Strategy as GoogleStrategy, Profile as GoogleProfile } from 'passport-g
 import { VerifyCallback } from 'passport-oauth2';
 import { Request } from 'express';
 import passport from 'passport';
-import { CreateSchema } from './auth.schema';
+import { CreateLocalAccountSchema } from './auth.schema';
 import config from '../../config/config';
 import * as authServices from './auth.services';
 import APIError from '../../errors/APIError';
@@ -26,7 +26,7 @@ const strategies = [
   {
     name: 'local-register',
     strategy: new CustomStrategy(
-      async function (req: Request<unknown, unknown, CreateSchema>, submit) {
+      async function (req: Request<unknown, unknown, CreateLocalAccountSchema>, submit) {
         try {
           const userId = await authServices.localRegister(req.body);
           return submit(null, { userId });
@@ -39,7 +39,7 @@ const strategies = [
   {
     name: 'local-link',
     strategy: new CustomStrategy(
-      async function (req: Request<unknown, unknown, CreateSchema>, submit) {
+      async function (req: Request<unknown, unknown, CreateLocalAccountSchema>, submit) {
         try {
           if (!req.user) return submit(new Error('req.user does not exist in local-authorize in auth.strategies.ts'));
           const userId = await authServices.localLink(req.user.userId, req.body);

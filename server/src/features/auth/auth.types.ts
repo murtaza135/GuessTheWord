@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 
-export type UserData = {
+export type ExpressUser = {
   userId: User['userId'];
   [x: string]: unknown;
 };
