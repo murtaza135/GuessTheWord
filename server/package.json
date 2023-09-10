@@ -5,7 +5,8 @@
     "dev": "cross-env NODE_ENV=development nodemon src/server.ts",
     "build": "npx tsc -p .",
     "test": "jest",
-    "prisma-push": "npx prisma db push"
+    "prisma-push": "npx prisma db push",
+    "prisma-generate": "npx prisma generate"
   },
   "devDependencies": {
     "@jest/globals": "^29.6.4",
