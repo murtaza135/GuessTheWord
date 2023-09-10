@@ -19,7 +19,6 @@
     "@tanstack/react-query": "^4.32.6",
     "clsx": "^2.0.0",
     "lodash": "^4.17.21",
-    "msw": "^1.2.5",
     "react": "^18.2.0",
     "react-aria": "^3.27.0",
     "react-dom": "^18.2.0",
@@ -63,6 +62,7 @@
     "workbox-core": "^7.0.0",
     "workbox-precaching": "^7.0.0",
     "workbox-routing": "^7.0.0",
-    "workbox-strategies": "^7.0.0"
+    "workbox-strategies": "^7.0.0",
+    "msw": "^1.2.5"
   }
 }
