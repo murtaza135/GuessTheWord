@@ -17,12 +17,12 @@ import { authRouter, initAuthStrategies } from './features/auth';
 import { winLossRouter } from './features/win-loss';
 
 const app = express();
+app.use(express.static(path.join(__dirname, 'public')));
+
 const router = Router();
 app.use(`/api/v${config.VERSION_MAJOR}`, router);
 
 initAuthStrategies();
-
-router.use(express.static(path.join(__dirname, 'public')));
 
 router.use(morgan());
 router.use(express.json());

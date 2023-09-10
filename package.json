@@ -4,9 +4,10 @@
   "description": "A 'guess the word' game",
   "main": "server/dist/server.js",
   "scripts": {
-    "start": "npm --prefix server run start",
+    "start": "node server/dist/server.js",
     "server": "npm --prefix server run dev",
-    "client": "npm --prefix client run dev"
+    "client": "npm --prefix client run dev",
+    "build": "npm --prefix server run build && npm --prefix client run build"
   },
   "keywords": [
     "guess",
