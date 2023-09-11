@@ -1,7 +1,7 @@
 import Card from '@/ui/cards/Card';
 import Letter from '@/types/Letter';
 import useIncrement from '@/hooks/useIncrement';
-import { useGuessWord, Keyboard, IncorrectGuessesDisplay, AnswerDisplay, GuessDisplay, GameFinishedDisplay } from '@/features/guess-game';
+import { useGuessWord, Keyboard, IncorrectGuessesDisplay, GuessDisplay, GameFinishedDisplay } from '@/features/guess-game';
 import config from '@/config/config';
 import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
@@ -41,7 +41,7 @@ export default function PlayPage() {
         : (
           <>
             <div className='flex flex-col gap-1 items-center'>
-              {import.meta.env.DEV && <AnswerDisplay guess={guess} />}
+              {/* {import.meta.env.DEV && <AnswerDisplay guess={guess} />} */}
               <IncorrectGuessesDisplay value={numGuesses} />
             </div>
             <Keyboard onClick={handleLetterClick} />
