@@ -5,13 +5,14 @@ import { TiTimes } from "react-icons/ti";
 import cn from '@/utils/cn';
 
 type Props = {
+  to: string;
   isAuthorized?: boolean;
 };
 
-export default function GuessButton({ isAuthorized }: Props) {
+export default function GuessButton({ to, isAuthorized }: Props) {
   return (
     <Link
-      to="/connections/guess"
+      to={to}
       className='relative inline-flex justify-center items-center align-middle w-12 h-12 aspect-square rounded-full cursor-pointer hover:opacity-75 transition-opacity border-[1px] border-gray-300'
       onClick={(event) => isAuthorized && event.preventDefault()}
     >

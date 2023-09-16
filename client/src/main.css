@@ -24,7 +24,6 @@ body {
   white-space: nowrap;
 }
 
-/* TODO replace with tailwind if possible */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

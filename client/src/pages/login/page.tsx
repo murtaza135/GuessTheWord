@@ -2,6 +2,7 @@ import Card from '@/ui/cards/Card';
 import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
 import { LoginForm, GithubButton, GoogleButton } from '@/features/auth';
+import config from '@/config/config';
 
 export default function LoginPage() {
   return (
@@ -13,8 +14,8 @@ export default function LoginPage() {
       <div className='flex flex-col justify-center items-center gap-3'>
         <p className='text-md text-primary-900 cursor-default'>Or login with</p>
         <div className="flex gap-4 justify-center">
-          <GithubButton />
-          <GoogleButton />
+          <GithubButton to={`${config.VITE_API_URL}/auth/github/login`} />
+          <GoogleButton to={`${config.VITE_API_URL}/auth/google/login`} />
         </div>
       </div>
 

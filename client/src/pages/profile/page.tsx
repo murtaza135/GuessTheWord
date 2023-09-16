@@ -9,6 +9,7 @@ import Button from '@/ui/buttons/Button';
 import { useLogout } from '@/features/auth';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '@/ui/spinners/Spinner';
+import config from '@/config/config';
 
 export default function ProfilePage() {
   const { data: profile } = useProfile();
@@ -42,9 +43,9 @@ export default function ProfilePage() {
       <div className='flex flex-col w-full justify-center items-center gap-4 border-[1px] p-8 rounded-md border-gray-300'>
         <p className='text-sm text-primary-900 font-semibold'>Your connections</p>
         <div className='flex gap-5'>
-          <GuessButton isAuthorized={!!accounts?.localAccount} />
-          <GithubButton to='http://localhost:5000/api/v1/auth/github/link' isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'github')} />
-          <GoogleButton to='http://localhost:5000/api/v1/auth/google/link' isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'google')} />
+          <GuessButton to='/connections/guess' isAuthorized={!!accounts?.localAccount} />
+          <GithubButton to={`${config.VITE_API_URL}/auth/github/link`} isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'github')} />
+          <GoogleButton to={`${config.VITE_API_URL}/auth/google/link`} isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'google')} />
         </div>
       </div>
 
