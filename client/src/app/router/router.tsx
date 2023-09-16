@@ -1,14 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "@/app/App";
 import pages from './pages';
-import PrivateRouteLayout from '@/layouts/PrivateRouteLayout';
-import PublicRouteLayout from '@/layouts/PublicRouteLayout';
-import ErrorRouteLayout from '@/layouts/ErrorRouteLayout';
+import RootLayout from '@/app/layouts/RootLayout';
+import PrivateRouteLayout from '@/app/layouts/PrivateRouteLayout';
+import PublicRouteLayout from '@/app/layouts/PublicRouteLayout';
+import ErrorRouteLayout from '@/app/layouts/ErrorRouteLayout';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: <RootLayout />,
     errorElement: <ErrorRouteLayout />,
     children: [
       {
