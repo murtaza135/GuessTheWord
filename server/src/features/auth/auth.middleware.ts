@@ -28,14 +28,14 @@ export function authenticate({
       function (error: unknown, user: Express.User) {
         if (error) {
           // TODO change redirect on error
-          if (failRedirect) return res.redirect(`${failRedirect}?error=Error`);
+          if (failRedirect) return res.redirect(`${failRedirect}?error=${encodeURIComponent('Something went wrong')}`);
           if (error instanceof Error) return next(error);
           return next(new Error('Something went wrong', { cause: error }));
         }
 
         if (!user) {
           // TODO change redirect on error
-          if (failRedirect) return res.redirect(`${failRedirect}?error=${message ?? 'Unauthorized'}`);
+          if (failRedirect) return res.redirect(`${failRedirect}?error=${encodeURIComponent(message ?? 'Unauthorized')}`);
           return next(new APIError({
             statusText: 'Unauthorized',
             message: message ?? 'Unauthorized',
