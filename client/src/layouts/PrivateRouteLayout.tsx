@@ -4,17 +4,23 @@ import { Outlet } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import Container from '@/ui/containers/Container';
 import { Navbar } from '@/features/navbar';
-import { toast } from 'react-hot-toast';
-import { useEffect } from 'react';
+// import { toast } from 'react-hot-toast';
+// import { useEffect } from 'react';
 
+// TODO clean up
 export default function PrivateRouteLayout() {
-  const { error, isLoading } = useProfile();
+  // const { error, isLoading, isError, isFetching } = useProfile();
+  const { error, isLoading, isError, isFetching, isRefetching } = useProfile({ enabled: false });
+  console.log(isLoading);
+  console.log(isError);
+  console.log(isFetching);
+  console.log(isRefetching);
 
-  useEffect(() => {
-    if (!isLoading && error) {
-      toast.error(error?.message ?? 'Something went wrong', { id: 'private-route-layout' });
-    }
-  }, [error, isLoading]);
+  // useEffect(() => {
+  //   if (!isLoading && error) {
+  //     toast.error(error?.message ?? 'Something went wrong', { id: 'private-route-layout' });
+  //   }
+  // }, [error, isLoading]);
 
   if (isLoading) {
     return (
