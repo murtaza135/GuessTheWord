@@ -24,7 +24,7 @@ export default function LoginPage() {
         </Link>
 
         <Link to="/">
-          <Button color='greyedOut' className='w-auto'>Play as Guest</Button>
+          <Button $variant='greyedOut'>Play as Guest</Button>
         </Link>
       </div>
     </Card>

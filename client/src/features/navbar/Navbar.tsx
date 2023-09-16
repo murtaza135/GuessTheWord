@@ -28,8 +28,8 @@ export default function Navbar() {
             : (
               <>
                 {/* TODO find a better alternative than '?? 0' */}
-                <Stat value={losses ?? 0} icon={<TiTimes />} color='red' />
-                <Stat value={wins ?? 0} icon={<RxCheck />} color='green' />
+                <Stat value={losses ?? 0} icon={<TiTimes />} $color='red' />
+                <Stat value={wins ?? 0} icon={<RxCheck />} $color='green' />
               </>
             )}
         </div>

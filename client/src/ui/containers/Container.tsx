@@ -1,7 +1,7 @@
 import cn from '@/utils/cn';
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
-  variant?: keyof typeof variants;
+  $variant?: keyof typeof variants;
 };
 
 const variants = {
@@ -9,12 +9,11 @@ const variants = {
   center: 'min-h-full flex justify-center items-center'
 } as const;
 
-export default function Container({ variant, children, className, ...rest }: Props) {
-  const variantValue = variant ?? 'normal';
+export default function Container({ $variant = 'normal', children, className, ...rest }: Props) {
 
   return (
     <div
-      className={cn('container mx-auto', variants[variantValue], className)}
+      className={cn('container mx-auto', variants[$variant], className)}
       {...rest}
     >
       {children}

@@ -10,11 +10,12 @@ import { Navbar } from '@/features/navbar';
 // TODO clean up
 export default function PrivateRouteLayout() {
   // const { error, isLoading, isError, isFetching } = useProfile();
-  const { error, isLoading, isError, isFetching, isRefetching } = useProfile({ enabled: false });
-  console.log(isLoading);
-  console.log(isError);
-  console.log(isFetching);
-  console.log(isRefetching);
+  // const { error, isLoading, isError, isFetching, isRefetching } = useProfile({ enabled: false });
+  const { error, isLoading } = useProfile({ enabled: false });
+  // console.log(isLoading);
+  // console.log(isError);
+  // console.log(isFetching);
+  // console.log(isRefetching);
 
   // useEffect(() => {
   //   if (!isLoading && error) {
@@ -24,7 +25,7 @@ export default function PrivateRouteLayout() {
 
   if (isLoading) {
     return (
-      <Container variant='center' className='px-4 py-24'>
+      <Container $variant='center' className='px-4 py-24'>
         <Spinner />
       </Container>
     );
@@ -37,7 +38,7 @@ export default function PrivateRouteLayout() {
   return (
     <>
       <Navbar />
-      <Container variant='center' className='px-4 pt-36 pb-24'>
+      <Container $variant='center' className='px-4 pt-36 pb-24'>
         <Outlet />
       </Container>
     </>

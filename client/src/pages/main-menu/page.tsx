@@ -14,7 +14,7 @@ export default function MainMenuPage() {
         <p className='text-center text-red-800 font-bold text-2xl md:text-2xl'>Losses: {losses ?? '...'}</p>
       </div>
       <Link to="/play" className='w-full mt-1'>
-        <Button size='lg' className='w-full'>Play</Button>
+        <Button $size='lg' className='w-full'>Play</Button>
       </Link>
     </Card>
   );
