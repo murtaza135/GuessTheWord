@@ -1,7 +1,7 @@
 import React from 'react';
 import cn from '@/utils/cn';
 
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type Props = React.ComponentProps<"button"> & {
   $variant?: keyof typeof variants;
   $size?: keyof typeof sizes;
 };

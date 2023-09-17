@@ -1,6 +1,6 @@
 import type Letter from "@/types/Letter";
 
-type Props = React.HTMLAttributes<HTMLParagraphElement> & {
+type Props = React.ComponentProps<"p"> & {
   show: boolean;
   value?: Letter | '';
 };

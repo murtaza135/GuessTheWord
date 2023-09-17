@@ -1,6 +1,6 @@
 import type Letter from "@/types/Letter";
 
-type Props = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'onClick'> & {
+type Props = Omit<React.ComponentProps<"button">, 'onClick'> & {
   value: Letter;
   onClick?: (letter: Letter, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 };

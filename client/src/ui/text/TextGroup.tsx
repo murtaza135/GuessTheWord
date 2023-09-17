@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import cn from '@/utils/cn';
 
-type Props = React.HTMLAttributes<HTMLDivElement> & {
+type Props = React.ComponentProps<"div"> & {
   label?: string;
   icon?: ReactNode;
 };

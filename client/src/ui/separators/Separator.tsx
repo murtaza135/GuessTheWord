@@ -2,7 +2,7 @@ import { useSeparator, SeparatorProps } from 'react-aria';
 import cn from '@/utils/cn';
 
 type Props = SeparatorProps & {
-  className?: React.HTMLAttributes<HTMLDivElement>['className'];
+  className?: string;
 };
 
 export default function Separator({ className, ...rest }: Props) {

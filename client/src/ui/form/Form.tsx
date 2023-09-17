@@ -8,7 +8,7 @@ type Props2<T extends ZodTypeAny> = Omit<UseFormProps<T>, 'resolver'> & {
   schema?: T;
   onSubmit?: SubmitHandler<z.infer<T>>;
   children?: ReactNode;
-  className?: React.FormHTMLAttributes<HTMLFormElement>['className'];
+  className?: string;
 };
 
 export default function Form<T extends ZodTypeAny>({ schema, onSubmit, children, ...rest }: Props2<T>) {
