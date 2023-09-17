@@ -1,22 +1,22 @@
 import { useMutation, useQueryClient, UseMutationResult, UseMutateFunction } from '@tanstack/react-query';
-import API from '@/app/api/api';
-import { ErrorResponse } from '@/app/api/types';
+import api from '@/app/api/api';
+import APIError from '@/app/api/APIError';
 import { WinLossResponse } from '../types';
 
 type IncrementLossesVariable = { losses: number; };
 type WinLossContext = { previousData: WinLossResponse; };
 
-type UseIncrementLossesResult = Omit<UseMutationResult<WinLossResponse, ErrorResponse, IncrementLossesVariable, WinLossContext>, 'data' | 'mutate'> & {
+type UseIncrementLossesResult = Omit<UseMutationResult<WinLossResponse, APIError, IncrementLossesVariable, WinLossContext>, 'data' | 'mutate'> & {
   wins?: number;
   losses?: number;
-  incrementLosses: UseMutateFunction<WinLossResponse, ErrorResponse, IncrementLossesVariable, WinLossContext>;
+  incrementLosses: UseMutateFunction<WinLossResponse, APIError, IncrementLossesVariable, WinLossContext>;
 };
 
 export default function useIncrementLosses(): UseIncrementLossesResult {
   const queryClient = useQueryClient();
 
-  const { data, mutate, ...rest } = useMutation<WinLossResponse, ErrorResponse, IncrementLossesVariable, WinLossContext>({
-    mutationFn: (args) => API.post('/losses/increment', { body: args }),
+  const { data, mutate, ...rest } = useMutation<WinLossResponse, APIError, IncrementLossesVariable, WinLossContext>({
+    mutationFn: (args) => api.post('losses/increment', { json: args }).json(),
     onMutate: async ({ losses }) => { // i.e. incremented losses
       await queryClient.cancelQueries({ queryKey: ['winLoss'] });
       const previousData = queryClient.getQueryData<WinLossResponse>(['winLoss']) ?? { wins: 0, losses: 0 };

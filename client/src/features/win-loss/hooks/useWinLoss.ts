@@ -1,18 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import API from '@/app/api/api';
-import { ErrorResponse } from '@/app/api/types';
+import api from '@/app/api/api';
+import APIError from '@/app/api/APIError';
 import { WinLossResponse } from '../types';
 import { UseQueryResult } from '@tanstack/react-query';
 
-type UseWinLossResult = Omit<UseQueryResult<WinLossResponse, ErrorResponse>, 'data'> & {
+type UseWinLossResult = Omit<UseQueryResult<WinLossResponse, APIError>, 'data'> & {
   wins?: number;
   losses?: number;
 };
 
 export default function useWinLoss(): UseWinLossResult {
-  const { data, ...rest } = useQuery<WinLossResponse, ErrorResponse>({
+  const { data, ...rest } = useQuery<WinLossResponse, APIError>({
     queryKey: ['winLoss'],
-    queryFn: () => API.get('/winLoss'),
+    queryFn: () => api.get('winLoss').json(),
   });
 
   return {

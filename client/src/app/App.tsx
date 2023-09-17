@@ -1,13 +1,13 @@
 import queryClient from './api/queryClient';
-import API from './api/api';
+import api from './api/api';
 import { Toaster } from 'react-hot-toast';
 import { RouterProvider } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import router from './router/router';
 
-queryClient.prefetchQuery({ queryKey: ['profile'], queryFn: () => API.get('/auth/profile') });
-queryClient.prefetchQuery({ queryKey: ['winLoss'], queryFn: () => API.get('/winLoss') });
+queryClient.prefetchQuery({ queryKey: ['profile'], queryFn: () => api.get('auth/profile').json() });
+queryClient.prefetchQuery({ queryKey: ['winLoss'], queryFn: () => api.get('winLoss').json() });
 
 export default function App() {
   return (

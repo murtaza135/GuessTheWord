@@ -11,7 +11,7 @@ import { Navbar } from '@/features/navbar';
 export default function PrivateRouteLayout() {
   // const { error, isLoading, isError, isFetching } = useProfile();
   // const { error, isLoading, isError, isFetching, isRefetching } = useProfile({ enabled: false });
-  const { error, isLoading } = useProfile({ enabled: false });
+  const { isError, isLoading } = useProfile({ enabled: false });
   // console.log(isLoading);
   // console.log(isError);
   // console.log(isFetching);
@@ -31,7 +31,7 @@ export default function PrivateRouteLayout() {
     );
   }
 
-  if (error) {
+  if (isError) {
     return <Navigate to="/login" replace />;
   }
 

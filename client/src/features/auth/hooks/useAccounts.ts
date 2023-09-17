@@ -1,12 +1,12 @@
-import API from '@/app/api/api';
+import api from '@/app/api/api';
 import { AccountsResponse } from '../types';
 import { useQuery } from '@tanstack/react-query';
-import { ErrorResponse } from '@/app/api/types';
+import APIError from '@/app/api/APIError';
 
 export default function useAccounts() {
-  const query = useQuery<AccountsResponse, ErrorResponse>({
+  const query = useQuery<AccountsResponse, APIError>({
     queryKey: ['accounts'],
-    queryFn: () => API.get('/auth/accounts'),
+    queryFn: () => api.get('auth/accounts').json(),
   });
   return query;
 }
