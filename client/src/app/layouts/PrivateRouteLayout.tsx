@@ -11,9 +11,10 @@ import { Navbar } from '@/features/navbar';
 export default function PrivateRouteLayout() {
   // const { error, isLoading, isError, isFetching } = useProfile();
   // const { error, isLoading, isError, isFetching, isRefetching } = useProfile({ enabled: false });
-  const { isError, isLoading } = useProfile({ enabled: false });
+  const { isError, isLoading} = useProfile({ enabled: true });
   // console.log(isLoading);
   // console.log(isError);
+  // console.log(isSuccess);
   // console.log(isFetching);
   // console.log(isRefetching);
 
@@ -32,6 +33,10 @@ export default function PrivateRouteLayout() {
   }
 
   if (isError) {
+    // queryClient.removeQueries({ queryKey: ['profile'] });
+    // queryClient.resetQueries({ queryKey: ['profile'] });
+    // queryClient.fetchQuery({ queryKey: ['profile'] });
+    // refetch();
     return <Navigate to="/login" replace />;
   }
 

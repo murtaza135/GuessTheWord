@@ -15,11 +15,12 @@ export default function useLogin(options?: Options) {
   const navigate = useNavigate();
   const mutation = useMutation<null, APIError, LoginSchema>({
     mutationFn: (args) => api.post('auth/local/login', { json: args }).json(),
-    // mutationFn: (args) => API.post('/auth/local/login', { body: args }),
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      console.log("login success");
+      await queryClient.invalidateQueries({ queryKey: ['profile'] });
+      await queryClient.refetchQueries({ queryKey: ['profile'] });
       // TODO is this how you want to handle refetch of profile data?
-      await queryClient.ensureQueryData({ queryKey: ['profile'], queryFn: () => api.get('auth/profile').json() });
+      // await queryClient.fetchQuery({ queryKey: ['profile'], queryFn: () => api.get('auth/profile').json() });
       if (options?.successRedirect) navigate(options.successRedirect);
     },
     onError: (error) => toast.error(error.message, { id: 'login' })
