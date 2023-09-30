@@ -1,11 +1,10 @@
 import { QueryClient } from '@tanstack/react-query';
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 2
+      retry: 2,
+      cacheTime: Infinity,
     }
   }
 });
-
-export default queryClient;

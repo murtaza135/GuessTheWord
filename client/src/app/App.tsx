@@ -1,8 +1,9 @@
-import queryClient from './api/queryClient';
+import { queryClient } from './api/queryClient';
+import { persistOptions } from './api/persister';
 import api from './api/api';
 import { Toaster } from 'react-hot-toast';
 import { RouterProvider } from 'react-router-dom';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import router from './router/router';
 
@@ -11,10 +12,10 @@ queryClient.prefetchQuery({ queryKey: ['winLoss'], queryFn: () => api.get('winLo
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
       <RouterProvider router={router} />
       <ReactQueryDevtools initialIsOpen={false} panelPosition='bottom' position='bottom-right' />
       <Toaster position='bottom-center' />
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 }

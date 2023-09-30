@@ -11,12 +11,12 @@ import { Navbar } from '@/features/navbar';
 export default function PrivateRouteLayout() {
   // const { error, isLoading, isError, isFetching } = useProfile();
   // const { error, isLoading, isError, isFetching, isRefetching } = useProfile({ enabled: false });
-  const { isError, isLoading, isSuccess } = useProfile({ enabled: true });
-  // console.log(isLoading);
-  // console.log(isError);
-  // console.log(isSuccess);
-  // console.log(isFetching);
-  // console.log(isRefetching);
+  const { isError, isLoading, isSuccess, data, isFetching, fetchStatus, status, isStale, isFetched } = useProfile({ enabled: true });
+  // console.log('data:', data);
+  // console.log('fetchStatus:', fetchStatus);
+  // console.log('status:', status);
+  // console.log('isStale:', isStale);
+  // console.log('isFetched:', isFetched);
 
   // useEffect(() => {
   //   if (!isLoading && error) {
