@@ -53,7 +53,7 @@ export default defineConfig({
     })
   ],
   build: {
-    outDir: '../server/dist/public',
+    outDir: '/dist',
     emptyOutDir: true
   },
   test: {
