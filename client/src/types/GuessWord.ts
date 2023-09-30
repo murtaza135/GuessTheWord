@@ -1,9 +1,9 @@
 import Letter from '@/types/Letter';
 
-type Guess = {
+type GuessWord = {
   id: number;
   letter: Letter;
-  guess: boolean;
+  isCorrect: boolean;
 };
 
-export default Guess;
+export default GuessWord;

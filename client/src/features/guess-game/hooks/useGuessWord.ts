@@ -1,34 +1,38 @@
 import { useState, useMemo, useCallback } from 'react';
 import randomWord from '@/utils/words/randomWord';
 import Letter from '@/types/Letter';
-import Guess from '@/types/Guess';
+import GuessWord from '@/types/GuessWord';
 
-function randomGuess(): Guess[] {
+function generateRandomGuessWord(): GuessWord[] {
   return [...randomWord()].map((letter, index) => ({
-    letter: letter.toUpperCase() as Letter,
-    guess: false,
     id: index,
+    letter: letter.toUpperCase() as Letter,
+    isCorrect: false,
   }));
 }
 
 export default function useGuessWord() {
-  const [guess, setGuess] = useState(() => randomGuess());
-  const isGuessCorrect = useMemo(() => guess.every((value) => value.guess), [guess]);
+  const [word, setWord] = useState(() => generateRandomGuessWord());
+  const isWordCorrect = useMemo(() => word.every((value) => value.isCorrect), [word]);
 
-  const resetWord = useCallback(() => setGuess(randomGuess()), []);
+  const resetWord = useCallback(() => setWord(generateRandomGuessWord()), []);
 
-  const updateGuessWithLetter = useCallback((letter: Letter) => {
-    const updatedGuess = guess.map((value): Guess => {
+  const guessLetterInWord = useCallback((letter: Letter) => {
+    const updatedWord = word.map((value) => {
       return value.letter.toUpperCase() === letter.toUpperCase()
-        ? { ...value, guess: true }
+        ? { ...value, isCorrect: true }
         : value;
     });
 
-    setGuess(updatedGuess);
+    setWord(updatedWord);
 
-    const isCorrectLetter = updatedGuess.filter((value) => value.letter.toUpperCase() === letter.toUpperCase()).length > 0;
-    return isCorrectLetter;
-  }, [guess]);
+    return {
+      isLetterCorrect: updatedWord
+        .filter((value) => value.letter.toUpperCase() === letter.toUpperCase())
+        .length > 0,
+      isWordCorrect: updatedWord.every((value) => value.isCorrect)
+    };
+  }, [word]);
 
-  return { guess, isGuessCorrect, resetWord, updateGuessWithLetter } as const;
+  return { word, isWordCorrect, resetWord, guessLetterInWord } as const;
 }

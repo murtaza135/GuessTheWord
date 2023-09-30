@@ -1,30 +1,26 @@
 import Card from '@/ui/cards/Card';
 import Letter from '@/types/Letter';
 import useIncrement from '@/hooks/useIncrement';
-import { useGuessWord, Keyboard, IncorrectGuessesDisplay, GuessDisplay, GameFinishedDisplay } from '@/features/guess-game';
+import { useGuessWord, Keyboard, IncorrectGuessesDisplay, GuessDisplay, GameFinishedDisplay, AnswerDisplay } from '@/features/guess-game';
 import config from '@/config/config';
 import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
 import { useIncrementWins, useIncrementLosses } from '@/features/win-loss';
 
 export default function PlayPage() {
-  const { guess, isGuessCorrect, updateGuessWithLetter, resetWord } = useGuessWord();
+  const { word, isWordCorrect, guessLetterInWord, resetWord } = useGuessWord();
   const [numGuesses, incrementNumGuesses, resetNumGuesses] = useIncrement(0);
-  const isGameOver = isGuessCorrect || numGuesses >= config.NUM_TRIES;
+  const isGameOver = isWordCorrect || numGuesses >= config.NUM_TRIES;
   const { incrementWins } = useIncrementWins();
   const { incrementLosses } = useIncrementLosses();
 
-  useEffect(() => {
-    if (isGameOver) {
-      if (isGuessCorrect) incrementWins({ wins: 1 });
-      else incrementLosses({ losses: 1 });
-    }
-  }, [isGameOver, isGuessCorrect]);
-
   const handleLetterClick = (letter: Letter) => {
-    const isCorrect = updateGuessWithLetter(letter);
-    if (!isCorrect) incrementNumGuesses();
+    const { isLetterCorrect, isWordCorrect } = guessLetterInWord(letter);
+    const isWordNotCorrect = !isLetterCorrect && (numGuesses + 1) >= config.NUM_TRIES;
+
+    if (!isLetterCorrect) incrementNumGuesses();
+    if (isWordCorrect) incrementWins({ wins: 1 });
+    else if (isWordNotCorrect) incrementLosses({ losses: 1 });
   };
 
   const handlePlayAgain = () => {
@@ -34,14 +30,14 @@ export default function PlayPage() {
 
   return (
     <Card className='flex flex-col gap-8 items-center'>
-      <GuessDisplay guess={guess} showAll={isGameOver} />
+      <GuessDisplay guess={word} showAll={isGameOver} />
 
       {isGameOver
-        ? <GameFinishedDisplay isWin={isGuessCorrect} onPlayAgain={handlePlayAgain} />
+        ? <GameFinishedDisplay isWin={isWordCorrect} onPlayAgain={handlePlayAgain} />
         : (
           <>
             <div className='flex flex-col gap-1 items-center'>
-              {/* {import.meta.env.DEV && <AnswerDisplay guess={guess} />} */}
+              {import.meta.env.DEV && <AnswerDisplay guess={word} />}
               <IncorrectGuessesDisplay value={numGuesses} />
             </div>
             <Keyboard onClick={handleLetterClick} />

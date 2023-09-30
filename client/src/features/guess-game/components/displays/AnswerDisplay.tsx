@@ -1,7 +1,7 @@
-import Guess from '@/types/Guess';
+import GuessWord from '@/types/GuessWord';
 
 type Props = {
-  guess: Guess[];
+  guess: GuessWord[];
 };
 
 export default function AnswerDisplay({ guess }: Props) {
