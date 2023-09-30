@@ -11,7 +11,7 @@
     "test-watch": "vitest",
     "server": "json-server db/db.json --port 3001 --delay 1000",
     "preview": "vite preview",
-    "generate-assets": "pwa-assets-generator --preset minimal public/images/favicon.svg"
+    "generate-assets": "pwa-assets-generator --preset minimal public/images/icon.svg"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.2.0",

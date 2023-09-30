@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import useProfile from '@/features/auth/hooks/useProfile';
 import Container from '@/ui/containers/Container';
 import { useLocation } from 'react-router-dom';
-import icon from "/images/icon.png";
+import icon from "/images/icon.svg";
 import { useWinLoss } from '../win-loss';
 
 export default function Navbar() {
@@ -22,7 +22,7 @@ export default function Navbar() {
           {!isPlayingGame
             ? (
               <Link to='/' className='hover:opacity-75 transition-opacity bg-white rounded-full w-10 h-10'>
-                <img src={icon} alt="Guess! Icon" />
+                <img src={icon} alt="Guess!" />
               </Link>
             )
             : (
