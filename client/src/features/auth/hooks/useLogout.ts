@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast';
 export default function useLogout() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
   const mutation = useMutation<null, APIError, null>({
     mutationFn: () => api.post('auth/logout').json(),
     onSuccess: () => {
@@ -16,5 +17,6 @@ export default function useLogout() {
     },
     onError: (error) => toast.error(error.message, { id: 'logout' })
   });
+
   return mutation;
 }

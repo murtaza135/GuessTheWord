@@ -13,6 +13,7 @@ type Options = {
 export default function useConnectLocalAccount(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
   const mutation = useMutation<null, APIError, RegisterSchema>({
     mutationFn: (args) => api.post('auth/local/link', { json: args }).json(),
     onSuccess: () => {
@@ -21,5 +22,6 @@ export default function useConnectLocalAccount(options?: Options) {
     },
     onError: (error) => toast.error(error.message, { id: 'connect-local-account' })
   });
+
   return mutation;
 }

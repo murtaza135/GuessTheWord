@@ -8,5 +8,6 @@ export default function useAccounts() {
     queryKey: ['accounts'],
     queryFn: () => api.get('auth/accounts').json(),
   });
+
   return query;
 }

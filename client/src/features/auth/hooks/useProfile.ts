@@ -15,5 +15,6 @@ export default function useProfile(options?: Options) {
     queryFn: () => api.get('auth/profile').json(),
     enabled
   });
+
   return query;
 }

@@ -13,6 +13,7 @@ type Options = {
 export default function useLogin(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
   const mutation = useMutation<null, APIError, LoginSchema>({
     mutationFn: (args) => api.post('auth/local/login', { json: args }).json(),
     onSuccess: async () => {
@@ -25,5 +26,6 @@ export default function useLogin(options?: Options) {
     },
     onError: (error) => toast.error(error.message, { id: 'login' })
   });
+
   return mutation;
 }

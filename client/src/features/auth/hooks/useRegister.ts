@@ -13,6 +13,7 @@ type Options = {
 export default function useRegister(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+
   const mutation = useMutation<null, APIError, RegisterSchema>({
     mutationFn: (args) => api.post('auth/local/register', { json: args }).json(),
     onSuccess: async () => {
@@ -24,5 +25,6 @@ export default function useRegister(options?: Options) {
     },
     onError: (error) => toast.error(error.message, { id: 'register' })
   });
+
   return mutation;
 }
