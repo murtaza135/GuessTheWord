@@ -13,7 +13,7 @@ const api = ky.create({
         return Promise.reject(new APIError(errorResponse));
       }
     ]
-  }
+  },
 });
 
 export default api;

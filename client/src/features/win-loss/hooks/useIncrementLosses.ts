@@ -16,6 +16,7 @@ export default function useIncrementLosses(): UseIncrementLossesResult {
   const queryClient = useQueryClient();
 
   const { data, mutate, ...rest } = useMutation<WinLossResponse, APIError, IncrementLossesVariable, WinLossContext>({
+    mutationKey: ['incrementLoss'],
     mutationFn: (args) => api.post('losses/increment', { json: args }).json(),
     onMutate: async ({ losses }) => { // i.e. incremented losses
       await queryClient.cancelQueries({ queryKey: ['winLoss'] });

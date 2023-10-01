@@ -5,6 +5,10 @@ export const queryClient = new QueryClient({
     queries: {
       retry: 2,
       cacheTime: Infinity,
+      networkMode: 'offlineFirst'
+    },
+    mutations: {
+      networkMode: 'always'
     }
   }
 });
