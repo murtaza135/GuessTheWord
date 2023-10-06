@@ -1,8 +1,7 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient, UseQueryResult } from '@tanstack/react-query';
 import api from '@/app/api/api';
 import APIError from '@/app/api/APIError';
 import { WinLossResponse } from '../types';
-import { UseQueryResult } from '@tanstack/react-query';
 import useStore from '@/app/store';
 
 type UseWinLossResult = Omit<UseQueryResult<WinLossResponse, APIError>, 'data'> & {

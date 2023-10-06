@@ -25,6 +25,7 @@ const winsQueue = new Queue('guess-the-word-increment-wins');
 const lossesQueue = new Queue('guess-the-word-increment-losses');
 
 self.addEventListener('sync', () => {
+  console.log("SYNC");
   setTimeout(() => {
     self.clients.matchAll().then(clients => {
       clients.forEach(client => {
@@ -50,6 +51,7 @@ registerRoute(
       const newReq = new Request(request, {
         body: JSON.stringify({ losses: prevLosses + newLosses }),
       });
+      console.log('losses sw:', prevLosses + newLosses);
       await lossesQueue.pushRequest({ request: newReq });
       return new Response();
     }

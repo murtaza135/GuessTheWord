@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import useStore from '@/app/store';
+import { clear, createStore } from "idb-keyval";
+const workboxBackgroundSyncDB = createStore('workbox-background-sync', 'requests');
 
 export default function useLogout() {
   const queryClient = useQueryClient();
@@ -13,9 +15,10 @@ export default function useLogout() {
 
   const mutation = useMutation<null, APIError, null>({
     mutationFn: () => api.post('auth/logout').json(),
-    onSuccess: () => {
+    onSuccess: async () => {
       setGuestMode(false);
       queryClient.clear();
+      await clear(workboxBackgroundSyncDB);
       navigate('/login');
     },
     onError: (error) => toast.error(error.message, { id: 'logout' })
