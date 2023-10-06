@@ -8,14 +8,15 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import router from './router/router';
 
 queryClient.prefetchQuery({ queryKey: ['profile'], queryFn: () => api.get('auth/profile').json() });
+queryClient.prefetchQuery({ queryKey: ['accounts'], queryFn: () => api.get('auth/accounts').json() });
 queryClient.prefetchQuery({ queryKey: ['winLoss'], queryFn: () => api.get('winLoss').json() });
 
 export default function App() {
   return (
     <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
       <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} panelPosition='bottom' position='bottom-right' />
       <Toaster position='bottom-center' />
+      <ReactQueryDevtools initialIsOpen={false} panelPosition='bottom' position='bottom-right' />
     </PersistQueryClientProvider>
   );
 }

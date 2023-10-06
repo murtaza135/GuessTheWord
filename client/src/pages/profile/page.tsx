@@ -10,19 +10,21 @@ import { useLogout } from '@/features/auth';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '@/ui/spinners/Spinner';
 import config from '@/config/config';
+import useStore from '@/app/store';
 
 export default function ProfilePage() {
   const { data: profile } = useProfile();
   const { data: accounts, isLoading } = useAccounts();
   const { mutate } = useLogout();
   const navigate = useNavigate();
+  const isGuestMode = useStore.use.isGuestMode();
 
   const handleLogout = () => {
     mutate(null);
     navigate('/login');
   };
 
-  if (isLoading) {
+  if (!isGuestMode && isLoading) {
     return <Spinner />;
   }
 
@@ -40,14 +42,16 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <div className='flex flex-col w-full justify-center items-center gap-4 border-[1px] p-8 rounded-md border-gray-300'>
-        <p className='text-sm text-primary-900 font-semibold'>Your connections</p>
-        <div className='flex gap-5'>
-          <GuessButton to='/connections/guess' isAuthorized={!!accounts?.localAccount} />
-          <GithubButton to={`${config.VITE_API_URL}/auth/github/link`} isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'github')} />
-          <GoogleButton to={`${config.VITE_API_URL}/auth/google/link`} isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'google')} />
+      {!isGuestMode && (
+        <div className='flex flex-col w-full justify-center items-center gap-4 border-[1px] p-8 rounded-md border-gray-300'>
+          <p className='text-sm text-primary-900 font-semibold'>Your connections</p>
+          <div className='flex gap-5'>
+            <GuessButton to='/connections/guess' isAuthorized={!!accounts?.localAccount} />
+            <GithubButton to={`${config.VITE_API_URL}/auth/github/link`} isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'github')} />
+            <GoogleButton to={`${config.VITE_API_URL}/auth/google/link`} isAuthorized={!!accounts?.oAuthAccounts.find((account) => account.provider === 'google')} />
+          </div>
         </div>
-      </div>
+      )}
 
       <Button className='w-full' onClick={handleLogout}>Logout</Button>
     </Card>

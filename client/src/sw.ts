@@ -1,9 +1,9 @@
 import { precacheAndRoute, cleanupOutdatedCaches } from "workbox-precaching";
-import { Queue } from 'workbox-background-sync';
-// import { Queue, BackgroundSyncPlugin } from 'workbox-background-sync';
+// import { Queue } from 'workbox-background-sync';
+import { Queue, BackgroundSyncPlugin } from 'workbox-background-sync';
 import { clientsClaim } from 'workbox-core';
 import { registerRoute } from 'workbox-routing';
-// import { NetworkOnly } from 'workbox-strategies';
+import { NetworkOnly } from 'workbox-strategies';
 import config from './config/config';
 // import { queryClient } from './app/api/queryClient';
 import { WinLossResponse } from './features/win-loss/types';
@@ -79,4 +79,3 @@ registerRoute(
   },
   'POST'
 );
-

@@ -3,8 +3,18 @@ import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
 import { LoginForm, GithubButton, GoogleButton } from '@/features/auth';
 import config from '@/config/config';
+import { useNavigate } from 'react-router-dom';
+import useStore from '@/app/store';
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const setGuestMode = useStore.use.setGuestMode();
+
+  const handleClick = () => {
+    setGuestMode(true);
+    navigate('/');
+  };
+
   return (
     <Card className='flex flex-col gap-10 items-center w-full max-w-sm'>
       <p className='font-semibold text-center text-primary-900 text-3xl cursor-default'>Login</p>
@@ -24,9 +34,7 @@ export default function LoginPage() {
           <p className='md:text-lg font-semibold text-center text-primary-900 hover:opacity-75 transition-opacity'>Don't have an account? Sign Up</p>
         </Link>
 
-        <Link to="/">
-          <Button $variant='greyedOut'>Play as Guest</Button>
-        </Link>
+        <Button $variant='greyedOut' onClick={handleClick}>Play as Guest</Button>
       </div>
     </Card>
   );

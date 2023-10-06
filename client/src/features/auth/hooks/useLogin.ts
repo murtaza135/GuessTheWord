@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import api from '@/app/api/api';
+import useStore from '@/app/store';
 
 type Options = {
   successRedirect?: string;
@@ -13,11 +14,12 @@ type Options = {
 export default function useLogin(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const setGuestMode = useStore.use.setGuestMode();
 
   const mutation = useMutation<null, APIError, LoginSchema>({
     mutationFn: (args) => api.post('auth/local/login', { json: args }).json(),
     onSuccess: async () => {
-      console.log("login success");
+      setGuestMode(false);
       await queryClient.invalidateQueries({ queryKey: ['profile'] });
       await queryClient.refetchQueries({ queryKey: ['profile'] });
       // TODO is this how you want to handle refetch of profile data?
