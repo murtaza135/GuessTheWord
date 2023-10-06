@@ -4,21 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import APIError from '@/app/api/APIError';
 import useStore from '@/app/store';
 
-type Options = {
-  enabled?: boolean;
-};
-
-export default function useProfile(options?: Options) {
-  const enabled = options?.enabled ?? true;
+export default function useProfile() {
   const isGuestMode = useStore.use.isGuestMode();
 
   const query = useQuery<ProfileResponse, APIError>({
     queryKey: ['profile'],
     queryFn: () => {
       if (!isGuestMode) return api.get('auth/profile').json();
-      return { userId: -1 };
+      return { userId: -1, name: 'Guest' } as ProfileResponse;
     },
-    enabled
   });
 
   return query;

@@ -5,12 +5,15 @@ import { LoginForm, GithubButton, GoogleButton } from '@/features/auth';
 import config from '@/config/config';
 import { useNavigate } from 'react-router-dom';
 import useStore from '@/app/store';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function LoginPage() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const setGuestMode = useStore.use.setGuestMode();
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    await queryClient.cancelQueries();
     setGuestMode(true);
     navigate('/');
   };

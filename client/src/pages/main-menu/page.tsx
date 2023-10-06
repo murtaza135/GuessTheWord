@@ -5,6 +5,8 @@ import { useWinLoss } from '@/features/win-loss';
 
 export default function MainMenuPage() {
   const { wins, losses } = useWinLoss();
+  console.log('wins:', wins);
+  console.log('losses:', losses);
 
   return (
     <Card className='flex flex-col gap-10 items-center'>

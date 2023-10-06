@@ -4,51 +4,20 @@ import { Outlet } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import Container from '@/ui/containers/Container';
 import { Navbar } from '@/features/navbar';
-// import { toast } from 'react-hot-toast';
-// import { useEffect } from 'react';
+import { toast } from 'react-hot-toast';
+import { useEffect } from 'react';
 
-// TODO clean up
 export default function PrivateRouteLayout() {
-  // const { error, isLoading, isError, isFetching } = useProfile();
-  // const { error, isLoading, isError, isFetching, isRefetching } = useProfile({ enabled: false });
-  // const { isError, isLoading, isSuccess } = useProfile({ enabled: true });
-  const { isError, isLoading, isSuccess, data, isFetching, fetchStatus, status, isStale, isFetched } = useProfile({ enabled: true });
-  console.log('data:', data);
-  // console.log('fetchStatus:', fetchStatus);
-  console.log('status:', status);
-  // console.log('isStale:', isStale);
-  // console.log('isFetched:', isFetched);
+  const { isLoading, isSuccess, error } = useProfile();
 
-  // useEffect(() => {
-  //   if (!isLoading && error) {
-  //     toast.error(error?.message ?? 'Something went wrong', { id: 'private-route-layout' });
-  //   }
-  // }, [error, isLoading]);
-
-  // if (isLoading) {
-  //   return (
-  //     <Container $variant='center' className='px-4 py-24'>
-  //       <Spinner />
-  //     </Container>
-  //   );
-  // }
-
-  // if (isError) {
-  //   // queryClient.removeQueries({ queryKey: ['profile'] });
-  //   // queryClient.resetQueries({ queryKey: ['profile'] });
-  //   // queryClient.fetchQuery({ queryKey: ['profile'] });
-  //   // refetch();
-  //   return <Navigate to="/login" replace />;
-  // }
-
-  // return (
-  //   <>
-  //     <Navbar />
-  //     <Container $variant='center' className='px-4 pt-36 pb-24'>
-  //       <Outlet />
-  //     </Container>
-  //   </>
-  // );
+  useEffect(() => {
+    if (!isLoading && error) {
+      toast.error(
+        error?.message ?? 'Something went wrong',
+        { id: 'private-route-layout' },
+      );
+    }
+  }, [error, isLoading]);
 
   return (
     <>
@@ -58,7 +27,7 @@ export default function PrivateRouteLayout() {
         </Container>
       )}
 
-      {isError && <Navigate to="/login" replace />}
+      {error && <Navigate to="/login" replace />}
 
       {isSuccess && (
         <>

@@ -10,7 +10,6 @@ export { default as useConnectLocalAccount } from "./hooks/useConnectLocalAccoun
 export { default as useLogout } from "./hooks/useLogout";
 export { default as useProfile } from "./hooks/useProfile";
 export { default as useAccounts } from "./hooks/useAccounts";
-export { default as GuestModeProvider, useGuestMode } from "./components/GuestModeProvider";
 export { guestModeSlice } from "./slices/guest-mode.slice";
 
 export { type LoginSchema, type RegisterSchema } from "./schema";

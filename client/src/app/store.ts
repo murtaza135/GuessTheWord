@@ -1,4 +1,5 @@
 import { create, StoreApi, UseBoundStore } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { guestModeSlice, GuestModeSlice } from '@/features/auth/slices/guest-mode.slice';
 
 type WithSelectors<S> = S extends { getState: () => infer T; }
@@ -17,10 +18,11 @@ const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(
   return store;
 };
 
-const useStoreWithoutSelectors = create<GuestModeSlice>()((...a) => ({
-  ...guestModeSlice(...a),
-}));
-
-const useStore = createSelectors(useStoreWithoutSelectors);
+const useStore = createSelectors(create<GuestModeSlice>()(
+  persist(
+    (...a) => ({ ...guestModeSlice(...a) }),
+    { name: 'zustand-store' }
+  )
+));
 
 export default useStore;
