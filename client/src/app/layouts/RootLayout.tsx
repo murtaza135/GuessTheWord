@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import useToastErrorFromQueryParams from '@/hooks/useToastErrorFromQueryParams';
 import { useProfile, useAccounts } from '@/features/auth';
 import { useWinLoss } from '@/features/win-loss';
+import { Offline } from "react-detect-offline";
 
 export default function RootLayout() {
   // queryClient.prefetchQuery does not wait for react query to load its data
@@ -15,5 +16,14 @@ export default function RootLayout() {
 
   useToastErrorFromQueryParams();
 
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+      <Offline>
+        <div className='fixed bottom-0 w-full py-1 bg-red-700 text-white text-center text-sm'>
+          No Internet Connection
+        </div>
+      </Offline>
+    </>
+  );
 }
