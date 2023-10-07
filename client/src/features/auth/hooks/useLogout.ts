@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import useStore from '@/app/store';
 import { clear, createStore } from "idb-keyval";
+
 const workboxBackgroundSyncDB = createStore('workbox-background-sync', 'requests');
 
 export default function useLogout() {

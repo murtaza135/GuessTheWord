@@ -8,7 +8,7 @@ import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
 
 export default function PrivateRouteLayout() {
-  const { isLoading, isSuccess, error } = useProfile();
+  const { error, isLoading } = useProfile();
 
   useEffect(() => {
     if (!isLoading && error) {
@@ -19,24 +19,24 @@ export default function PrivateRouteLayout() {
     }
   }, [error, isLoading]);
 
+  if (isLoading) {
+    return (
+      <Container $variant='center' className='px-4 py-24'>
+        <Spinner />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return <Navigate to="/login" replace />;
+  }
+
   return (
     <>
-      {isLoading && (
-        <Container $variant='center' className='px-4 py-24'>
-          <Spinner />
-        </Container>
-      )}
-
-      {error && <Navigate to="/login" replace />}
-
-      {isSuccess && (
-        <>
-          <Navbar />
-          <Container $variant='center' className='px-4 pt-36 pb-24'>
-            <Outlet />
-          </Container>
-        </>
-      )}
+      <Navbar />
+      <Container $variant='center' className='px-4 pt-36 pb-24'>
+        <Outlet />
+      </Container>
     </>
   );
 }

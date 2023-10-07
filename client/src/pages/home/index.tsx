@@ -1,9 +1,9 @@
 import { RouteObject } from 'react-router-dom';
-import MainMenuPage from './page';
+import HomePage from './page';
 
 const mainMenuRoute: RouteObject = {
-  path: "/main-menu",
-  element: <MainMenuPage />,
+  path: "/",
+  element: <HomePage />,
 };
 
 export default mainMenuRoute;
