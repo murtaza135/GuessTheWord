@@ -9,21 +9,22 @@ import SpinnerContainer from '@/ui/spinners/SpinnerContainer';
 
 export default function PrivateRouteLayout() {
   const { error, isLoading } = useProfile();
+  const isErrorRelatedToOffline = error instanceof TypeError;
 
   useEffect(() => {
-    if (!isLoading && error) {
+    if (!isLoading && error && !isErrorRelatedToOffline) {
       toast.error(
         error?.message ?? 'Something went wrong',
         { id: 'private-route-layout' },
       );
     }
-  }, [error, isLoading]);
+  }, [isLoading, error, isErrorRelatedToOffline]);
 
   if (isLoading) {
     return <SpinnerContainer />;
   }
 
-  if (error) {
+  if (error && !isErrorRelatedToOffline) {
     return <Navigate to="/login" replace />;
   }
 

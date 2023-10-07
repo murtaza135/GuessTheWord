@@ -4,12 +4,18 @@ import APIError from '@/app/api/APIError';
 import { WinLossResponse } from '../types';
 import useStore from '@/app/store';
 
+type Options = {
+  refetch?: boolean;
+};
+
+
 type UseWinLossResult = Omit<UseQueryResult<WinLossResponse, APIError>, 'data'> & {
   wins?: number;
   losses?: number;
 };
 
-export default function useWinLoss(): UseWinLossResult {
+export default function useWinLoss(options?: Options): UseWinLossResult {
+  const refetch = options?.refetch ?? true;
   const queryClient = useQueryClient();
   const isGuestMode = useStore.use.isGuestMode();
 
@@ -20,6 +26,9 @@ export default function useWinLoss(): UseWinLossResult {
       const winLossData = queryClient.getQueryData<WinLossResponse>(['winLoss']);
       return winLossData || { wins: 0, losses: 0 };
     },
+    refetchOnMount: refetch,
+    refetchOnReconnect: refetch,
+    refetchOnWindowFocus: refetch,
   });
 
   return {

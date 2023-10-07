@@ -4,7 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 import APIError from '@/app/api/APIError';
 import useStore from '@/app/store';
 
-export default function useProfile() {
+type Options = {
+  refetch?: boolean;
+};
+
+export default function useProfile(options?: Options) {
+  const refetch = options?.refetch ?? true;
   const isGuestMode = useStore.use.isGuestMode();
 
   const query = useQuery<ProfileResponse, APIError>({
@@ -13,6 +18,9 @@ export default function useProfile() {
       if (!isGuestMode) return api.get('auth/profile').json();
       return { userId: -1, name: 'Guest' } as ProfileResponse;
     },
+    refetchOnMount: refetch,
+    refetchOnReconnect: refetch,
+    refetchOnWindowFocus: refetch,
   });
 
   return query;
