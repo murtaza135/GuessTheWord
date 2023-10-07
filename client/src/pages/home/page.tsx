@@ -1,17 +1,12 @@
 import { useProfile } from '@/features/auth';
-import Container from '@/ui/containers/Container';
-import Spinner from '@/ui/spinners/Spinner';
 import { Navigate } from 'react-router-dom';
+import SpinnerContainer from '@/ui/spinners/SpinnerContainer';
 
 export default function HomePage() {
   const { data, isLoading } = useProfile();
 
   if (isLoading) {
-    return (
-      <Container $variant='center' className='px-4 py-24'>
-        <Spinner />
-      </Container>
-    );
+    return <SpinnerContainer />;
   }
 
   if (!data) {

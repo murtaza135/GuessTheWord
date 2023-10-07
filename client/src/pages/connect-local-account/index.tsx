@@ -1,5 +1,8 @@
+import { lazy } from 'react';
 import { RouteObject } from 'react-router-dom';
-import ConnectLocalAccountPage from './page';
+
+// import ConnectLocalAccountPage from './page';
+const ConnectLocalAccountPage = lazy(() => import('./page'));
 
 const registerRoute: RouteObject = {
   path: "/connections/guess",

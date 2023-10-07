@@ -1,11 +1,11 @@
 import { useProfile } from '@/features/auth';
-import Spinner from '@/ui/spinners/Spinner';
 import { Outlet } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import Container from '@/ui/containers/Container';
 import { Navbar } from '@/features/navbar';
 import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
+import SpinnerContainer from '@/ui/spinners/SpinnerContainer';
 
 export default function PrivateRouteLayout() {
   const { error, isLoading } = useProfile();
@@ -20,11 +20,7 @@ export default function PrivateRouteLayout() {
   }, [error, isLoading]);
 
   if (isLoading) {
-    return (
-      <Container $variant='center' className='px-4 py-24'>
-        <Spinner />
-      </Container>
-    );
+    return <SpinnerContainer />;
   }
 
   if (error) {
