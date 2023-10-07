@@ -1,18 +1,20 @@
 import { PersistedClient, Persister, PersistQueryClientOptions } from "@tanstack/react-query-persist-client";
-import { get, set, del } from "idb-keyval";
+import { get, set, del, createStore } from "idb-keyval";
 import config from '@/config/config';
+
+const reactQueryDB = createStore('react-query-db', 'react-query-store');
 
 // creates an IDB persister for react query to use as cache
 // @source https://github.com/TanStack/query/discussions/3198
 const persister: Persister = {
   persistClient: async (client: PersistedClient) => {
-    await set(config.IDB_CACHE_KEY, client);
+    await set(config.IDB_CACHE_KEY, client, reactQueryDB);
   },
   restoreClient: async () => {
-    return await get<PersistedClient>(config.IDB_CACHE_KEY);
+    return await get<PersistedClient>(config.IDB_CACHE_KEY, reactQueryDB);
   },
   removeClient: async () => {
-    await del(config.IDB_CACHE_KEY);
+    await del(config.IDB_CACHE_KEY, reactQueryDB);
   },
 };
 
