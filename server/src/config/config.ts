@@ -31,6 +31,7 @@ const config = {
   ACCESS_TOKEN_MAX_AGE: '15m',
   SESSION_COOKIE_MAX_AGE: ms('15m'),
   SESSION_COOKIE_NAME: 'session',
+  NON_HTTP_SESSION_COOKIE_NAME: 'session-non-http',
   ...env,
 } as const;
 

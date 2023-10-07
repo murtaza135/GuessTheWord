@@ -17,8 +17,14 @@ const strategies = [
     name: 'protect',
     strategy: new CustomStrategy(
       async function (req: Request, submit) {
-        const payload = authServices.verifyAccessToken(req.session?.accessToken);
-        if (!payload) return submit(null);
+        if (!req.session) return submit(null, null);
+        // @source https://medium.com/@thbrown/logging-out-with-http-only-session-ad09898876ba
+        const nonHttpAccessTokenFromCookie = req.cookies[config.NON_HTTP_SESSION_COOKIE_NAME];
+        const { nonHttpAccessToken, httpOnlyAccessToken } = req.session;
+        if (!nonHttpAccessTokenFromCookie || !nonHttpAccessToken) return submit(null, null);
+        if (nonHttpAccessTokenFromCookie !== nonHttpAccessToken) return submit(null, null);
+        const payload = authServices.verifyAccessToken(httpOnlyAccessToken);
+        if (!payload) return submit(null, null);
         return submit(null, payload);
       }
     )
