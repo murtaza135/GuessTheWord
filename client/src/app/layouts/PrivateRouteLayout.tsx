@@ -6,25 +6,25 @@ import { Navbar } from '@/features/navbar';
 import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
 import SpinnerContainer from '@/ui/spinners/SpinnerContainer';
+import APIError from '@/app/errors/APIError';
 
 export default function PrivateRouteLayout() {
   const { error, isLoading } = useProfile();
-  const isErrorRelatedToOffline = error instanceof TypeError;
 
   useEffect(() => {
-    if (!isLoading && error && !isErrorRelatedToOffline) {
+    if (!isLoading && error && error instanceof APIError) {
       toast.error(
         error?.message ?? 'Something went wrong',
         { id: 'private-route-layout' },
       );
     }
-  }, [isLoading, error, isErrorRelatedToOffline]);
+  }, [isLoading, error]);
 
   if (isLoading) {
     return <SpinnerContainer />;
   }
 
-  if (error && !isErrorRelatedToOffline) {
+  if (error && error instanceof APIError) {
     return <Navigate to="/login" replace />;
   }
 

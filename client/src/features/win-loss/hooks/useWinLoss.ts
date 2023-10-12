@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient, UseQueryResult } from '@tanstack/react-query';
 import { CustomUseQueryOptions } from '@/types/custom-react-query';
 import api from '@/app/api/api';
-import APIError from '@/app/api/APIError';
+import APIError from '@/app/errors/APIError';
 import { WinLossResponse } from '../types';
 import useStore from '@/app/store';
 

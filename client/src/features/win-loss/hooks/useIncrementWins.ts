@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient, UseMutationResult, UseMutateFunction } from '@tanstack/react-query';
 import api from '@/app/api/api';
-import APIError from '@/app/api/APIError';
+import APIError from '@/app/errors/APIError';
 import { WinLossResponse } from '../types';
 
 type IncrementWinsVariable = { wins: number; };

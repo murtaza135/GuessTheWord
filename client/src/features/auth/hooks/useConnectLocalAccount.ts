@@ -1,7 +1,7 @@
 import api from '@/app/api/api';
 import { useMutation } from '@tanstack/react-query';
 import { RegisterSchema } from "../schema";
-import APIError from '@/app/api/APIError';
+import APIError from '@/app/errors/APIError';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
