@@ -10,9 +10,9 @@ export default function RootLayout() {
   // incorrect data, however useQuery does wait for react query to load its data,
   // therefore until a better solution can be found, query data must be "prefetched"
   // as below
-  useProfile({ refetch: false });
-  useAccounts({ refetch: false });
-  useWinLoss({ refetch: false });
+  useProfile({ refetchOnMount: false, refetchOnReconnect: false, refetchOnWindowFocus: false });
+  useAccounts({ refetchOnMount: false, refetchOnReconnect: false, refetchOnWindowFocus: false });
+  useWinLoss({ refetchOnMount: false, refetchOnReconnect: false, refetchOnWindowFocus: false });
 
   useToastErrorFromQueryParams();
 

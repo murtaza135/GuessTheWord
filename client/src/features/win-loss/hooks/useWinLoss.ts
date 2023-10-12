@@ -1,13 +1,11 @@
 import { useQuery, useQueryClient, UseQueryResult } from '@tanstack/react-query';
+import { CustomUseQueryOptions } from '@/types/custom-react-query';
 import api from '@/app/api/api';
 import APIError from '@/app/api/APIError';
 import { WinLossResponse } from '../types';
 import useStore from '@/app/store';
 
-type Options = {
-  refetch?: boolean;
-};
-
+type Options = CustomUseQueryOptions<WinLossResponse, APIError>;
 
 type UseWinLossResult = Omit<UseQueryResult<WinLossResponse, APIError>, 'data'> & {
   wins?: number;
@@ -15,7 +13,6 @@ type UseWinLossResult = Omit<UseQueryResult<WinLossResponse, APIError>, 'data'> 
 };
 
 export default function useWinLoss(options?: Options): UseWinLossResult {
-  const refetch = options?.refetch ?? true;
   const queryClient = useQueryClient();
   const isGuestMode = useStore.use.isGuestMode();
 
@@ -26,9 +23,7 @@ export default function useWinLoss(options?: Options): UseWinLossResult {
       const winLossData = queryClient.getQueryData<WinLossResponse>(['winLoss']);
       return winLossData || { wins: 0, losses: 0 };
     },
-    refetchOnMount: refetch,
-    refetchOnReconnect: refetch,
-    refetchOnWindowFocus: refetch,
+    ...options
   });
 
   return {

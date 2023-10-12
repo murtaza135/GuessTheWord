@@ -10,30 +10,30 @@ const api = ky.create({
   hooks: {
     beforeRequest: [
       (request) => {
-        console.log("BEFORE REQUEST");
+        // console.log("BEFORE REQUEST");
         return useStore.getState().isGuestMode ? new Response() : request;
       }
     ],
     beforeRetry: [
       (options) => {
-        console.log("BEFORE RETRY");
-        console.log('options in before retry:', options);
+        // console.log("BEFORE RETRY");
+        // console.log('options in before retry:', options);
       }
     ],
     beforeError: [
       async (error) => {
-        console.log("BEFORE ERROR");
-        console.log('ky error:', error);
+        // console.log("BEFORE ERROR");
+        // console.log('ky error:', error);
         const errorResponse: APIErrorConstructor = await error.response.json();
         return Promise.reject(new APIError(errorResponse));
       }
     ],
     afterResponse: [
       async (req, options, res) => {
-        console.log("AFTER RESPONSE");
-        console.log('options in after response:', options);
-        console.log('request:', req);
-        console.log('response:', res);
+        // console.log("AFTER RESPONSE");
+        // console.log('options in after response:', options);
+        // console.log('request:', req);
+        // console.log('response:', res);
         return res;
       }
     ]
