@@ -20,7 +20,6 @@ export default function useLogin(options?: Options) {
     mutationFn: (args) => api.post('auth/local/login', { json: args }).json(),
     onSuccess: async () => {
       setGuestMode(false);
-      // TODO is this how you want to handle refetch of profile data?
       await queryClient.refetchQueries({ queryKey: ['profile'] });
       await queryClient.refetchQueries({ queryKey: ['accounts'] });
       await queryClient.refetchQueries({ queryKey: ['winLoss'] });

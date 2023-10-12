@@ -17,10 +17,10 @@ export default function useIncrementLosses(): UseIncrementLossesResult {
 
   const { data, mutate, ...rest } = useMutation<WinLossResponse, APIError, IncrementLossesVariable, WinLossContext>({
     mutationFn: (args) => api.post('losses/increment', { json: args }).json(),
-    onMutate: async ({ losses }) => { // i.e. incremented losses
+    onMutate: async ({ losses: numLossesToIncrement }) => {
       await queryClient.cancelQueries({ queryKey: ['winLoss'] });
       const previousData = queryClient.getQueryData<WinLossResponse>(['winLoss']) ?? { wins: 0, losses: 0 };
-      queryClient.setQueryData<WinLossResponse>(['winLoss'], { ...previousData, losses: previousData.losses + losses });
+      queryClient.setQueryData<WinLossResponse>(['winLoss'], { ...previousData, losses: previousData.losses + numLossesToIncrement });
       return { previousData };
     },
     onError: (_error, _newData, context) => {

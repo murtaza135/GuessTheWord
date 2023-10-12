@@ -20,10 +20,9 @@ export default function useRegister(options?: Options) {
     mutationFn: (args) => api.post('auth/local/register', { json: args }).json(),
     onSuccess: async () => {
       setGuestMode(false);
-      await queryClient.invalidateQueries({ queryKey: ['profile'] });
       await queryClient.refetchQueries({ queryKey: ['profile'] });
-      // TODO is this how you want to handle refetch of profile data?
-      // await queryClient.ensureQueryData({ queryKey: ['profile'], queryFn: () => api.get('auth/profile').json() });
+      await queryClient.refetchQueries({ queryKey: ['accounts'] });
+      await queryClient.refetchQueries({ queryKey: ['winLoss'] });
       if (options?.successRedirect) navigate(options.successRedirect);
     },
     onError: (error) => toast.error(error.message, { id: 'register' })

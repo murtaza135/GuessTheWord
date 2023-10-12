@@ -13,10 +13,8 @@ export default function PrivateRouteLayout() {
 
   useEffect(() => {
     if (!isLoading && error && error instanceof APIError) {
-      toast.error(
-        error?.message ?? 'Something went wrong',
-        { id: 'private-route-layout' },
-      );
+      const message = error?.message ?? 'Something went wrong';
+      toast.error(message, { id: 'private-route-layout' },);
     }
   }, [isLoading, error]);
 
