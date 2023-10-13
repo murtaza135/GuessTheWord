@@ -3,8 +3,7 @@ import { Form } from '@/features/general/components/form/Form';
 import { Input } from '@/features/general/components/form/Input';
 import { Button } from '@/features/general/components/Button';
 import { useRegister } from '@/features/auth/hooks/useRegister';
-import * as authSchema from '@/features/auth/schema';
-import { type RegisterSchema } from "@/features/auth/schema";
+import { registerSchema, RegisterSchema } from "@/features/auth/schema";
 import { AiOutlineMail } from "react-icons/ai";
 import { BsPerson, BsPersonCircle } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
@@ -17,7 +16,7 @@ export function RegisterForm() {
 
   return (
     <Form
-      schema={authSchema.register}
+      schema={registerSchema}
       onSubmit={handleSubmit}
       className='flex flex-col gap-6 w-full max-w-xl'
     >

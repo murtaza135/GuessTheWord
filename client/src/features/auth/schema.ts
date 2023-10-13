@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import validator from 'validator';
 
-export const login = z.object({
+export const loginSchema = z.object({
   username: z.string({ required_error: 'Required' })
     .trim()
     .max(25, { message: 'Username cannot be longer than 25 characters' })
@@ -9,7 +9,7 @@ export const login = z.object({
   password: z.string().trim().min(6, 'Password too short'),
 });
 
-export const register = z.object({
+export const registerSchema = z.object({
   email: z.string().email({ message: 'Please provide a valid email' }),
   username: z.string({ required_error: 'Please provide a valid username' })
     .trim()
@@ -24,5 +24,5 @@ export const register = z.object({
     path: ['confirmPassword']
   });
 
-export type LoginSchema = z.infer<typeof login>;
-export type RegisterSchema = z.infer<typeof register>;
+export type LoginSchema = z.infer<typeof loginSchema>;
+export type RegisterSchema = z.infer<typeof registerSchema>;

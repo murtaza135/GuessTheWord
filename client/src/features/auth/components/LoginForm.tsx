@@ -3,8 +3,7 @@ import { Form } from '@/features/general/components/form/Form';
 import { Input } from '@/features/general/components/form/Input';
 import { Button } from '@/features/general/components/Button';
 import { useLogin } from '@/features/auth/hooks/useLogin';
-import * as authSchema from '@/features/auth//schema';
-import { LoginSchema } from "@/features/auth/schema";
+import { loginSchema, LoginSchema } from "@/features/auth/schema";
 import { BsPerson } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
 
@@ -16,7 +15,7 @@ export function LoginForm() {
 
   return (
     <Form
-      schema={authSchema.login}
+      schema={loginSchema}
       onSubmit={handleSubmit}
       className='flex flex-col gap-6 w-full max-w-xl'
     >
