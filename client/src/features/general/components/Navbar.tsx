@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useProfile } from '@/features/auth/hooks/useProfile';
 import { useWinLoss } from '@/features/win-loss/hooks/useWinLoss';
 import { Stat } from '@/features/general/components/Stat';
-import { Avatar } from '@/features/general/components/avatars/Avatar';
+import { SmallAvatar } from '@/features/general/components/avatars/SmallAvatar';
 import { Container } from '@/features/general/components/Container';
 import { RxCheck } from "react-icons/rx";
 import { TiTimes } from "react-icons/ti";
@@ -33,7 +33,7 @@ export function Navbar() {
             )}
         </div>
         <Link to='/profile'>
-          <Avatar alt={data?.name ?? 'Avatar'} src={data?.image} fallback={data?.name} />
+          <SmallAvatar alt={data?.name ?? 'Avatar'} src={data?.image} fallback={data?.name} />
         </Link>
       </Container>
     </nav>

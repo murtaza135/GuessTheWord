@@ -8,7 +8,7 @@ import { useLogout } from '@/features/auth/hooks/useLogout';
 import { GithubButton } from '@/features/auth/components/GithubButton';
 import { GoogleButton, } from '@/features/auth/components/GoogleButton';
 import { GuessButton } from '@/features/auth/components/GuessButton';
-import { Avatar } from '@/features/general/components/avatars/Avatar2';
+import { BigAvatar } from '@/features/general/components/avatars/BigAvatar';
 import { TextGroup } from '@/features/general/components/TextGroup';
 import { Button } from '@/features/general/components/Button';
 import { Spinner } from '@/features/general/components/spinners/Spinner';
@@ -39,7 +39,7 @@ export default function ProfilePage() {
         <p className='font-semibold text-center text-primary-900 text-3xl cursor-default'>Profile</p>
 
         <div className='flex flex-col w-full gap-8 items-center border-[1px] p-8 rounded-md border-gray-300'>
-          <Avatar alt={profile?.name ?? 'Profile'} src={profile?.image} fallback={profile?.name} />
+          <BigAvatar alt={profile?.name ?? 'Profile'} src={profile?.image} fallback={profile?.name} />
 
           <div className="flex flex-col w-full gap-4">
             <TextGroup label='Name' icon={<BsPersonCircle />}>{profile?.name || 'N/A'}</TextGroup>

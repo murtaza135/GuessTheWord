@@ -3,8 +3,7 @@ import { Input } from '@/features/general/components/form/Input';
 import { Button } from '@/features/general/components/Button';
 import { useProfile } from '@/features/auth/hooks/useProfile';
 import { useLinkLocalAccount } from '@/features/auth/hooks/useLinkLocalAccount';
-import * as authSchema from '@/features/auth/schema';
-import { RegisterSchema } from "@/features/auth/schema";
+import { registerSchema, RegisterSchema } from "@/features/auth/schema";
 import { AiOutlineMail } from "react-icons/ai";
 import { BsPerson, BsPersonCircle } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
@@ -18,7 +17,7 @@ export function LinkLocalAccountForm() {
   // TODO OR make it so that the page simply cannot be accessed if a local account exists
   return (
     <Form
-      schema={authSchema.register}
+      schema={registerSchema}
       onSubmit={handleSubmit}
       className='flex flex-col gap-6 w-full max-w-xl'
     >

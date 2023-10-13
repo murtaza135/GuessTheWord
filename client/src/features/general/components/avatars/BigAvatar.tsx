@@ -1,5 +1,4 @@
 import * as RadixUIAvatar from '@radix-ui/react-avatar';
-import { cn } from '@/utils/cn';
 import { BsFillPersonFill } from "react-icons/bs";
 import upperFirst from "lodash/upperFirst";
 
@@ -7,24 +6,20 @@ type Props = {
   src?: string;
   alt: string;
   fallback?: string;
-  className?: string;
 };
 
-export function Avatar({ src, alt, fallback, className }: Props) {
+export function BigAvatar({ src, alt, fallback }: Props) {
   return (
-    <RadixUIAvatar.Root className="inline-flex justify-center items-center align-middle overflow-hidden select-none w-10 h-10 aspect-square rounded-full hover:opacity-75 transition-opacity">
+    <RadixUIAvatar.Root className="inline-flex justify-center items-center align-middle overflow-hidden select-none w-32 h-32 aspect-square rounded-full border-2 border-primary-900">
       <RadixUIAvatar.Image
         className="w-full h-full object-cover rounded-full"
         src={src}
         alt={alt}
       />
-      <RadixUIAvatar.Fallback
-        className={cn("relative w-full h-full flex justify-center items-center bg-white text-primary-900 font-semibold", className)}
-        delayMs={600}
-      >
+      <RadixUIAvatar.Fallback className="relative w-full h-full flex justify-center items-center bg-white text-primary-900 font-semibold">
         {fallback
           ? (
-            <p className={cn('text-primary-900', className)}>
+            <p className='text-primary-900 text-3xl'>
               {upperFirst(fallback.substring(0, 2))}
             </p>
           )
