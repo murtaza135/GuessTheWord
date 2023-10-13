@@ -6,6 +6,8 @@ import { logger } from './config/logger';
 import GracefulShutdown from './config/graceful-shutdown';
 
 const server = app.listen(config.PORT, () => {
+  // eslint-disable-next-line no-console
+  console.log(`[GuessTheWord] server running: ${config.NODE_ENV} mode on port ${config.PORT}`);
   logger.info(`[GuessTheWord] server running: ${config.NODE_ENV} mode on port ${config.PORT}`);
 });
 

@@ -17,7 +17,7 @@ const morganFormat = (
   return `${method} ${url} | ${status} ${statusText} | ${responseTime}`;
 };
 
-const skip = () => !config.IS_DEVELOPMENT;
+const skip = () => config.IS_PRODUCTION;
 const stream = {
   write: (message: string) => logger.http(message.trim())
 };
