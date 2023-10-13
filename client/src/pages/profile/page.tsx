@@ -15,12 +15,12 @@ import useStore from '@/app/store';
 export default function ProfilePage() {
   const { data: profile } = useProfile();
   const { data: accounts, isLoading } = useAccounts();
-  const { mutate } = useLogout();
+  const { logout } = useLogout();
   const navigate = useNavigate();
   const isGuestMode = useStore.use.isGuestMode();
 
   const handleLogout = () => {
-    mutate(null);
+    logout();
     navigate('/login');
   };
 

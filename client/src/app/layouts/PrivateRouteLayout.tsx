@@ -7,14 +7,17 @@ import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
 import SpinnerContainer from '@/ui/spinners/SpinnerContainer';
 import APIError from '@/app/errors/APIError';
+import { useLogout } from '@/features/auth';
 
 export default function PrivateRouteLayout() {
   const { error, isLoading } = useProfile();
+  const { logout } = useLogout();
 
   useEffect(() => {
     if (!isLoading && error && error instanceof APIError) {
       const message = error?.message ?? 'Something went wrong';
-      toast.error(message, { id: 'private-route-layout' },);
+      toast.error(message, { id: 'private-route-layout' });
+      logout();
     }
   }, [isLoading, error]);
 

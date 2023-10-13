@@ -1,16 +1,19 @@
 import api from '@/app/api/api';
-import { useMutation } from '@tanstack/react-query';
+import { useQueryClient, useMutation, UseMutationResult } from '@tanstack/react-query';
 import APIError from '@/app/errors/APIError';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
 import useStore from '@/app/store';
 import { clear, createStore } from "idb-keyval";
 import Cookies from 'js-cookie';
 import config from '@/config/config';
 
+type UseLogoutResult = UseMutationResult<null, APIError, null> & {
+  logout: () => void;
+};
+
 const workboxBackgroundSyncDB = createStore('workbox-background-sync', 'requests');
 
-export default function useLogout() {
+export default function useLogout(): UseLogoutResult {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const setGuestMode = useStore.use.setGuestMode();
@@ -26,5 +29,7 @@ export default function useLogout() {
     }
   });
 
-  return mutation;
+  const logout = () => mutation.mutate(null);
+
+  return { ...mutation, logout };
 }
