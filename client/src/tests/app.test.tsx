@@ -8,7 +8,7 @@ import { renderWithClientAndRouter } from './utils';
 import { server } from "../../vitest.setup";
 import LoginPage from '@/pages/login/page';
 import RegisterPage from '@/pages/register/page';
-import ConnectLocalAccountPage from '@/pages/connect-local-account/page';
+import ConnectLocalAccountPage from '@/pages/link-local-account/page';
 import ProfilePage from '@/pages/profile/page';
 
 afterEach(() => {

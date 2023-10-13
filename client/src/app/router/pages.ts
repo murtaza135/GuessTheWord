@@ -4,7 +4,7 @@ import homeRoute from "@/pages/home";
 import profileRoute from '@/pages/profile';
 import mainMenuRoute from '@/pages/main-menu';
 import playRoute from '@/pages/play';
-import connectLocalAccountRoute from "@/pages/connect-local-account";
+import connectLocalAccountRoute from "@/pages/link-local-account";
 
 const pages = {
   public: [

@@ -10,7 +10,7 @@ type Options = {
   successRedirect?: string;
 };
 
-export default function useConnectLocalAccount(options?: Options) {
+export default function useLinkLocalAccount(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export default function useConnectLocalAccount(options?: Options) {
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       if (options?.successRedirect) navigate(options.successRedirect);
     },
-    onError: (error) => toast.error(error.message, { id: 'connect-local-account' })
+    onError: (error) => toast.error(error.message, { id: 'link-local-account' })
   });
 
   return mutation;

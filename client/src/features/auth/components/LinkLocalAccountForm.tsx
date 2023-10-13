@@ -3,13 +3,13 @@ import Button from '@/ui/buttons/Button';
 import { AiOutlineMail } from "react-icons/ai";
 import { BsPerson, BsPersonCircle } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
-import useConnectLocalAccount from '../hooks/useConnectLocalAccount';
+import useLinkLocalAccount from '../hooks/useLinkLocalAccount';
 import * as authSchema from '../schema';
 import { type RegisterSchema } from "../schema";
 import useProfile from '../hooks/useProfile';
 
-export default function ConnectLocalAccountForm() {
-  const { mutate } = useConnectLocalAccount({ successRedirect: '/profile' });
+export default function LinkLocalAccountForm() {
+  const { mutate } = useLinkLocalAccount({ successRedirect: '/profile' });
   const { data } = useProfile();
   const handleSubmit = (data: RegisterSchema) => mutate(data);
 

@@ -6,7 +6,10 @@ import { WinLossResponse } from '../types';
 type IncrementLossesVariable = { losses: number; };
 type WinLossContext = { previousData: WinLossResponse; };
 
-type UseIncrementLossesResult = Omit<UseMutationResult<WinLossResponse, APIError, IncrementLossesVariable, WinLossContext>, 'data' | 'mutate'> & {
+type UseIncrementLossesResult = Omit<
+  UseMutationResult<WinLossResponse, APIError, IncrementLossesVariable, WinLossContext>,
+  'data' | 'mutate'
+> & {
   wins?: number;
   losses?: number;
   incrementLosses: UseMutateFunction<WinLossResponse, APIError, IncrementLossesVariable, WinLossContext>;
