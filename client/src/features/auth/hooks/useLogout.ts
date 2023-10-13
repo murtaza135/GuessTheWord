@@ -1,11 +1,11 @@
-import api from '@/app/api/api';
+import { api } from '@/app/api/api';
 import { useQueryClient, useMutation, UseMutationResult } from '@tanstack/react-query';
-import APIError from '@/app/errors/APIError';
 import { useNavigate } from 'react-router-dom';
-import useStore from '@/app/store';
+import { config } from '@/app/config';
+import { APIError } from '@/app/errors/APIError';
+import { useStore } from '@/app/store';
 import { clear, createStore } from "idb-keyval";
 import Cookies from 'js-cookie';
-import config from '@/config/config';
 
 type UseLogoutResult = UseMutationResult<null, APIError, null> & {
   logout: () => void;
@@ -13,7 +13,7 @@ type UseLogoutResult = UseMutationResult<null, APIError, null> & {
 
 const workboxBackgroundSyncDB = createStore('workbox-background-sync', 'requests');
 
-export default function useLogout(): UseLogoutResult {
+export function useLogout(): UseLogoutResult {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const setGuestMode = useStore.use.setGuestMode();

@@ -1,12 +1,13 @@
-import Card from '@/ui/cards/Card';
-import Button from '@/ui/buttons/Button';
-import { Link } from 'react-router-dom';
-import { LoginForm, GithubButton, GoogleButton } from '@/features/auth';
-import config from '@/config/config';
-import { useNavigate } from 'react-router-dom';
-import useStore from '@/app/store';
 import { useQueryClient } from '@tanstack/react-query';
-import Title from '@/ui/Title';
+import { Link, useNavigate } from 'react-router-dom';
+import { config } from '@/app/config';
+import { LoginForm } from '@/features/auth/components/LoginForm';
+import { GithubButton } from '@/features/auth/components/GithubButton';
+import { GoogleButton } from '@/features/auth/components/GoogleButton';
+import { useStore } from '@/app/store';
+import { Card } from '@/features/general/components/Card';
+import { Button } from '@/features/general/components/Button';
+import { Title } from '@/features/general/components/Title';
 
 export default function LoginPage() {
   const queryClient = useQueryClient();

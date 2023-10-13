@@ -1,16 +1,15 @@
-import api from '@/app/api/api';
-import { useMutation } from '@tanstack/react-query';
-import { RegisterSchema } from "../schema";
-import APIError from '@/app/errors/APIError';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
+import { api } from '@/app/api/api';
+import { RegisterSchema } from "@/features/auth/schema";
+import { APIError } from '@/app/errors/APIError';
 
 type Options = {
   successRedirect?: string;
 };
 
-export default function useLinkLocalAccount(options?: Options) {
+export function useLinkLocalAccount(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 

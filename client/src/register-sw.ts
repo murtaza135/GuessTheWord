@@ -5,7 +5,7 @@ type SWEvent = MessageEvent<{ refetch: boolean; }>;
 
 const intervalMS = 24 * 60 * 60 * 1000; // 24 hours
 
-const updateSW = registerSW({
+export const updateSW = registerSW({
   onOfflineReady() { },
   onRegisteredSW(_swScriptUrl, registration) {
     navigator.serviceWorker.addEventListener('message', (event: SWEvent) => {
@@ -18,5 +18,3 @@ const updateSW = registerSW({
     }, intervalMS);
   }
 });
-
-export default updateSW;

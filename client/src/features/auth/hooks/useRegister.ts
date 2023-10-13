@@ -1,17 +1,16 @@
-import api from '@/app/api/api';
-import { useMutation } from '@tanstack/react-query';
-import { RegisterSchema } from "../schema";
-import APIError from '@/app/errors/APIError';
+import { api } from '@/app/api/api';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { RegisterSchema } from "@/features/auth/schema";
+import { APIError } from '@/app/errors/APIError';
 import { useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import useStore from '@/app/store';
+import { useStore } from '@/app/store';
 
 type Options = {
   successRedirect?: string;
 };
 
-export default function useRegister(options?: Options) {
+export function useRegister(options?: Options) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const setGuestMode = useStore.use.setGuestMode();

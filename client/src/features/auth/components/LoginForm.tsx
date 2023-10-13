@@ -1,13 +1,14 @@
-import { Form, Input } from '@/ui/form';
-import Button from '@/ui/buttons/Button';
+import { useSearchParams } from "react-router-dom";
+import { Form } from '@/features/general/components/form/Form';
+import { Input } from '@/features/general/components/form/Input';
+import { Button } from '@/features/general/components/Button';
+import { useLogin } from '@/features/auth/hooks/useLogin';
+import * as authSchema from '@/features/auth//schema';
+import { LoginSchema } from "@/features/auth/schema";
 import { BsPerson } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
-import useLogin from '../hooks/useLogin';
-import * as authSchema from '../schema';
-import { type LoginSchema } from "../schema";
-import { useSearchParams } from "react-router-dom";
 
-export default function LoginForm() {
+export function LoginForm() {
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect') ?? '/';
   const { mutate } = useLogin({ successRedirect: redirect });

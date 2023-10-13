@@ -1,13 +1,13 @@
-import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
-import { useWinLoss } from '@/features/win-loss';
+import { Button } from '@/features/general/components/Button';
+import { useWinLoss } from '@/features/win-loss/hooks/useWinLoss';
 
 type Props = {
   isWin: boolean;
   onPlayAgain?: () => void;
 };
 
-export default function GameFinishedDisplay({ isWin, onPlayAgain }: Props) {
+export function GameFinishedDisplay({ isWin, onPlayAgain }: Props) {
   const { wins, losses } = useWinLoss();
 
   return (

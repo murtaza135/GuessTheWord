@@ -1,14 +1,14 @@
+import { cn } from '@/utils/cn';
 import { FcGoogle } from "react-icons/fc";
 import { BsCheck } from "react-icons/bs";
 import { TiTimes } from "react-icons/ti";
-import cn from '@/utils/cn';
 
 type Props = {
   to: string;
   isAuthorized?: boolean;
 };
 
-export default function GoogleButton({ to, isAuthorized }: Props) {
+export function GoogleButton({ to, isAuthorized }: Props) {
   return (
     <a
       href={to}

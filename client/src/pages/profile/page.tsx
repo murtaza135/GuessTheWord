@@ -1,17 +1,20 @@
-import Card from '@/ui/cards/Card';
-import { useProfile, useAccounts } from '@/features/auth';
-import Avatar from '@/ui/avatars/Avatar2';
-import { GithubButton, GoogleButton, GuessButton } from '@/features/auth';
-import TextGroup from '@/ui/text/TextGroup';
+import { useNavigate } from 'react-router-dom';
+import { config } from '@/app/config';
+import { useStore } from '@/app/store';
+import { Card } from '@/features/general/components/Card';
+import { useProfile } from '@/features/auth/hooks/useProfile';
+import { useAccounts } from '@/features/auth/hooks/useAccounts';
+import { useLogout } from '@/features/auth/hooks/useLogout';
+import { GithubButton } from '@/features/auth/components/GithubButton';
+import { GoogleButton, } from '@/features/auth/components/GoogleButton';
+import { GuessButton } from '@/features/auth/components/GuessButton';
+import { Avatar } from '@/features/general/components/avatars/Avatar2';
+import { TextGroup } from '@/features/general/components/TextGroup';
+import { Button } from '@/features/general/components/Button';
+import { Spinner } from '@/features/general/components/spinners/Spinner';
+import { Title } from '@/features/general/components/Title';
 import { AiOutlineMail } from "react-icons/ai";
 import { BsPerson, BsPersonCircle } from "react-icons/bs";
-import Button from '@/ui/buttons/Button';
-import { useLogout } from '@/features/auth';
-import { useNavigate } from 'react-router-dom';
-import Spinner from '@/ui/spinners/Spinner';
-import config from '@/config/config';
-import useStore from '@/app/store';
-import Title from '@/ui/Title';
 
 export default function ProfilePage() {
   const { data: profile } = useProfile();

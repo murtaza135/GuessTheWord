@@ -1,6 +1,6 @@
-import Card from '@/ui/cards/Card';
-import { LinkLocalAccountForm } from '@/features/auth';
-import Title from '@/ui/Title';
+import { LinkLocalAccountForm } from '@/features/auth/components/LinkLocalAccountForm';
+import { Card } from '@/features/general/components/Card';
+import { Title } from '@/features/general/components/Title';
 
 export default function LinkLocalAccountPage() {
   return (

@@ -5,7 +5,7 @@ export type APIErrorConstructor = {
   fields?: Record<string, unknown>,
 };
 
-export default class APIError extends Error {
+export class APIError extends Error {
   public readonly status: NonNullable<APIErrorConstructor['status']>;
   public readonly statusText: NonNullable<APIErrorConstructor['statusText']>;
   public readonly fields: NonNullable<APIErrorConstructor['fields']>;

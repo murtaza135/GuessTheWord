@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
-import icon from "/images/icon.png";
+import { cn } from '@/utils/cn';
 import { BsCheck } from "react-icons/bs";
 import { TiTimes } from "react-icons/ti";
-import cn from '@/utils/cn';
+import icon from "/images/icon.png";
 
 type Props = {
   to: string;
   isAuthorized?: boolean;
 };
 
-export default function GuessButton({ to, isAuthorized }: Props) {
+export function GuessButton({ to, isAuthorized }: Props) {
   return (
     <Link
       to={to}

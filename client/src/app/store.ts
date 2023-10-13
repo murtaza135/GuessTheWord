@@ -18,11 +18,9 @@ const createSelectors = <S extends UseBoundStore<StoreApi<object>>>(
   return store;
 };
 
-const useStore = createSelectors(create<GuestModeSlice>()(
+export const useStore = createSelectors(create<GuestModeSlice>()(
   persist(
     (...a) => ({ ...guestModeSlice(...a) }),
     { name: 'zustand-store' }
   )
 ));
-
-export default useStore;

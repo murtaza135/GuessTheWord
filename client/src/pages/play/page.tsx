@@ -1,11 +1,17 @@
-import Card from '@/ui/cards/Card';
-import Letter from '@/types/Letter';
-import useIncrement from '@/hooks/useIncrement';
-import { useGuessWord, Keyboard, IncorrectGuessesDisplay, GuessDisplay, GameFinishedDisplay, AnswerDisplay } from '@/features/guess-game';
-import config from '@/config/config';
-import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
-import { useIncrementWins, useIncrementLosses } from '@/features/win-loss';
+import { Card } from '@/features/general/components/Card';
+import { config } from '@/app/config';
+import { useGuessWord } from '@/features/guess-game/hooks/useGuessWord';
+import { Keyboard } from '@/features/guess-game/components/keyboard/Keyboard';
+import { IncorrectGuessesDisplay } from '@/features/guess-game/components/displays/IncorrectGuessesDisplay';
+import { GuessDisplay } from '@/features/guess-game/components/displays/GuessDisplay';
+import { GameFinishedDisplay } from '@/features/guess-game/components/displays/GameFinishedDisplay';
+import { AnswerDisplay } from '@/features/guess-game/components/displays/AnswerDisplay';
+import { useIncrementWins } from '@/features/win-loss/hooks/useIncrementWins';
+import { useIncrementLosses } from '@/features/win-loss/hooks/useIncrementLosses';
+import { useIncrement } from '@/features/general/hooks/useIncrement';
+import { Button } from '@/features/general/components/Button';
+import { Letter } from '@/features/guess-game/types';
 
 export default function PlayPage() {
   const { word, isWordCorrect, guessLetterInWord, resetWord } = useGuessWord();

@@ -1,9 +1,9 @@
 import { useQuery, useQueryClient, UseQueryResult } from '@tanstack/react-query';
 import { CustomUseQueryOptions } from '@/types/custom-react-query';
-import api from '@/app/api/api';
-import APIError from '@/app/errors/APIError';
-import { WinLossResponse } from '../types';
-import useStore from '@/app/store';
+import { api } from '@/app/api/api';
+import { APIError } from '@/app/errors/APIError';
+import { WinLossResponse } from '@/features/win-loss/types';
+import { useStore } from '@/app/store';
 
 type Options = CustomUseQueryOptions<WinLossResponse, APIError>;
 
@@ -12,7 +12,7 @@ type UseWinLossResult = Omit<UseQueryResult<WinLossResponse, APIError>, 'data'> 
   losses?: number;
 };
 
-export default function useWinLoss(options?: Options): UseWinLossResult {
+export function useWinLoss(options?: Options): UseWinLossResult {
   const queryClient = useQueryClient();
   const isGuestMode = useStore.use.isGuestMode();
 

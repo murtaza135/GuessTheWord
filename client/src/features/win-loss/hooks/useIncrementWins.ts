@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, UseMutationResult, UseMutateFunction } from '@tanstack/react-query';
-import api from '@/app/api/api';
-import APIError from '@/app/errors/APIError';
-import { WinLossResponse } from '../types';
+import { api } from '@/app/api/api';
+import { APIError } from '@/app/errors/APIError';
+import { WinLossResponse } from '@/features/win-loss/types';
 
 type IncrementWinsVariable = { wins: number; };
 type WinLossContext = { previousData: WinLossResponse; };
@@ -15,7 +15,7 @@ type UseIncrementWinsResult = Omit<
   incrementWins: UseMutateFunction<WinLossResponse, APIError, IncrementWinsVariable, WinLossContext>;
 };
 
-export default function useIncrementWins(): UseIncrementWinsResult {
+export function useIncrementWins(): UseIncrementWinsResult {
   const queryClient = useQueryClient();
 
   const { data, mutate, ...rest } = useMutation<WinLossResponse, APIError, IncrementWinsVariable, WinLossContext>({

@@ -1,14 +1,15 @@
-import { Form, Input } from '@/ui/form';
-import Button from '@/ui/buttons/Button';
+import { useSearchParams } from "react-router-dom";
+import { Form } from '@/features/general/components/form/Form';
+import { Input } from '@/features/general/components/form/Input';
+import { Button } from '@/features/general/components/Button';
+import { useRegister } from '@/features/auth/hooks/useRegister';
+import * as authSchema from '@/features/auth/schema';
+import { type RegisterSchema } from "@/features/auth/schema";
 import { AiOutlineMail } from "react-icons/ai";
 import { BsPerson, BsPersonCircle } from "react-icons/bs";
 import { BiLock } from "react-icons/bi";
-import useRegister from '../hooks/useRegister';
-import * as authSchema from '../schema';
-import { type RegisterSchema } from "../schema";
-import { useSearchParams } from "react-router-dom";
 
-export default function RegisterForm() {
+export function RegisterForm() {
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect') ?? '/';
   const { mutate } = useRegister({ successRedirect: redirect });

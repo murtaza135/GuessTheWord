@@ -1,13 +1,13 @@
-import api from '@/app/api/api';
-import { ProfileResponse } from '../types';
+import { api } from '@/app/api/api';
+import { ProfileResponse } from '@/features/auth/types';
 import { useQuery } from '@tanstack/react-query';
 import { CustomUseQueryOptions } from '@/types/custom-react-query';
-import APIError from '@/app/errors/APIError';
-import useStore from '@/app/store';
+import { APIError } from '@/app/errors/APIError';
+import { useStore } from '@/app/store';
 
 type Options = CustomUseQueryOptions<ProfileResponse, APIError>;
 
-export default function useProfile(options?: Options) {
+export function useProfile(options?: Options) {
   const isGuestMode = useStore.use.isGuestMode();
 
   const query = useQuery<ProfileResponse, APIError>({

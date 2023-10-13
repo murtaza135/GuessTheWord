@@ -1,7 +1,7 @@
-import Card from '@/ui/cards/Card';
-import { RegisterForm } from '@/features/auth';
 import { Link } from 'react-router-dom';
-import Title from '@/ui/Title';
+import { RegisterForm } from '@/features/auth/components/RegisterForm';
+import { Card } from '@/features/general/components/Card';
+import { Title } from '@/features/general/components/Title';
 
 export default function RegisterPage() {
   return (

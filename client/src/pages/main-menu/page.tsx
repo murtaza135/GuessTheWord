@@ -1,7 +1,7 @@
-import Card from '@/ui/cards/Card';
-import Button from '@/ui/buttons/Button';
 import { Link } from 'react-router-dom';
-import { useWinLoss } from '@/features/win-loss';
+import { useWinLoss } from '@/features/win-loss/hooks/useWinLoss';
+import { Card } from '@/features/general/components/Card';
+import { Button } from '@/features/general/components/Button';
 
 export default function MainMenuPage() {
   const { wins, losses } = useWinLoss();

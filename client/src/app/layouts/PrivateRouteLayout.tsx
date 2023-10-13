@@ -1,15 +1,14 @@
-import { useProfile } from '@/features/auth';
-import { Outlet } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
-import Container from '@/ui/containers/Container';
-import { Navbar } from '@/features/navbar';
-import { toast } from 'react-hot-toast';
 import { useEffect } from 'react';
-import SpinnerContainer from '@/ui/spinners/SpinnerContainer';
-import APIError from '@/app/errors/APIError';
-import { useLogout } from '@/features/auth';
+import { Outlet, Navigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import { useProfile } from '@/features/auth/hooks/useProfile';
+import { useLogout } from '@/features/auth/hooks/useLogout';
+import { Container } from '@/features/general/components/Container';
+import { Navbar } from '@/features/general/components/Navbar';
+import { SpinnerContainer } from '@/features/general/components/spinners/SpinnerContainer';
+import { APIError } from '@/app/errors/APIError';
 
-export default function PrivateRouteLayout() {
+export function PrivateRouteLayout() {
   const { error, isLoading } = useProfile();
   const { logout } = useLogout();
 

@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-import pages from './pages';
-import RootLayout from '@/app/layouts/RootLayout';
-import PrivateRouteLayout from '@/app/layouts/PrivateRouteLayout';
-import PublicRouteLayout from '@/app/layouts/PublicRouteLayout';
-import ErrorRouteLayout from '@/app/layouts/ErrorRouteLayout';
+import { pages } from './pages';
+import { RootLayout } from '@/app/layouts/RootLayout';
+import { PrivateRouteLayout } from '@/app/layouts/PrivateRouteLayout';
+import { PublicRouteLayout } from '@/app/layouts/PublicRouteLayout';
+import { ErrorRouteLayout } from '@/app/layouts/ErrorRouteLayout';
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
@@ -22,5 +22,3 @@ const router = createBrowserRouter([
     ]
   }
 ]);
-
-export default router;

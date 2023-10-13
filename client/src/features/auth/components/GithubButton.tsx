@@ -1,14 +1,14 @@
+import { cn } from '@/utils/cn';
 import { FaGithub } from "react-icons/fa";
 import { BsCheck } from "react-icons/bs";
 import { TiTimes } from "react-icons/ti";
-import cn from '@/utils/cn';
 
 type Props = {
   to: string;
   isAuthorized?: boolean;
 };
 
-export default function GithubButton({ to, isAuthorized }: Props) {
+export function GithubButton({ to, isAuthorized }: Props) {
   return (
     <a
       href={to}

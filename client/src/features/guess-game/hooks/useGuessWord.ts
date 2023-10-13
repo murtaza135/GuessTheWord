@@ -1,7 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
-import randomWord from '@/utils/words/randomWord';
-import Letter from '@/types/Letter';
-import GuessWord from '@/types/GuessWord';
+import { randomWord } from '@/features/guess-game/utils/randomWord';
+import { Letter, GuessWord } from '@/features/guess-game/types';
 
 function generateRandomGuessWord(): GuessWord[] {
   return [...randomWord()].map((letter, index) => ({
@@ -11,7 +10,7 @@ function generateRandomGuessWord(): GuessWord[] {
   }));
 }
 
-export default function useGuessWord() {
+export function useGuessWord() {
   const [word, setWord] = useState(() => generateRandomGuessWord());
   const isWordCorrect = useMemo(() => word.every((value) => value.isCorrect), [word]);
 

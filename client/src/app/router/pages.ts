@@ -1,23 +1,21 @@
-import loginRoute from '@/pages/login';
-import registerRoute from '@/pages/register';
-import homeRoute from "@/pages/home";
-import profileRoute from '@/pages/profile';
-import mainMenuRoute from '@/pages/main-menu';
-import playRoute from '@/pages/play';
-import connectLocalAccountRoute from "@/pages/link-local-account";
+import login from '@/pages/login';
+import register from '@/pages/register';
+import home from "@/pages/home";
+import profile from '@/pages/profile';
+import mainMenu from '@/pages/main-menu';
+import play from '@/pages/play';
+import connectLocalAccount from "@/pages/link-local-account";
 
-const pages = {
+export const pages = {
   public: [
-    loginRoute,
-    registerRoute,
-    homeRoute
+    login,
+    register,
+    home
   ],
   private: [
-    profileRoute,
-    mainMenuRoute,
-    playRoute,
-    connectLocalAccountRoute
+    profile,
+    mainMenu,
+    play,
+    connectLocalAccount
   ]
 };
-
-export default pages;

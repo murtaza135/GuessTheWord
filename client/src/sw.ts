@@ -1,9 +1,9 @@
+import { config } from '@/app/config';
+import { WinLossResponse } from '@/features/win-loss/types';
 import { precacheAndRoute, cleanupOutdatedCaches } from "workbox-precaching";
 import { Queue } from 'workbox-background-sync';
 import { clientsClaim } from 'workbox-core';
 import { registerRoute } from 'workbox-routing';
-import config from './config/config';
-import { WinLossResponse } from './features/win-loss/types';
 
 type WinResponse = Pick<WinLossResponse, 'wins'>;
 type LossResponse = Pick<WinLossResponse, 'losses'>;

@@ -1,10 +1,10 @@
 import ky from "ky";
-import config from '@/config/config';
-import APIError, { APIErrorConstructor } from '../errors/APIError';
-import OfflineError from '../errors/OfflineError';
-import useStore from '../store';
+import { config } from '@/app/config';
+import { APIError, APIErrorConstructor, } from '@/app/errors/APIError';
+import { OfflineError } from '@/app/errors/OfflineError';
+import { useStore } from '@/app/store';
 
-const api = ky.create({
+export const api = ky.create({
   prefixUrl: config.VITE_API_URL,
   credentials: 'include',
   throwHttpErrors: true,
@@ -32,5 +32,3 @@ const api = ky.create({
     ],
   },
 });
-
-export default api;

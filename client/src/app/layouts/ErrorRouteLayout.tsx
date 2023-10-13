@@ -1,12 +1,10 @@
-import Container from '@/ui/containers/Container';
-import { useRouteError } from 'react-router-dom';
-import { isRouteErrorResponse } from 'react-router-dom';
-import Button from '@/ui/buttons/Button';
-import Card from '@/ui/cards/Card';
-import { Link } from 'react-router-dom';
-import Title from '@/ui/Title';
+import { useRouteError, isRouteErrorResponse, Link } from 'react-router-dom';
+import { Container } from '@/features/general/components/Container';
+import { Button } from '@/features/general/components/Button';
+import { Card } from '@/features/general/components/Card';
+import { Title } from '@/features/general/components/Title';
 
-export default function ErrorRouteLayout() {
+export function ErrorRouteLayout() {
   const error = useRouteError();
   const isPageNotFoundError = isRouteErrorResponse(error) && error.status === 404;
 

@@ -1,10 +1,11 @@
 import { Outlet } from "react-router-dom";
-import useToastErrorFromQueryParams from '@/hooks/useToastErrorFromQueryParams';
-import { useProfile, useAccounts } from '@/features/auth';
-import { useWinLoss } from '@/features/win-loss';
 import { Offline } from "react-detect-offline";
+import { useToastErrorFromQueryParams } from '@/features/general/hooks/useToastErrorFromQueryParams';
+import { useProfile } from '@/features/auth/hooks/useProfile';
+import { useAccounts } from '@/features/auth/hooks/useAccounts';
+import { useWinLoss } from '@/features/win-loss/hooks/useWinLoss';
 
-export default function RootLayout() {
+export function RootLayout() {
   // queryClient.prefetchQuery does not wait for react query to load its data
   // that was persisted onto idb, and therefore causes a race condition that returns
   // incorrect data, however useQuery does wait for react query to load its data,
