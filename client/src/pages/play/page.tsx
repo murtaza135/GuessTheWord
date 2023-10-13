@@ -37,7 +37,7 @@ export default function PlayPage() {
         : (
           <>
             <div className='flex flex-col gap-1 items-center'>
-              {import.meta.env.DEV && <AnswerDisplay guess={word} />}
+              {!config.PROD && <AnswerDisplay guess={word} />}
               <IncorrectGuessesDisplay value={numGuesses} />
             </div>
             <Keyboard onClick={handleLetterClick} />

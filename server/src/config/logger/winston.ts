@@ -5,7 +5,7 @@ import config from '../config';
 
 export const FILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB (in bytes)
 
-const level = config.IS_PRODUCTION ? 'warn' : 'debug';
+const level = config.PROD ? 'warn' : 'debug';
 
 const levels = {
   error: 0,
@@ -77,7 +77,7 @@ const logger = winston.createLogger({
   exitOnError: false
 });
 
-if (!config.IS_PRODUCTION) logger.add(consoleTransport);
+if (!config.PROD) logger.add(consoleTransport);
 
 type Logger = Pick<winston.Logger, LogLevel>;
 
