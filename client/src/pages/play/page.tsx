@@ -3,10 +3,9 @@ import { Card } from '@/features/general/components/Card';
 import { config } from '@/app/config';
 import { useGuessWord } from '@/features/guess-game/hooks/useGuessWord';
 import { Keyboard } from '@/features/guess-game/components/keyboard/Keyboard';
-import { IncorrectGuessesDisplay } from '@/features/guess-game/components/displays/IncorrectGuessesDisplay';
-import { GuessDisplay } from '@/features/guess-game/components/displays/GuessDisplay';
-import { GameFinishedDisplay } from '@/features/guess-game/components/displays/GameFinishedDisplay';
-import { AnswerDisplay } from '@/features/guess-game/components/displays/AnswerDisplay';
+import { CurrentGuess } from '@/features/guess-game/components/CurrentGuess';
+import { GameData } from '@/features/guess-game/components/GameData';
+import { WinLossData } from '@/features/guess-game/components/WinLossData';
 import { useIncrementWins } from '@/features/win-loss/hooks/useIncrementWins';
 import { useIncrementLosses } from '@/features/win-loss/hooks/useIncrementLosses';
 import { useIncrement } from '@/features/general/hooks/useIncrement';
@@ -36,24 +35,24 @@ export default function PlayPage() {
 
   return (
     <Card className='flex flex-col gap-8 items-center'>
-      <GuessDisplay guess={word} showAll={isGameOver} />
+      <CurrentGuess guess={word} showAll={isGameOver} />
 
-      {isGameOver
-        ? <GameFinishedDisplay isWin={isWordCorrect} onPlayAgain={handlePlayAgain} />
-        : (
+      {!isGameOver
+        ? (
           <>
-            <div className='flex flex-col gap-1 items-center'>
-              {!config.PROD && <AnswerDisplay guess={word} />}
-              <IncorrectGuessesDisplay value={numGuesses} />
-            </div>
+            <GameData guess={word} incorrectGuesses={numGuesses} />
             <Keyboard onClick={handleLetterClick} />
-            <div className="flex gap-3 flex-1">
-              <Link to="/"><Button>Main Menu</Button></Link>
-              <Button onClick={handlePlayAgain}>Reset</Button>
-            </div>
           </>
         )
+        : <WinLossData isWin={isWordCorrect} />
       }
+
+      <div className="flex gap-3">
+        <Link to="/"><Button>Main Menu</Button></Link>
+        <Button onClick={handlePlayAgain}>
+          {!isGameOver ? 'Reset' : 'Play Again?'}
+        </Button>
+      </div>
     </Card>
   );
 }

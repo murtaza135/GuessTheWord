@@ -1,8 +1,8 @@
 import { useState, useMemo, useCallback } from 'react';
 import { randomWord } from '@/features/guess-game/utils/randomWord';
-import { Letter, GuessWord } from '@/features/guess-game/types';
+import { Letter, LetterData } from '@/features/guess-game/types';
 
-function generateRandomGuessWord(): GuessWord[] {
+function generateRandomWordInLetterDataForm(): LetterData[] {
   return [...randomWord()].map((letter, index) => ({
     id: index,
     letter: letter.toUpperCase() as Letter,
@@ -11,10 +11,10 @@ function generateRandomGuessWord(): GuessWord[] {
 }
 
 export function useGuessWord() {
-  const [word, setWord] = useState(() => generateRandomGuessWord());
+  const [word, setWord] = useState(() => generateRandomWordInLetterDataForm());
   const isWordCorrect = useMemo(() => word.every((value) => value.isCorrect), [word]);
 
-  const resetWord = useCallback(() => setWord(generateRandomGuessWord()), []);
+  const resetWord = useCallback(() => setWord(generateRandomWordInLetterDataForm()), []);
 
   const guessLetterInWord = useCallback((letter: Letter) => {
     const updatedWord = word.map((value) => {

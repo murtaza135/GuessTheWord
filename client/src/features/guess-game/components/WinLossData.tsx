@@ -1,13 +1,10 @@
-import { Link } from 'react-router-dom';
-import { Button } from '@/features/general/components/Button';
 import { useWinLoss } from '@/features/win-loss/hooks/useWinLoss';
 
 type Props = {
   isWin: boolean;
-  onPlayAgain?: () => void;
 };
 
-export function GameFinishedDisplay({ isWin, onPlayAgain }: Props) {
+export function WinLossData({ isWin }: Props) {
   const { wins, losses } = useWinLoss();
 
   return (
@@ -17,16 +14,10 @@ export function GameFinishedDisplay({ isWin, onPlayAgain }: Props) {
         : <p className='font-semibold text-center text-red-700 text-3xl md:text-4xl'>You Lost!</p>
       }
 
+      {/* TODO change the '...' */}
       <div>
         <p className='text-center text-green-700 font-bold text-xl md:text-xl'>Wins: {wins ?? '...'}</p>
         <p className='text-center text-red-800 font-bold text-xl md:text-xl'>Losses: {losses ?? '...'}</p>
-      </div>
-
-      <div className='flex gap-3'>
-        <Link to="/">
-          <Button>Main Menu</Button>
-        </Link>
-        <Button onClick={onPlayAgain}>Play Again?</Button>
       </div>
     </div>
   );
