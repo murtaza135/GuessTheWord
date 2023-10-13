@@ -1,5 +1,4 @@
-// import { defineConfig } from 'vite';
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
@@ -55,11 +54,6 @@ export default defineConfig({
   build: {
     outDir: './dist',
     emptyOutDir: true
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['./vitest.setup.ts']
   },
   resolve: {
     alias: [{ find: "@", replacement: "/src" }]
