@@ -28,7 +28,9 @@ router.post(
   '/auth/local/link',
   protect({ message: 'You must login to access this route' }),
   validate.body(authSchemas.createLocalAccount),
-  authenticate({ strategy: 'local-link', session: false }),
+  // TODO is renewSession what we want?
+  authenticate({ strategy: 'local-link', renewSession: false }),
+  // authenticate({ strategy: 'local-link', session: false }),
   (_req, res) => res.status(204).end()
 );
 

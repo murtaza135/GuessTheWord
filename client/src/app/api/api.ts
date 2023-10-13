@@ -16,12 +16,12 @@ export const api = ky.create({
     ],
     beforeRetry: [
       (options) => {
-        const isNoInternetError = (
+        const isNoConnectionError = (
           options.error instanceof TypeError
           && options.error.message === 'Failed to fetch'
         );
 
-        if (isNoInternetError) throw new OfflineError();
+        if (isNoConnectionError) throw new OfflineError();
       }
     ],
     beforeError: [
