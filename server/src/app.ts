@@ -38,7 +38,7 @@ router.use(cookieSession({
   name: config.SESSION_COOKIE_NAME,
   keys: [config.COOKIE_SECRET],
   httpOnly: true,
-  sameSite: 'none',
+  sameSite: config.PROD ? 'strict' : 'none',
   secure: config.PROD,
   maxAge: config.SESSION_COOKIE_MAX_AGE,
 }));
@@ -62,5 +62,7 @@ router.use(() => {
 });
 
 router.use(errorHandler);
+
+app.get('*', (_req, res) => res.redirect('/'));
 
 export default app;
