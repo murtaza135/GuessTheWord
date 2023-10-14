@@ -2,6 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { Form } from '@/features/general/components/form/Form';
 import { Input } from '@/features/general/components/form/Input';
 import { Button } from '@/features/general/components/Button';
+import { Spinner } from '@/features/general/components/spinners/Spinner';
 import { useRegister } from '@/features/auth/hooks/useRegister';
 import { registerSchema, RegisterSchema } from "@/features/auth/schema";
 import { AiOutlineMail } from "react-icons/ai";
@@ -11,8 +12,11 @@ import { BiLock } from "react-icons/bi";
 export function RegisterForm() {
   const [searchParams] = useSearchParams();
   const redirect = searchParams.get('redirect') ?? '/';
-  const { mutate } = useRegister({ successRedirect: redirect });
-  const handleSubmit = (data: RegisterSchema) => mutate(data);
+  const { mutate, isLoading } = useRegister({ successRedirect: redirect });
+
+  const handleSubmit = (data: RegisterSchema) => {
+    if (!isLoading) mutate(data);
+  };
 
   return (
     <Form
@@ -25,7 +29,7 @@ export function RegisterForm() {
       <Input name='name' label='Name' placeholder='Name' type='text' icon={<BsPersonCircle />} />
       <Input name='password' label='Password' placeholder='Password' type='password' icon={<BiLock />} />
       <Input name='confirmPassword' label='Confirm Password' placeholder='Confirm Password' type='password' icon={<BiLock />} />
-      <Button type='submit' className='mt-3'>Register</Button>
+      <Button type='submit' className='mt-3'>{!isLoading ? 'Register' : <Spinner text='' imgSize={24} />}</Button>
     </Form>
   );
 }

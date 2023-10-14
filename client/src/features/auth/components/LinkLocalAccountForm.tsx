@@ -1,6 +1,7 @@
 import { Form } from '@/features/general/components/form/Form';
 import { Input } from '@/features/general/components/form/Input';
 import { Button } from '@/features/general/components/Button';
+import { Spinner } from '@/features/general/components/spinners/Spinner';
 import { useProfile } from '@/features/auth/hooks/useProfile';
 import { useLinkLocalAccount } from '@/features/auth/hooks/useLinkLocalAccount';
 import { registerSchema, RegisterSchema } from "@/features/auth/schema";
@@ -10,8 +11,11 @@ import { BiLock } from "react-icons/bi";
 
 export function LinkLocalAccountForm() {
   const { mutate } = useLinkLocalAccount({ successRedirect: '/profile' });
-  const { data: profile } = useProfile();
-  const handleSubmit = (data: RegisterSchema) => mutate(data);
+  const { data: profile, isLoading } = useProfile();
+
+  const handleSubmit = (data: RegisterSchema) => {
+    if (!isLoading) mutate(data);
+  };
 
   return (
     <Form
@@ -24,7 +28,7 @@ export function LinkLocalAccountForm() {
       <Input name='name' label='Name' placeholder='Name' type='text' icon={<BsPersonCircle />} defaultValue={profile?.name ?? ''} />
       <Input name='password' label='Password' placeholder='Password' type='password' icon={<BiLock />} />
       <Input name='confirmPassword' label='Confirm Password' placeholder='Confirm Password' type='password' icon={<BiLock />} />
-      <Button type='submit' className='mt-3'>Link Account</Button>
+      <Button type='submit' className='mt-3'>{!isLoading ? 'Link Account' : <Spinner text='' imgSize={24} />}</Button>
     </Form>
   );
 }
