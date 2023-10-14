@@ -37,7 +37,7 @@ router.use(cookieSession({
   name: config.SESSION_COOKIE_NAME,
   keys: [config.COOKIE_SECRET],
   httpOnly: true,
-  sameSite: 'none',
+  sameSite: false,
   secure: true,
   maxAge: config.SESSION_COOKIE_MAX_AGE,
 }));
