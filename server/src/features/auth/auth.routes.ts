@@ -4,7 +4,7 @@ import * as authController from './auth.controller';
 import * as authSchemas from './auth.schema';
 import validate from '../../middleware/validate';
 import config from '../../config/config';
-import { authenticate, protect, startOAuth, logout } from './auth.middleware';
+import { authenticate, authorize, protect, startOAuth, logout } from './auth.middleware';
 
 const router = Router();
 
@@ -28,9 +28,7 @@ router.post(
   '/auth/local/link',
   protect({ message: 'You must login to access this route' }),
   validate.body(authSchemas.createLocalAccount),
-  // TODO is renewSession what we want?
-  authenticate({ strategy: 'local-link', renewSession: false }),
-  // authenticate({ strategy: 'local-link', session: false }),
+  authorize({ strategy: 'local-link' }),
   (_req, res) => res.status(204).end()
 );
 
@@ -54,7 +52,7 @@ router.get(
 router.get(
   '/auth/github/link/callback',
   protect({ message: 'You must login to access this route', failRedirect: `${config.CLIENT_URL}/profile` }),
-  authenticate({ strategy: 'github-link', session: false, failRedirect: `${config.CLIENT_URL}/profile` }),
+  authorize({ strategy: 'github-link', failRedirect: `${config.CLIENT_URL}/profile` }),
   (_req, res) => res.redirect(`${config.CLIENT_URL}/profile`)
 );
 
@@ -78,8 +76,7 @@ router.get(
 router.get(
   '/auth/google/link/callback',
   protect({ message: 'You must login to access this route', failRedirect: `${config.CLIENT_URL}/profile` }),
-  // (req, res, next) => { req.user = { userId: 3 }; next(); },
-  authenticate({ strategy: 'google-link', session: false, failRedirect: `${config.CLIENT_URL}/profile` }),
+  authorize({ strategy: 'google-link', failRedirect: `${config.CLIENT_URL}/profile` }),
   (_req, res) => res.redirect(`${config.CLIENT_URL}/profile`)
 );
 

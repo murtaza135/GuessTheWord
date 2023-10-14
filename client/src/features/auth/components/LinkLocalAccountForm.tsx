@@ -20,9 +20,9 @@ export function LinkLocalAccountForm() {
   const hasLocalAccount = !!accounts?.localAccount;
 
   // TODO fix flash or remove
-  useEffect(() => {
-    if (hasLocalAccount) navigate('/profile');
-  }, [hasLocalAccount, navigate]);
+  // useEffect(() => {
+  //   if (hasLocalAccount) navigate('/profile');
+  // }, [hasLocalAccount, navigate]);
 
   const handleSubmit = (data: RegisterSchema) => mutate(data);
 

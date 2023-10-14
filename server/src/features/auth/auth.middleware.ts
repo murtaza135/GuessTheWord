@@ -19,7 +19,11 @@ export type StartOAuthOptions = {
   scope: NonNullable<AuthenticateOptions['scope']>;
 };
 
-function createSession(req: Request, res: Response, { user }: { user: Express.User; }) {
+type CreateSessionOptions = {
+  user: Express.User;
+};
+
+function createSession(req: Request, res: Response, { user }: CreateSessionOptions) {
   if (!req.session) req.session = {};
 
   // @source https://medium.com/@thbrown/logging-out-with-http-only-session-ad09898876ba
@@ -55,20 +59,16 @@ export function authenticate({
       strategy,
       function (error: unknown, user: Express.User) {
         if (error) {
-          removeSession(req, res);
-          // TODO make errorRedirect, then if errorRedirect, do redirect, else if failRedirect, do redirect, else nothing
+          if (session) removeSession(req, res);
           if (failRedirect) return res.redirect(`${failRedirect}?error=${encodeURIComponent('Something went wrong')}`);
           if (error instanceof Error) return next(error);
           return next(new Error('Something went wrong', { cause: error }));
         }
 
         if (!user) {
-          removeSession(req, res);
+          if (session) removeSession(req, res);
           if (failRedirect) return res.redirect(`${failRedirect}?error=${encodeURIComponent(message ?? 'Unauthorized')}`);
-          return next(new APIError({
-            statusText: 'Unauthorized',
-            message: message ?? 'Unauthorized',
-          }));
+          return next(new APIError({ statusText: 'Unauthorized', message: message ?? 'Unauthorized' }));
         }
 
         if (session) {
@@ -82,8 +82,12 @@ export function authenticate({
   };
 }
 
-export function protect({ message, failRedirect }: Pick<AuthOptions, 'message' | 'failRedirect'>) {
-  return authenticate({ strategy: 'protect', renewSession: false, message, failRedirect });
+export function authorize(options: Omit<AuthOptions, 'session' | 'renewSession'>) {
+  return authenticate({ ...options, session: false, renewSession: false });
+}
+
+export function protect(options: Omit<AuthOptions, 'strategy' | 'session' | 'renewSession'>) {
+  return authenticate({ ...options, strategy: 'protect', session: true, renewSession: false });
 }
 
 export function startOAuth({ strategy, scope }: StartOAuthOptions) {
