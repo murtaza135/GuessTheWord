@@ -20,7 +20,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 
 const router = Router();
-app.set('trust proxy', true);
+app.set('trust proxy', 1);
 app.use(`/api/v${config.VERSION_MAJOR}`, router);
 
 initAuthStrategies();
