@@ -17,10 +17,10 @@ import { authRouter, initAuthStrategies } from './features/auth';
 import { winLossRouter } from './features/win-loss';
 
 const app = express();
+app.set('trust proxy', 1);
 app.use(express.static(path.join(__dirname, 'public')));
 
 const router = Router();
-app.set('trust proxy', 1);
 app.use(`/api/v${config.VERSION_MAJOR}`, router);
 
 initAuthStrategies();
@@ -39,7 +39,7 @@ router.use(cookieSession({
   keys: [config.COOKIE_SECRET],
   httpOnly: true,
   sameSite: 'none',
-  secure: true,
+  secure: config.PROD,
   maxAge: config.SESSION_COOKIE_MAX_AGE,
 }));
 
