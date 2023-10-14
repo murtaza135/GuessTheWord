@@ -24,7 +24,7 @@ export function LinkLocalAccountForm() {
       className='flex flex-col gap-6 w-full max-w-xl'
     >
       <Input name='email' label='Email' placeholder='Email' type='email' icon={<AiOutlineMail />} defaultValue={profile?.email ?? ''} />
-      <Input name='username' label='Username' placeholder='Useranme' type='text' icon={<BsPerson />} />
+      <Input name='username' label='Username' placeholder='Username' type='text' icon={<BsPerson />} />
       <Input name='name' label='Name' placeholder='Name' type='text' icon={<BsPersonCircle />} defaultValue={profile?.name ?? ''} />
       <Input name='password' label='Password' placeholder='Password' type='password' icon={<BiLock />} />
       <Input name='confirmPassword' label='Confirm Password' placeholder='Confirm Password' type='password' icon={<BiLock />} />
