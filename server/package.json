@@ -3,7 +3,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "cross-env NODE_ENV=development nodemon src/server.ts",
-    "build": "tsc",
+    "build": "npm i && tsc",
     "prisma-push": "prisma db push",
     "prisma-generate": "prisma generate"
   },
