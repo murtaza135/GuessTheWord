@@ -52,7 +52,8 @@ export default defineConfig({
     })
   ],
   build: {
-    outDir: './dist',
+    outDir: '../server/src/public',
+    // outDir: './dist',
     emptyOutDir: true
   },
   resolve: {
