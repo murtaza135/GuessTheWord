@@ -21,15 +21,20 @@ const globalExtension = Prisma.defineExtension({
           if (error instanceof Prisma.PrismaClientKnownRequestError) {
             // unique constraint violation
             if (error.code === 'P2002') {
-              const fields: Record<string, string> = Object.fromEntries(
-                (error.meta?.target as Array<string>).map((field) => [
-                  field, `${field} is taken`
-                ])
-              );
+              const fields: Record<string, string> = (function () {
+                if (error.meta && 'target' in error.meta && error.meta.target) {
+                  return Object.fromEntries(
+                    (error.meta.target as Array<string>).map((field) => [
+                      field, `${field} is taken`
+                    ])
+                  );
+                }
+                return {};
+              }());
 
               throw new APIError({
                 statusText: 'Bad Request',
-                message: 'Non-unique data',
+                message: 'This information is already taken',
                 cause: error,
                 fields
               });
