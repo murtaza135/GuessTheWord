@@ -17,7 +17,7 @@ import { authRouter, initAuthStrategies } from './features/auth';
 import { winLossRouter } from './features/win-loss';
 
 const app = express();
-app.set('trust proxy', 1);
+app.set('trust proxy', true);
 app.use(express.static(path.join(__dirname, 'public')));
 
 const router = Router();
