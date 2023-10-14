@@ -39,7 +39,7 @@ router.use(cookieSession({
   httpOnly: true,
   sameSite: 'none',
   maxAge: config.SESSION_COOKIE_MAX_AGE,
-  secure: config.PROD
+  // secure: config.PROD
 }));
 
 router.use(actuator({

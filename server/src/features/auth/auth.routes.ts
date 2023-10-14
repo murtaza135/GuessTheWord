@@ -23,6 +23,7 @@ router.post(
   authenticate({ strategy: 'local-login', message: 'Invalid Credentials' }),
   (req, _res, next) => {
     console.log('req.session:', req.session);
+    console.log('secure:', config.PROD);
     next();
   },
   (_req, res) => res.status(204).end()
