@@ -26,6 +26,7 @@ router.post(
 
 router.post(
   '/auth/local/link',
+  rateLimit({ maxAttempts: 10, duration: 60 }),
   protect({ message: 'You must login to access this route' }),
   validate.body(authSchemas.createLocalAccount),
   authorize({ strategy: 'local-link' }),
