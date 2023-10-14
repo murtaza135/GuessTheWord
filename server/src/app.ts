@@ -38,8 +38,8 @@ router.use(cookieSession({
   keys: [config.COOKIE_SECRET],
   httpOnly: true,
   sameSite: 'none',
+  secure: true,
   maxAge: config.SESSION_COOKIE_MAX_AGE,
-  // secure: config.PROD
 }));
 
 router.use(actuator({
