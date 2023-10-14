@@ -41,6 +41,7 @@ router.use(cookieSession({
   sameSite: false,
   secure: true,
   maxAge: config.SESSION_COOKIE_MAX_AGE,
+  secureProxy: true,
 }));
 
 router.use(actuator({
