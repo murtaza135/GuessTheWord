@@ -22,6 +22,7 @@ const env = validateEnv(z.object({
 }));
 
 const config = {
+  APP_NAME: 'Guess the Word!',
   VERSION_MAJOR: env.VERSION.split('.')[0],
   DEV: (env.NODE_ENV || 'production') === 'development',
   PROD: (env.NODE_ENV || 'production') === 'production',

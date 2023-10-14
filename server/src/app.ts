@@ -44,7 +44,7 @@ router.use(cookieSession({
 router.use(actuator({
   basePath: '/_app',
   infoBuildOptions: {
-    name: 'Guess the Word!',
+    name: config.APP_NAME,
     version: config.VERSION
   }
 }));
