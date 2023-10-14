@@ -9,6 +9,9 @@ const env = validateEnv(z.object({
   PORT: z.coerce.number(),
   NODE_ENV: z.enum(['production', 'development', 'test']),
   VERSION: z.string().regex(/^[0-9]+\.[0-9]+\.[0-9]+$/), // e.g. 11.2.456
+  DEBUG: z.string()
+    .refine((value) => value === 'true' || value === 'false')
+    .transform((value) => value === 'true'),
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'http', 'debug']),
   DATABASE_URL: z.string(),
   COOKIE_SECRET: z.string(),

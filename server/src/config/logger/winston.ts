@@ -5,7 +5,7 @@ import config from '../config';
 
 export const FILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB (in bytes)
 
-const level = config.PROD ? 'warn' : 'debug';
+const defaultLevel = config.DEBUG ? 'debug' : 'warn';
 
 const levels = {
   error: 0,
@@ -70,14 +70,14 @@ const detailedErrorFileTransport = new winston.transports.File({
 });
 
 const logger = winston.createLogger({
-  level,
+  level: defaultLevel,
   levels,
   format: defaultFormat,
   transports: [simpleErrorFileTransport, detailedErrorFileTransport],
   exitOnError: false
 });
 
-if (!config.PROD) logger.add(consoleTransport);
+if (config.DEBUG) logger.add(consoleTransport);
 
 type Logger = Pick<winston.Logger, LogLevel>;
 

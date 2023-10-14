@@ -31,7 +31,8 @@ function createSession(req: Request, res: Response, { user }: CreateSessionOptio
   res.cookie(config.NON_HTTP_SESSION_COOKIE_NAME, nonHttpAccessToken, {
     httpOnly: false,
     sameSite: 'none',
-    maxAge: config.SESSION_COOKIE_MAX_AGE
+    maxAge: config.SESSION_COOKIE_MAX_AGE,
+    secure: config.PROD
   });
 
   req.session.nonHttpAccessToken = nonHttpAccessToken;
@@ -43,7 +44,8 @@ function removeSession(req: Request, res: Response) {
   res.clearCookie(config.NON_HTTP_SESSION_COOKIE_NAME, {
     httpOnly: false,
     sameSite: 'none',
-    maxAge: config.SESSION_COOKIE_MAX_AGE
+    maxAge: config.SESSION_COOKIE_MAX_AGE,
+    secure: config.PROD
   });
 }
 
