@@ -17,8 +17,9 @@ import { AiOutlineMail } from "react-icons/ai";
 import { BsPerson, BsPersonCircle } from "react-icons/bs";
 
 export default function ProfilePage() {
-  const { data: profile } = useProfile();
-  const { data: accounts, isLoading } = useAccounts();
+  const { data: profile, isLoading: isProfileLoading } = useProfile();
+  const { data: accounts, isLoading: isAccountsLoading } = useAccounts();
+  const isLoading = isProfileLoading || isAccountsLoading;
   const { logout } = useLogout();
   const navigate = useNavigate();
   const isGuestMode = useStore.use.isGuestMode();
@@ -44,7 +45,11 @@ export default function ProfilePage() {
           <div className="flex flex-col w-full gap-4">
             <TextGroup label='Name' icon={<BsPersonCircle />}>{profile?.name || 'N/A'}</TextGroup>
             <TextGroup label='Email' icon={<AiOutlineMail />}>{profile?.email || 'N/A'}</TextGroup>
-            {accounts?.localAccount && <TextGroup label='Username' icon={<BsPerson />}>{accounts.localAccount.username || 'N/A'}</TextGroup>}
+            {accounts?.localAccount && (
+              <TextGroup label='Username' icon={<BsPerson />}>
+                {accounts.localAccount.username || 'N/A'}
+              </TextGroup>
+            )}
           </div>
         </div>
 

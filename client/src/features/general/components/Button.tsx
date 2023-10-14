@@ -15,13 +15,7 @@ const sizes = {
   lg: 'text-3xl px-8 py-3'
 } as const;
 
-export function Button({
-  $variant = 'primary',
-  $size = 'md',
-  children,
-  className,
-  ...rest
-}: Props) {
+export function Button({ $variant = 'primary', $size = 'md', children, className, ...rest }: Props) {
   return (
     <button
       className={cn('font-semibold px-4 py-2 rounded-md', variants[$variant], sizes[$size], className)}

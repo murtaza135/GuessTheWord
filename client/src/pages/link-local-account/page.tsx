@@ -1,8 +1,17 @@
+import { Navigate } from 'react-router-dom';
+import { useAccounts } from '@/features/auth/hooks/useAccounts';
 import { LinkLocalAccountForm } from '@/features/auth/components/LinkLocalAccountForm';
 import { Card } from '@/features/general/components/Card';
 import { Title } from '@/features/general/components/Title';
 
 export default function LinkLocalAccountPage() {
+  const { data } = useAccounts();
+  const hasLocalAccount = !!data?.localAccount;
+
+  if (hasLocalAccount) {
+    return <Navigate to="/profile" />;
+  }
+
   return (
     <>
       <Title title='Link Guess Account' />

@@ -80,7 +80,7 @@ registerRoute(
 // send message to browser to refetch data again (via react query)
 // on reconnect/sync
 self.addEventListener('sync', () => {
-  console.log("SYNC");
+  console.log("SYNC"); // TODO 
   setTimeout(() => {
     self.clients.matchAll().then(clients => {
       clients.forEach(client => {

@@ -26,7 +26,7 @@ const eventId = `gracefulShutdown-${randomBytes(16).toString('hex')}`;
 const eventEmitter = new EventEmitter();
 eventEmitter.setMaxListeners(1);
 
-const GracefulShutdown = (server: Server) => {
+const configureGracefulShutdown = (server: Server) => {
   const callback = HTTPGracefulShutdown(server, httpGracefulShutdownConfig);
   eventEmitter.removeAllListeners(eventId);
   eventEmitter.on(eventId, callback);
@@ -36,4 +36,4 @@ export const shutdownGracefully = () => {
   eventEmitter.emit(eventId);
 };
 
-export default GracefulShutdown;
+export default configureGracefulShutdown;
