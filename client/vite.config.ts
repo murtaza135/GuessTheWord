@@ -8,7 +8,7 @@ export default defineConfig({
     VitePWA({
       devOptions: { enabled: true, type: 'module', navigateFallback: 'index.html' },
       strategies: 'injectManifest',
-      injectManifest: { globPatterns: ['**/*.{js,css,html}'] },
+      injectManifest: { globPatterns: ['**/*.{js,css,html,svg}'] },
       registerType: 'autoUpdate',
       srcDir: 'src',
       filename: 'sw.ts',

@@ -69,7 +69,6 @@ registerRoute(
       const newReq = new Request(request, {
         body: JSON.stringify({ losses: prevLosses + newLosses }),
       });
-      console.log('losses sw:', prevLosses + newLosses);
       await lossesQueue.pushRequest({ request: newReq });
       return new Response();
     }
@@ -80,7 +79,6 @@ registerRoute(
 // send message to browser to refetch data again (via react query)
 // on reconnect/sync
 self.addEventListener('sync', () => {
-  console.log("SYNC"); // TODO 
   setTimeout(() => {
     self.clients.matchAll().then(clients => {
       clients.forEach(client => {
