@@ -32,7 +32,7 @@ function createSession(req: Request, res: Response, { user }: CreateSessionOptio
     httpOnly: false,
     sameSite: 'none',
     maxAge: config.SESSION_COOKIE_MAX_AGE,
-    secure: true
+    secure: true,
   });
 
   req.session.nonHttpAccessToken = nonHttpAccessToken;

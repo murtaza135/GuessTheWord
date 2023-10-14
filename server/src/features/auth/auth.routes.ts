@@ -21,9 +21,10 @@ router.post(
   rateLimit({ maxAttempts: 5, duration: 60 }),
   validate.body(authSchemas.login),
   authenticate({ strategy: 'local-login', message: 'Invalid Credentials' }),
-  (req, _res, next) => {
+  (req, res, next) => {
     console.log('req.session:', req.session);
     console.log('secure:', config.PROD);
+    console.log('response:', res.getHeaders());
     next();
   },
   (_req, res) => res.status(204).end()
