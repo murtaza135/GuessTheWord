@@ -10,8 +10,6 @@ import config from '../../config/config';
 import * as authServices from './auth.services';
 import APIError from '../../errors/APIError';
 
-export type Strategy = typeof strategies[number]['name'];
-
 const strategies = [
   {
     name: 'protect',
@@ -180,6 +178,8 @@ const strategies = [
     )
   }
 ] as const;
+
+export type Strategy = typeof strategies[number]['name'];
 
 export default function initAuthStrategies() {
   strategies.forEach(({ name, strategy }) => {
